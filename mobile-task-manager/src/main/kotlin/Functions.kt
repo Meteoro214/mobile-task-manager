@@ -32,11 +32,11 @@ fun listTasks(tasks : List<Task>){
 }
 
 fun filterTasks(tasks : List<Task>){
-    println("TODO filtering...")
-    //Pedir condicion de filtrado
-    //Imprimir las que cumplan (lambda)
+    println("Press C to filter only done tasks, press anything else for undone tasks")
+    val completed : Boolean = if("C".equals(readLine()?.trim())) true else false
+    filterTasks(tasks,completed)
 }
 
 fun filterTasks(tasks : List<Task>,completed: Boolean){
-
+//Imprimir las que cumplan (lambda)
 }
