@@ -2,27 +2,35 @@
 fun closeApp() {
     println("Exiting...")
 }
-fun addTask() {
+fun addTask(tasks : List<Task>, nextId : Int) {
     println("TODO adding...")
+    //Pedir los datos
+    //Crear la Task
+    //Añadir la task
 }
 
-fun markTaskDone(){
+fun markTaskDone(tasks : List<Task>){
     println("TODO marking...")
+    //Pedir la id
+    //Buscar en la lista
+    //Modificar el campo (añadir confirmacion/informar si estaba ya acabada)
 }
 
-fun markTaskDone(id: Int){
+fun markTaskDone(tasks : List<Task>,id: Int){
 
 }
 
-fun listTasks(){
+fun listTasks(tasks : List<Task>){
     println("TODO listing...")
+    //Recorrer la lista e imprimir
 }
 
-fun filterTasks(){
+fun filterTasks(tasks : List<Task>){
     println("TODO filtering...")
-
+    //Pedir condicion de filtrado
+    //Imprimir las que cumplan (lambda)
 }
 
-fun filterTasks(completed: Boolean){
+fun filterTasks(tasks : List<Task>,completed: Boolean){
 
 }
