@@ -15,7 +15,6 @@ fun taskToString(t:Task) {
     for (key in t.keys){
         println("Property ${key} = ${t[key]}")
     }
-    println("\n")
 }
 
 /**

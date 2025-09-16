@@ -1,7 +1,7 @@
-
 fun closeApp() {
     println("Exiting...")
 }
+
 fun addTask(tasks : List<Task>, nextId : Int) {
     println("TODO adding...")
     //Pedir los datos
@@ -20,9 +20,15 @@ fun markTaskDone(tasks : List<Task>,id: Int){
 
 }
 
+/**
+ * Iterates over the given list and prints all tasks
+ */
 fun listTasks(tasks : List<Task>){
-    println("TODO listing...")
-    //Recorrer la lista e imprimir
+    println("Printing all Tasks:")
+    for (task in tasks){
+        println(taskToString(task))
+    }
+    println("All Tasks printed")
 }
 
 fun filterTasks(tasks : List<Task>){
