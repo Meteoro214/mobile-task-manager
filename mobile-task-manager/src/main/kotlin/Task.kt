@@ -1,4 +1,4 @@
-typealias Task = MutableMap<String, Any>
+typealias Task = MutableMap<String, Any?>
 
 const val TASK_ID = "id"
 const val TASK_TITLE = "title"
@@ -10,18 +10,20 @@ const val TASK_CATEGORY = "category"
 /**
  * Prints a given task
  */
-fun taskToString(t:Task) {
-    println("The task with id = ${t[TASK_ID]} has the following information:")
+fun taskToString(t:Task) : String {
+    val sb = StringBuilder()
+    sb.append("The task with id = ${t[TASK_ID]} has the following information:\n")
     for (key in t.keys){
-        println("Property ${key} = ${t[key]}")
+        sb.append("Property ${key} = ${t[key]}\n")
     }
+    return sb.toString()
 }
 
 /**
  * Creates and returns a new Task
  */
 fun createTask(id : Int, title : String, isDone : Boolean = false,
-               description : String? = null,dueDate : String? = null, category : String? = null )
+               description : String? = null,dueDate : String? = null, category : String? = null ) : Task
     = mutableMapOf(TASK_ID to  id, TASK_TITLE to title, TASK_DONE to isDone,
                     TASK_DESCRIPTION to description, TASK_DUEDATE to dueDate, TASK_CATEGORY to category)
 

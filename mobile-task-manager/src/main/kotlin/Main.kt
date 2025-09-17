@@ -3,15 +3,14 @@ import kotlin.collections.mutableListOf
 fun main(args : Array<String>){
     println("Initiating mobile task manager...")
     val tasks = mutableListOf<Task>()
-    var nextId : Int = 1
-    printMenu(tasks, nextId)
+    printMenu(tasks)
     println("Program finished")
 }
 
 /**
  * Prints the Menu while verifying the chosen option and launching the selected option, repeats until user exits
  */
-fun printMenu(tasks : List<Task>, nextId : Int)  {
+fun printMenu(tasks : MutableList<Task>)  {
     var toRet : String?
     do {
         println("""Please select one of the following options:
@@ -24,7 +23,7 @@ fun printMenu(tasks : List<Task>, nextId : Int)  {
 
         when(toRet){
             "0" -> closeApp()
-            "1" -> addTask(tasks, nextId)
+            "1" -> addTask(tasks)
             "2" -> markTaskDone(tasks)
             "3" -> listTasks(tasks)
             "4" -> filterTasks(tasks)
