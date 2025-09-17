@@ -9,15 +9,29 @@ fun addTask(tasks : List<Task>, nextId : Int) {
     //Añadir la task
 }
 
+/**
+ * Asks for the id of the task to mark as done and marks it as done
+ */
 fun markTaskDone(tasks : List<Task>){
-    println("TODO marking...")
-    //Pedir la id
-    //Buscar en la lista
-    //Modificar el campo (añadir confirmacion/informar si estaba ya acabada)
+    print("Input the id of the task to mark as done: ")
+    var id = readLine()
+    while( id == null || id.isEmpty() || !id.all { it.isDigit() }){
+        print("\nInputted id is not valid, please input a valid id: ")
+        id = readLine()
+    }
+    markTaskDone(tasks,id.toInt())
 }
 
+/**
+ * Marks the task with given id as done
+ */
 fun markTaskDone(tasks : List<Task>,id: Int){
-
+    val task = tasks.getOrNull(id)
+    if(task == null) println("No task with id $id exists")
+    else{
+        if(markDone(task )) println("Task with id=${id} was marked as done")
+        else println("Task with id=${id} was previously done")
+    }
 }
 
 /**
@@ -34,8 +48,8 @@ fun listTasks(tasks : List<Task>){
 }
 
 fun filterTasks(tasks : List<Task>){
-    println("Press C to filter only done tasks, press anything else for undone tasks")
-    val completed : Boolean = if("C".equals(readLine()?.trim(),ignoreCase = true)) true else false
+    print("Press C to filter only done tasks, press anything else for undone tasks: ")
+    val completed : Boolean = "C".equals(readLine()?.trim(),ignoreCase = true)
     filterTasks(tasks,completed)
 }
 
