@@ -29,6 +29,7 @@ Define a data representation for tasks that tracks tracks attributes and create 
 - Tasks are always considered to begin undone.
 - It is considered necessary for a task to have a title, an ID, and a completion status; description, category and due date are considered optional, and will be null if not entered under the assumption future upgrades will allow the user to modify a task´s attributes after creation.
 - Tasks are printed with all attributes to check if they are correct.
+- Due date is treated as a common String in the current version.
 ---
 
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
