@@ -1,4 +1,5 @@
-fun closeApp() {
+//REFACTOR
+ fun closeApp() {
     println("Exiting...")
 }
 
