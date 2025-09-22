@@ -1,4 +1,3 @@
 enum class Category {
+    WORK, PERSONAL, URGENT
 }
-
-//TODO
