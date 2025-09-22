@@ -1,17 +1,18 @@
-//REFACTOR
+
 import kotlin.collections.mutableListOf
 
 fun main(args : Array<String>){
     println("Initiating mobile task manager...")
-    val tasks = mutableListOf<Task>()
-    printMenu(tasks)
+    val controller = TaskController()
+    printMenu(controller)
     println("Program finished")
 }
 
 /**
  * Prints the Menu while verifying the chosen option and launching the selected option, repeats until user exits
  */
-fun printMenu(tasks : MutableList<Task>)  {
+fun printMenu(controller : TaskController)  {
+
     var toRet : String?
     do {
         println("""Please select one of the following options:
@@ -21,7 +22,7 @@ fun printMenu(tasks : MutableList<Task>)  {
         4 - Filter tasks
         0 - Exit the program""")
         toRet = readLine()?.trim()
-
+/*TODO  validaciones, pasar lecturas aqui, lectura de enum
         when(toRet){
             "0" -> closeApp()
             "1" -> addTask(tasks)
@@ -30,5 +31,7 @@ fun printMenu(tasks : MutableList<Task>)  {
             "4" -> filterTasks(tasks)
             else -> println("Invalid option selected")
         }
+
+ */
     } while (!toRet.equals("0"))
 }
