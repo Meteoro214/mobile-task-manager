@@ -22,7 +22,7 @@ fun printMenu(controller : TaskController)  {
         4 - Filter tasks
         0 - Exit the program""")
         toRet = readLine()?.trim()
-/*TODO  validaciones, pasar lecturas aqui, lectura de enum
+/*TODO  validaciones, pasar lecturas aqui, lectura de enum, lectura de fecha
         when(toRet){
             "0" -> closeApp()
             "1" -> addTask(tasks)
