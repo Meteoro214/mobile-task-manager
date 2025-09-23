@@ -1,7 +1,5 @@
-//REFACTOR
- fun closeApp() {
-    println("Exiting...")
-}
+//REFACTOR & DELETE FILE
+
 
 /**
  * Asks the user for the information on the new task and adds it to the task list
@@ -66,24 +64,8 @@ fun markTaskDone(tasks : List<Task>,id: Int){
     }
 }
 
-/**
- * Iterates over the given list and prints all tasks
- */
-fun listTasks(tasks : List<Task>){
-    println("Printing all Tasks:")
-    if (tasks.isNotEmpty()){
-        for (task in tasks){
-            println(taskToString(task))
-        }
-        println("All Tasks printed")
-    }else println("There are no tasks to print")
-}
 
-fun filterTasks(tasks : List<Task>){
-    print("Press C to filter only done tasks, press anything else for undone tasks: ")
-    val completed : Boolean = "C".equals(readLine()?.trim(),ignoreCase = true)
-    filterTasks(tasks,completed)
-}
+
 
 /**
  * Iterates over the given list and prints tasks that fulfill the filter condition

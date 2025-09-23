@@ -24,6 +24,11 @@ class TaskCollection {
     }
 
     /**
+     * Checks whenever the TaskCollection is empty
+     */
+    fun isEmpty(): Boolean = this.getSize()==0
+
+    /**
      * Deletes the task with the given ID, if it exists.
      * Returns true if the task gets deleted, or false if it doesn't exist
      */

@@ -1,8 +1,10 @@
 import java.time.LocalDate
 
-class Task(val id: Int, var title : String, var  isDone : Boolean = false,
-           var description : String? = null, var dueDate : LocalDate, var category : Category = Category.OTHER){
+class Task /*(val id: Int, var title : String, var  isDone : Boolean = false,
+           var description : String? = null, var dueDate : LocalDate, var category : Category = Category.OTHER)*/{
 //Que es modificable, que es nullable, que es private?
+
+    //REFACTOR
 
     /**
      * Returns this as a String
