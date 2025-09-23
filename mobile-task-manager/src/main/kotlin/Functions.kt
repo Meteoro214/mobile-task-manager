@@ -67,18 +67,3 @@ fun markTaskDone(tasks : List<Task>,id: Int){
 
 
 
-/**
- * Iterates over the given list and prints tasks that fulfill the filter condition
- */
-fun filterTasks(tasks : List<Task>,completed: Boolean){
-    print("Printing all tasks that are ")
-    if(!completed) print("NOT ")
-    println("completed:")
-    val filtered = tasks.filter { it[TASK_DONE] == completed }
-    if (filtered.isNotEmpty()){
-        for (task in filtered){
-            println(taskToString(task))
-        }
-        println("All filtered tasks printed")
-    }else println("No task exists after filtering")
-}

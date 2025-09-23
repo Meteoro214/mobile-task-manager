@@ -46,6 +46,11 @@ class TaskCollection {
     }
 
     /**
+     *
+     */
+    fun filter(filter: (Task) -> Boolean) : Iterator<Task> = taskList.asSequence().filter(filter).toList().iterator()
+
+    /**
      * Auxiliary private method to find the index of a Task with the given id.
      * Returns the index, or -1 if the task does not exist
      */
