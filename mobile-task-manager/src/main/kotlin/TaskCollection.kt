@@ -50,6 +50,14 @@ class TaskCollection {
      */
     fun filter(filter: (Task) -> Boolean) : Iterator<Task> = taskList.asSequence().filter(filter).toList().iterator()
 
+
+    /**
+     * Marks the task with given id as done if it exists. Returns false if it does not exist or if it was already done
+     * */
+    fun markTaskDone(id : Int) : Boolean {
+        return this.getTask(id)?.markDone() ?: false
+    }
+
     /**
      * Auxiliary private method to find the index of a Task with the given id.
      * Returns the index, or -1 if the task does not exist

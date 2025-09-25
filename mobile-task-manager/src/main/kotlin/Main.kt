@@ -21,11 +21,11 @@ fun printMenu(controller : TaskController)  {
         toRet = readLine()?.trim() ?: ""
 //TODO  validaciones, pasar lecturas aqui, lectura de enum, lectura de fecha
         when(toRet){
-            "0" -> closeApp()
-            "1" -> //addTask(tasks)
-            "2" -> //markTaskDone(tasks)
-            "3" -> println(controller.getAllTasks())
-            "4" -> filterTasks(controller)
+            "0" -> this.closeApp()
+            "1" -> this.addTask(controller)
+            "2" -> this.markTaskDone(controller)
+            "3" -> this.listTask(controller)
+            "4" -> this.filterTasks(controller)
             else -> println("Invalid option selected")
         }
 
@@ -35,6 +35,27 @@ fun printMenu(controller : TaskController)  {
 
 fun closeApp() {
     println("Exiting...")
+}
+
+fun addTask(controller : TaskController) {
+
+}
+
+/**
+ * Asks for the id of the task to mark as done and marks it as done
+ */
+fun markTaskDone(controller :TaskController) {
+    print("Input the id of the task to mark as done: ")
+    var id = readLine()
+    while( id == null || id.isEmpty() || !id.all { it.isDigit() }){
+        print("\nInputted id is not valid, please input a valid id: ")
+        id = readLine()
+    }
+    controller.markTaskDone(id.toInt())
+}
+
+fun listTasks(controller: TaskController){
+    println(controller.getAllTasks())
 }
 
 fun filterTasks(controller: TaskController){

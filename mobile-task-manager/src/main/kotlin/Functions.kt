@@ -39,31 +39,6 @@ fun addTask(tasks : MutableList<Task>) {
     tasks.add(newTask)
 }
 
-/**
- * Asks for the id of the task to mark as done and marks it as done
- */
-fun markTaskDone(tasks : List<Task>){
-    print("Input the id of the task to mark as done: ")
-    var id = readLine()
-    while( id == null || id.isEmpty() || !id.all { it.isDigit() }){
-        print("\nInputted id is not valid, please input a valid id: ")
-        id = readLine()
-    }
-    markTaskDone(tasks,id.toInt())
-}
-
-/**
- * Marks the task with given id as done
- */
-fun markTaskDone(tasks : List<Task>,id: Int){
-    val task = tasks.getOrNull(id)
-    if(task == null) println("No task with id $id exists")
-    else{
-        if(markDone(task )) println("Task with id ${id} was marked as done")
-        else println("Task with id ${id} was previously done")
-    }
-}
-
 
 
 
