@@ -1,3 +1,3 @@
 enum class Category {
-    WORK, PERSONAL, URGENT,OTHER
+    OTHER,WORK, PERSONAL, URGENT
 }

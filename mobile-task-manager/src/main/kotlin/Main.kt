@@ -47,6 +47,7 @@ fun closeApp() {
 fun addTask(controller : TaskController) {
     val newTask : Task
     println("Task will be created with an automatic id and marked as undone")
+
     println("Please enter a title: ")
     var title = readLine()?.trim() ?: ""
     while (title.isEmpty()){
@@ -55,22 +56,13 @@ fun addTask(controller : TaskController) {
         title = readLine()?.trim() ?: ""
     }
 
+    val cat = readCategory()
 
     /*
-
-
-
         println("Please enter a dueDate (press enter to skip): ")
         val dueDate = readLine()?.trim()
         if(dueDate?.isNotEmpty() ?: false) newTask[TASK_DUEDATE] = dueDate
-
-
-        println("Please enter a category (press enter to skip): ")
-        val category = readLine()?.trim()
-        if(category?.isNotEmpty() ?: false) newTask[TASK_CATEGORY] = category
-
     */
-
 
     //Optional value
     println("Please enter a description (press enter to skip): ")
@@ -87,10 +79,10 @@ fun addTask(controller : TaskController) {
  */
 fun markTaskDone(controller :TaskController) {
     print("Input the id of the task to mark as done: ")
-    var id = readLine()
-    while( id == null || id.isEmpty() || !id.all { it.isDigit() }){
+    var id = readLine() ?: ""
+    while( id.isEmpty() || !id.all { it.isDigit() }){
         print("\nInputted id is not valid, please input a valid id: ")
-        id = readLine()
+        id = readLine() ?: ""
     }
     val result = controller.markTaskDone(id.toInt())
     if (result == null){
@@ -117,7 +109,27 @@ fun filterTasks(controller: TaskController){
 }
 
 fun readCategory() : Category {
-
+    println("Select the category of the new Task")
+    for(cat in Category.entries){
+        println("Press ${cat.ordinal} for category '${cat.name}'")
+    }
+    var index = readLine() ?: ""
+    if( index.isEmpty() || !index.all { it.isDigit() }){
+        index = "-1"
+    }
+    var indexNum = index.toInt()
+    while(indexNum < 0 || indexNum >= Category.entries.size){
+        println("Selected value is not a valid category")
+        for(cat in Category.entries){
+            println("Press ${cat.ordinal} for category '${cat.name}'")
+        }
+        index = readLine() ?: ""
+        if( index.isEmpty() || !index.all { it.isDigit() }){
+            index = "-1"
+        }
+        indexNum = index.toInt()
+    }
+    return Category.entries[indexNum]
 }
 
 fun readDate() : LocalDate {}
