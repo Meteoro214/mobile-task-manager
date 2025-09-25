@@ -5,19 +5,11 @@ class TaskController {
 
 //TODO
 
-    /*
-/**
- * Marks the task with given id as done
- */
-fun markTaskDone(tasks : List<Task>,id: Int){
-    val task = tasks.getOrNull(id)
-    if(task == null) println("No task with id $id exists")
-    else{
-        if(markDone(task )) println("Task with id ${id} was marked as done")
-        else println("Task with id ${id} was previously done")
-    }
-}
-*/
+
+    /**
+    * Marks the task with given id as done. Returns false if it was already done, null if it does not exist or true if it's marked as done successfully
+    */
+    fun markTaskDone(id: Int) : Boolean? = tasks.markTaskDone(id)
 
     /**
      * Iterates over the TaskCollection and returns a String with all tasks printed
