@@ -6,21 +6,12 @@ class TaskController {
     private var nextId : Int = 1
 
 
-    fun addTask(){
-        /*val id: Int, var title : String, var  isDone : Boolean = false,
-           var description : String? = null, var dueDate : LocalDate, var category : Category = Category.OTHER*/
+    fun addTask(title : String, description : String,dueDate : LocalDate,  category : Category){
+        //constructor
+        tasks.addTask()
+        nextId++
     }
 
-    fun createDate(year:Int,month : Int, day : Int) : LocalDate? {
-//        val year = LocalDate.now().year
-        var date : LocalDate?
-        try {
-            date = LocalDate.of(year, month, day)
-        } catch (e : DateTimeException){
-            date = null
-        }
-        return date
-    }
     /**
     * Marks the task with given id as done. Returns false if it was already done, null if it does not exist or true if it's marked as done successfully
     */
@@ -60,4 +51,16 @@ class TaskController {
         }else sb.append("No task exists after filtering\n")
         return sb.toString()
     }
+
+    fun createDate(year:Int,month : Int, day : Int) : LocalDate? {
+//        val year = LocalDate.now().year
+        var date : LocalDate?
+        try {
+            date = LocalDate.of(year, month, day)
+        } catch (e : DateTimeException){
+            date = null
+        }
+        return date
+    }
+
 }
