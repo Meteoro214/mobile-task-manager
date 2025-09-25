@@ -12,7 +12,7 @@ class TaskCollection {
      * Retrieves the task with the given id or returns null if no such task exists
      */
     fun getTask(id:Int) : Task?{
-        val index = this.getIndex(id)
+        val index :Int  = this.getIndex(id)
         return if(index == -1) null else taskList[index]
     }
 
@@ -46,7 +46,7 @@ class TaskCollection {
     }
 
     /**
-     *
+     * Filters the TasksCollection according to the given filtering function and returns an iterator over the filtered collection
      */
     fun filter(filter: (Task) -> Boolean) : Iterator<Task> = taskList.asSequence().filter(filter).toList().iterator()
 
@@ -57,7 +57,7 @@ class TaskCollection {
     private fun getIndex(id : Int): Int {
         var i = 0
         val size = taskList.size
-        while (i < size && taskList.get(i).id != id) {
+        while (i < size && taskList[i].id != id) {
             i++
         }
         return if(i < size) i else -1
