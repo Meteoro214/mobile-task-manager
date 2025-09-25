@@ -1,6 +1,3 @@
-
-import kotlin.collections.mutableListOf
-
 fun main(args : Array<String>){
     println("Initiating mobile task manager...")
     val controller = TaskController()
@@ -43,5 +40,5 @@ fun closeApp() {
 fun filterTasks(controller: TaskController){
     print("Press C to filter only done tasks, press anything else for undone tasks: ")
     val completed : Boolean = "C".equals(readLine()?.trim(),ignoreCase = true)
-//    println(controller.filterTasks(completed))
+    println(controller.filterTasks(completed))
 }

@@ -6,7 +6,7 @@ class TaskController {
 //TODO
 
     /**
-     * Iterates over the TaskCollection and prints all tasks
+     * Iterates over the TaskCollection and returns a String with all tasks printed
      */
     fun getAllTasks() : String{
         val sb = StringBuilder()
@@ -22,7 +22,7 @@ class TaskController {
     }
 
     /**
-     * Iterates over the given list and prints tasks that fulfill the filter condition
+     * Iterates over the given list and returns a String with all tasks that fulfill the filter condition
      */
     fun filterTasks(completed: Boolean) : String{
         val sb = StringBuilder()
@@ -30,17 +30,13 @@ class TaskController {
         if(!completed) sb.append("NOT ")
         sb.append("completed:\n")
 
-        val filtered = tasks.filter { it[TASK_DONE] == completed }
-        if (filtered.isNotEmpty()){
-            for (task in filtered){
-                println(taskToString(task))
+        val filtered : Iterator<Task> = tasks.filter { it.isDone == completed }
+        if(filtered.hasNext()){ //At least 1 Task in the iterator
+            while (filtered.hasNext()) {
+                sb.append(filtered.next().toString()+"\n")
             }
-
-
-
-
-
             sb.append("All filtered tasks printed\n")
         }else sb.append("No task exists after filtering\n")
+        return sb.toString()
     }
 }
