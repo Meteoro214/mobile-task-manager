@@ -21,11 +21,11 @@ fun printMenu(controller : TaskController)  {
         toRet = readLine()?.trim() ?: ""
 //TODO  validaciones, pasar lecturas aqui, lectura de enum, lectura de fecha
         when(toRet){
-            "0" -> this.closeApp()
-            "1" -> this.addTask(controller)
-            "2" -> this.markTaskDone(controller)
-            "3" -> this.listTask(controller)
-            "4" -> this.filterTasks(controller)
+            "0" -> closeApp()
+            "1" -> addTask(controller)
+            "2" -> markTaskDone(controller)
+            "3" -> listTasks(controller)
+            "4" -> filterTasks(controller)
             else -> println("Invalid option selected")
         }
 
