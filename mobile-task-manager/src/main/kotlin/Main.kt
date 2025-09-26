@@ -28,7 +28,7 @@ fun printMenu(controller : TaskController)  {
             "4" -> filterTasks(controller)
             else -> println("Invalid option selected")
         }
-    } while (!toRet.equals("0"))
+    } while (toRet != "0")
 }
 
 fun closeApp() {
@@ -63,7 +63,7 @@ fun addTask(controller : TaskController) {
     val t = controller.addTask(title,description,date,cat)
     if(t == null){
         println("Something went wrong, Task not created")
-    } else println("The following task was created:\n ${t.toString()}")
+    } else println("The following task was created:\n $t")
 }
 
 /**
@@ -143,7 +143,7 @@ fun readDate(controller : TaskController) : LocalDate {
             day = readLine() ?: ""
         }
         date = controller.createDate(year,month.toInt(),day.toInt())
-        if(date == null || date.compareTo(LocalDate.now()) < 0){
+        if(date == null || !date.isFutureDate()){
             //Date is not valid, or has already passed, 1 attempt to do the next year will happen
             //If date was null, it may only be valid if input was 29th february and the next year is a leap year
             date = controller.createDate(year+1,month.toInt(),day.toInt())

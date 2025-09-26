@@ -9,7 +9,7 @@ class TaskController {
     fun addTask(title : String, description : String,dueDate : LocalDate,  category : Category) : Task?{
         //constructor
         try {
-            val t : Task = Task(nextId,title,dueDate,category,description)
+            val t = Task(nextId,title,dueDate,category,description)
             tasks.addTask(t)
             nextId++
             return t
@@ -59,11 +59,10 @@ class TaskController {
     }
 
     fun createDate(year:Int,month : Int, day : Int) : LocalDate? {
-        var date : LocalDate?
-        try {
-            date = LocalDate.of(year, month, day)
+        val date = try {
+            LocalDate.of(year, month, day)
         } catch (e : DateTimeException){
-            date = null
+            null
         }
         return date
     }

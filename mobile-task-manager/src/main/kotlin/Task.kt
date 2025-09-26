@@ -1,10 +1,24 @@
 import java.time.LocalDate
 
-class Task /*(val id: Int, var title : String, var  isDone : Boolean = false,
-           var description : String? = null, var dueDate : LocalDate, var category : Category = Category.OTHER)*/{
-//Que es modificable, que es nullable, que es private?
+class Task(val id : Int, title : String, dueDate : LocalDate,
+            var category : Category = Category.OTHER, var description : String = "",var isDone : Boolean = false) {
 
-    //REFACTOR
+    var title : String = title.trim()
+        set(value){
+            require(!value.trim().isEmpty()) {"title must not be empty"}
+            field = value
+        }
+    var dueDate : LocalDate = dueDate
+        set(value){
+            require(dueDate.isFutureDate()) { "due date must not be in the past" }
+            field = value
+        }
+
+    init{
+        require( id > 0) {"ID must be above 0"}
+        require(!title.trim().isEmpty()) {"title must not be empty"}
+        require(dueDate.isFutureDate()) { "due date must not be in the past" }
+    }
 
     /**
      * Returns this as a String
@@ -25,8 +39,8 @@ class Task /*(val id: Int, var title : String, var  isDone : Boolean = false,
      */
     fun markDone() : Boolean {
         val wasDone = this.isDone
-        this.isDone = true;
-        return !wasDone;
+        this.isDone = true
+        return !wasDone
     }
 }
 
