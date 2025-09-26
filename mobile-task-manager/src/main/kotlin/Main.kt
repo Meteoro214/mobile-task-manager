@@ -45,7 +45,6 @@ fun closeApp() {
  * Tasks are assumed to be entered undone
  */
 fun addTask(controller : TaskController) {
-    val newTask : Task
     println("Task will be created with an automatic id and marked as undone")
 
     println("Please enter a title: ")
@@ -56,22 +55,18 @@ fun addTask(controller : TaskController) {
         title = readLine()?.trim() ?: ""
     }
 
-    val cat = readCategory()
+    val cat : Category = readCategory()
 
-    /*
-        println("Please enter a dueDate (press enter to skip): ")
-        val dueDate = readLine()?.trim()
-        if(dueDate?.isNotEmpty() ?: false) newTask[TASK_DUEDATE] = dueDate
-    */
+    val date : LocalDate = readDate()
 
     //Optional value
     println("Please enter a description (press enter to skip): ")
     val description = readLine()?.trim() ?: ""
 
-    //Constructor
-    println("Adding the following Task:")
-    println(newTask.toString())
-    controller.addTask(newTask)
+    val t = controller.addTask(title,description,date,cat)
+    if(t == null){
+        println("Something went wrong, Task not created")
+    } else println("The following task was created:\n ${t.toString()}")
 }
 
 /**
@@ -132,4 +127,12 @@ fun readCategory() : Category {
     return Category.entries[indexNum]
 }
 
-fun readDate() : LocalDate {}
+fun readDate() : LocalDate {
+
+    /*
+    println("Please enter a dueDate (press enter to skip): ")
+    val dueDate = readLine()?.trim()
+    if(dueDate?.isNotEmpty() ?: false) newTask[TASK_DUEDATE] = dueDate
+*/
+
+}
