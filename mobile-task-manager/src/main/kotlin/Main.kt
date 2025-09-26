@@ -35,9 +35,6 @@ fun closeApp() {
     println("Exiting...")
 }
 
-
-//TODO  validaciones, pasar lecturas aqui, lectura de enum, lectura de fecha
-
 /**
  * Asks the user for the information on the new task and adds it to the task list
  * Task id is autoincremental
@@ -57,7 +54,7 @@ fun addTask(controller : TaskController) {
 
     val cat : Category = readCategory()
 
-    val date : LocalDate = readDate()
+    val date : LocalDate = readDate(controller)
 
     //Optional value
     println("Please enter a description (press enter to skip): ")
@@ -127,12 +124,33 @@ fun readCategory() : Category {
     return Category.entries[indexNum]
 }
 
-fun readDate() : LocalDate {
+fun readDate(controller : TaskController) : LocalDate {
+    val year = LocalDate.now().year //DueDate is assumed to be the closest year possible
+    var date : LocalDate?
+    do {
+        println("Please enter the month the Task is due : ")
+        var month = readLine() ?: ""
+        while (month.isEmpty() || !month.all { it.isDigit() } || month.toInt() !in (1..12)){
+            println("Month is not valid, please input a valid month: ")
+            month = readLine() ?: ""
+        }
 
-    /*
-    println("Please enter a dueDate (press enter to skip): ")
-    val dueDate = readLine()?.trim()
-    if(dueDate?.isNotEmpty() ?: false) newTask[TASK_DUEDATE] = dueDate
-*/
-
+        println("Please enter the day (number) the Task is due : ")
+        var day = readLine() ?: ""
+        while (day.isEmpty() || !day.all { it.isDigit() } || day.toInt() !in (1..31)){
+            //Day may still be invalid on some months, will be checked on creation
+            println("Day is not valid, please input a valid month: ")
+            day = readLine() ?: ""
+        }
+        date = controller.createDate(year,month.toInt(),day.toInt())
+        if(date == null || date.compareTo(LocalDate.now()) < 0){
+            //Date is not valid, or has already passed, 1 attempt to do the next year will happen
+            //If date was null, it may only be valid if input was 29th february and the next year is a leap year
+            date = controller.createDate(year+1,month.toInt(),day.toInt())
+        }
+        if(date == null){
+            println("Invalid date entered, please check the inputted day exists on the inputted month ")
+        }
+    }while(date == null)
+    return date
 }

@@ -59,7 +59,6 @@ class TaskController {
     }
 
     fun createDate(year:Int,month : Int, day : Int) : LocalDate? {
-//        val year = LocalDate.now().year
         var date : LocalDate?
         try {
             date = LocalDate.of(year, month, day)
