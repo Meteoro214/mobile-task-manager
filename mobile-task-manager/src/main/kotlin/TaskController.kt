@@ -6,10 +6,16 @@ class TaskController {
     private var nextId : Int = 1
 
 
-    fun addTask(title : String, description : String,dueDate : LocalDate,  category : Category){
+    fun addTask(title : String, description : String,dueDate : LocalDate,  category : Category) : Task?{
         //constructor
-        tasks.addTask()
-        nextId++
+        try {
+            val t : Task = Task(nextId,title,dueDate,category,description)
+            tasks.addTask(t)
+            nextId++
+            return t
+        } catch(e : IllegalArgumentException){
+            return null
+        }
     }
 
     /**
