@@ -1,35 +1,50 @@
-typealias Task = MutableMap<String, Any?>
+import java.time.LocalDate
 
-const val TASK_ID = "id"
-const val TASK_TITLE = "title"
-const val TASK_DONE = "isDone"
-const val TASK_DESCRIPTION = "description"
-const val TASK_DUEDATE = "dueDate"
-const val TASK_CATEGORY = "category"
+class Task(val id : Int, title : String, dueDate : LocalDate,
+            var category : Category = Category.OTHER, var description : String = "",var isDone : Boolean = false) {
 
-/**
- * Prints a given task
- */
-fun taskToString(t:Task) : String {
-    val sb = StringBuilder()
-    sb.append("The task with id = ${t[TASK_ID]} has the following information:\n")
-    for (key in t.keys){
-        sb.append("Property ${key} = ${t[key]}\n")
+    var title : String = title.trim()
+        set(value){
+            require(!value.trim().isEmpty()) {"title must not be empty"}
+            field = value
+        }
+    var dueDate : LocalDate = dueDate
+        set(value){
+            require(dueDate.isFutureDate()) { "due date must not be in the past" }
+            field = value
+        }
+
+    init{
+        require( id > 0) {"ID must be above 0"}
+        require(!title.trim().isEmpty()) {"title must not be empty"}
+        require(dueDate.isFutureDate()) { "due date must not be in the past" }
     }
-    return sb.toString()
+
+    /**
+     * Returns this as a String
+     */
+     override fun toString(): String {
+         val sb = StringBuilder()
+         sb.append("The task with id = ${this.id} has the following information:\n")
+         sb.append("Title = ${this.title}\n")
+         sb.append("Is it done? = ${this.isDone}\n")
+         sb.append("Due Date = ${this.dueDate.formattedDueDate()}\n")
+         sb.append("Category = ${this.category}\n")
+         sb.append("Description = ${this.description}\n")
+         return sb.toString()
+    }
+
+    /**
+     * Marks the given task as done, returns true if the task was not previously done
+     */
+    fun markDone() : Boolean {
+        val wasDone = this.isDone
+        this.isDone = true
+        return !wasDone
+    }
 }
 
-/**
- * Creates and returns a new Task
- */
-fun createTask(id : Int, title : String, isDone : Boolean = false,
-               description : String? = null,dueDate : String? = null, category : String? = null ) : Task
-    = mutableMapOf(TASK_ID to  id, TASK_TITLE to title, TASK_DONE to isDone,
-                    TASK_DESCRIPTION to description, TASK_DUEDATE to dueDate, TASK_CATEGORY to category)
 
-/**
- * Marks the given task as done, returns true if the task was not previously done
- */
-fun markDone(t:Task) : Boolean {
-    return t.put(TASK_DONE, true) == false
-}
+
+
+

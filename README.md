@@ -1,35 +1,33 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/wTylcrtj)
-# 📱 Mobile Task Manager – Assignment 2
+# 📱 Mobile Task Manager – Assignment 3
 
-This repository contains the implementation for **Assignment 2** of the Task Manager App project.
+This repository contains the implementation for **Assignment 3** of the Task Manager App project.
 
 ## 🎯 Assignment Goal
 
-Define a data representation for tasks that tracks tracks attributes and create a menu-based CLI that is structured around functions. The program will handle a mutable list of tasks with no data persistence and options to add tasks, mark a task and done, list all tasks and filter finished and unfinished tasks.
+Refactor the previous work to apply an object oriented architecture, including a Task class to represent tasks, and a TaskController to encapsulate operations. Also create an extension function to format the due date, and create a enum to handle categories.
 ## ✅ Implemented Features
 
-- Initial definition of a _Task_ data representation that tracks id, title, description, due date, category and completion status.
-- Auxiliary functions to handle a Task, including functions to turn a Task into a printable String, to create a new Task, and to mark a Task as complete.
-- Use of a MutableList to store Tasks in memory only.
-- Use of a menu to show available options to the user and read a choice, which is then validated.  
-- Use of functions to handle basic operations.
-- Implemented addTask, which reads the Task info from the CLI, creates a new Task, and adds it to the list.
-- Implemented markTaskDone, which marks a Task with a given ID as finished/done.
-- Implemented listTasks, which prints the information of all existing Tasks.
-- Implemented filterTasks, which filters Tasks according to their completion status and prints them. 
+- Implemented extension function LocalDate.formattedDueDate() on Extensions.kt to format a date. 
+- Implemented Category enum in Category.kt to handle task category. Implemented options are : OTHER, WORK, PERSONAL, URGENT
+- Implemented extra class TaskCollection to make TaskController independent from the collection used to hold Tasks.
+- Implemented TaskController to handle task operations.
+- Implemented a Task class to represent tasks.
+- Refactored Main.kt.
+- Changed ID generation logic and avoided using ID based indexing on TaskCollection to prevent unexpected behaviour and possible crashes.
+- Implemented auxiliary extension function LocalDate.isFutureDate() to check whenever a date is a future date.
 
 ## 🚧 Known Issues
 
 - No known issues.
 
 ## 📝 Notes
-
-- The program is structured in 3 .kt files; Main.kt handles the menu, Functions.kt holds all the functions used in the menu, and Task.kt holds information related to the Task data representation, including auxiliary functions.
-- A Task`s ID is considered to be auto-incremental, this means the user cannot input a new task´s ID, the ID will start at 0 and increase for all new tasks created.
+- ID now starts at 1.
+- The program is structured in 6 .kt files; Main.kt handles the menu and I/O operations, TaskController.kt holds the TaskController class, Task.kt holds the Task class, Category.kt holds the Category enum, Extensions.kt holds extension functions for LocalDate, and TaskCollection holds an auxiliary class TaskCollection to encapsulate operations over the Task List
+- A Task`s ID is considered to be auto-incremental, this means the user cannot input a new task´s ID,
 - Tasks are always considered to begin undone.
-- It is considered necessary for a task to have a title, an ID, and a completion status; description, category and due date are considered optional, and will be null if not entered under the assumption future upgrades will allow the user to modify a task´s attributes after creation.
-- Tasks are printed with all attributes to check if they are correct.
-- Due date is treated as a common String in the current version.
+- It is considered necessary for a task to values on all fields except for the description, which will be empty if not entered under the assumption future upgrades will allow the user to modify a task´s attributes after creation.
+
 ---
 
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
