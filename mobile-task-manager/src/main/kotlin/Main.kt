@@ -139,7 +139,7 @@ fun readDate(controller : TaskController) : LocalDate {
         var day = readLine() ?: ""
         while (day.isEmpty() || !day.all { it.isDigit() } || day.toInt() !in (1..31)){
             //Day may still be invalid on some months, will be checked on creation
-            println("Day is not valid, please input a valid month: ")
+            println("Day is not valid, please input a valid day: ")
             day = readLine() ?: ""
         }
         date = controller.createDate(year,month.toInt(),day.toInt())
