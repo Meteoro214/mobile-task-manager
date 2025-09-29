@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager
+package gal.uvigo.mobile_task_manager
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

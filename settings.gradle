@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "mobile-task-manager"
+rootProject.name = "Mobile Task Manager"
 include ':app'
