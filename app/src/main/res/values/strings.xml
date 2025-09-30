@@ -6,5 +6,12 @@
     <string name="mark_done_button_msg">Mark as Done</string>
     <string name="add_text_hint_msg">Title for a new Task</string>
     <string name="mark_done_text_hint_msg">Task ID to mark as done</string>
+    <string name="add_task_msg">New Task Added with ID: </string>
+    <string name="add_task_error_msg">Task Title must not be empty</string>
+    <string name="add_task_error_msg_generic">Something went wrong, Task not created</string>
+    <string name="mark_done_msg">Marked as done task with ID: </string>
+    <string name="mark_done_input_error_msg">Inputted ID is not valid, ID is a number > 0</string>
+    <string name="mark_done_noID_error_msg">No task exists with given ID</string>
+    <string name="mark_done_wasDone_error_msg">Task with given ID was already done</string>
 
 </resources>

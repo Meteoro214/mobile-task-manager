@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         markDoneTextView = findViewById(R.id.markDoneTextView)
         addButton = findViewById(R.id.addButton)
         markDoneButton = findViewById(R.id.markDoneButton)
+        //addButton.setOnClickListener(addTask())
+//        markDoneButton.setOnClickListener(addTask())
+
         listTasks()
     }
 
@@ -49,60 +52,42 @@ class MainActivity : AppCompatActivity() {
             sb.toString()
         }
     }
-}
 
-
-/*  TODO remains of Main.kt
-/**
- * Asks the user for the information on the new task and adds it to the task list
- * Task id is autoincremental
- * Only required fields to enter is the task title
- * Tasks are assumed to be entered undone
- */
-fun addTask(controller : TaskController) {
-    println("Task will be created with an automatic id and marked as undone")
-
-    println("Please enter a title: ")
-    var title = readLine()?.trim() ?: ""
-    while (title.isEmpty()){
-        println("A title must be entered")
-        println("Please enter a title: ")
-        title = readLine()?.trim() ?: ""
+    /**
+     * Reads the task title and creates a new task.
+     * Does not allow an empty title
+     */
+    fun addTask() {
+        val title = addTextView.text?.trim() ?: ""
+        msgView.text = if (title.isEmpty()) {
+            getString(R.string.add_task_error_msg)
+        } else {
+            val t = controller.addTask(title as String)
+            if (t == null) {
+                getString(R.string.add_task_error_msg_generic)
+            } else {
+                listTasks()
+                getString(R.string.add_task_msg) + t.id
+            }
+        }
     }
 
-    val cat : Category = readCategory()
-
-    val date : LocalDate = readDate(controller)
-
-    //Optional value
-    println("Please enter a description (press enter to skip): ")
-    val description = readLine()?.trim() ?: ""
-
-    val t = controller.addTask(title,description,date,cat)
-    if(t == null){
-        println("Something went wrong, Task not created")
-    } else println("The following task was created:\n $t")
-}
-
-/**
- * Asks for the id of the task to mark as done and marks it as done
- */
-fun markTaskDone(controller :TaskController) {
-    print("Input the id of the task to mark as done: ")
-    var id = readLine() ?: ""
-    while( id.isEmpty() || !id.all { it.isDigit() }){
-        print("\nInputted id is not valid, please input a valid id: ")
-        id = readLine() ?: ""
+    /**
+     * Reads the id of the task to mark as done and attempts to mark it as done
+     */
+    fun markTaskDone() {
+        val id = markDoneTextView.text?.trim() ?: ""
+        msgView.text = if (id.isEmpty() || !id.all { it.isDigit() }) {
+            getString(R.string.mark_done_input_error_msg)
+        } else {
+            val result = controller.markTaskDone(Integer.parseInt(id as String))
+            if (result == null) {
+                getString(R.string.mark_done_noID_error_msg)
+            } else if (result) {
+                listTasks()
+                getString(R.string.mark_done_msg) + id
+            } else getString(R.string.mark_done_wasDone_error_msg)
+        }
     }
-    val result = controller.markTaskDone(id.toInt())
-    if (result == null){
-        println("No task exists with id $id")
-    } else if(result){
-        println("Task with id $id marked as done")
-    } else println("Task with id $id was already done")
+
 }
-
-
-
-
-*/
