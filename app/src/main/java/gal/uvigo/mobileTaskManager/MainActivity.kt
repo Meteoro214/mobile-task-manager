@@ -2,29 +2,38 @@ package gal.uvigo.mobileTaskManager
 
 import Task
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
 
-    private val controller : TaskController = TaskController()
+    private val controller: TaskController = TaskController()
+    private lateinit var taskView: TextView
+    private lateinit var msgView: TextView
+    private lateinit var addTextView: EditText
+    private lateinit var markDoneTextView: EditText
+    private lateinit var addButton: Button
+    private lateinit var markDoneButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        taskView = findViewById(R.id.taskView)
+        msgView = findViewById(R.id.msgView)
+        addTextView = findViewById(R.id.addTextView)
+        markDoneTextView = findViewById(R.id.markDoneTextView)
+        addButton = findViewById(R.id.addButton)
+        markDoneButton = findViewById(R.id.markDoneButton)
     }
 
 
-
 }
-
-
-
-
-
-
 
 
 /*  TODO remains of Main.kt

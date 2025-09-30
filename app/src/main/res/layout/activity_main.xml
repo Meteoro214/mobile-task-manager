@@ -53,7 +53,7 @@
             android:text="@string/add_button_msg" />
 
         <EditText
-            android:id="@+id/markDoneTextVIew"
+            android:id="@+id/markDoneTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
