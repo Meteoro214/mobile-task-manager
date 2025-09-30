@@ -1,8 +1,6 @@
 package gal.uvigo.mobileTaskManager
 
-import Category
 import Task
-import TaskCollection
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +8,7 @@ import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
 
-    private val tasks: TaskCollection = TaskCollection()
-    private var nextId: Int = 1
-
-
+    private val controller : TaskController = TaskController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,30 +17,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /**
-     * Adds a new task with the next available ID, the given title, current date as dueDate, Category other and no description.
-     * Returns null if add operation fails, or the task if it succeeds
-     */
-    private fun addTask(title: String): Task? {
-        try {
-            val t = Task(nextId, title, LocalDate.now());
-            tasks.addTask(t)
-            nextId++
-            return t
-        } catch (e: IllegalArgumentException) {
-            return null
-        }
-    }
-
-    /**
-     * Marks the task with given id as done. Returns false if it was already done, null if it does not exist or true if it's marked as done successfully
-     */
-    private fun markTaskDone(id: Int): Boolean? = tasks.markTaskDone(id)
-
-    /**
-     * Returns an Iterator over the TaskCollection.
-     */
-    private fun getAllTasks(): Iterator<Task> = this.tasks.iterator()
 
 }
 
