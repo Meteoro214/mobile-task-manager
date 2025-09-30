@@ -30,9 +30,25 @@ class MainActivity : AppCompatActivity() {
         markDoneTextView = findViewById(R.id.markDoneTextView)
         addButton = findViewById(R.id.addButton)
         markDoneButton = findViewById(R.id.markDoneButton)
+        listTasks()
     }
 
-
+    /**
+     * Shows all tasks in the TaskCollection
+     */
+    fun listTasks() {
+        val it = controller.getAllTasks()
+        taskView.text = if (!it.hasNext()) {
+            getString(R.string.app_no_task_msg)
+        } else {
+            val sb = StringBuilder()
+            sb.append("Tasks:\n")
+            while (it.hasNext()) {
+                sb.append(it.next().toString() + "-------------------\n")
+            }
+            sb.toString()
+        }
+    }
 }
 
 
@@ -86,32 +102,7 @@ fun markTaskDone(controller :TaskController) {
     } else println("Task with id $id was already done")
 }
 
-/**
- * Prints all tasks in the TaskCollection
- */
-fun listTasks(controller: TaskController){
-    println(controller.getAllTasks())
-}
+
 
 
 */
-
-/* TODO Remains of TaskController.kt
-
-    /**
-     * Iterates over the TaskCollection and returns a String with all tasks printed
-     */
-    private fun getAllTasks(): String {
-        val sb = StringBuilder()
-        if (!this.tasks.isEmpty()) {
-            sb.append("Printing all Tasks:\n")
-            val it: Iterator<Task> = this.tasks.iterator()
-            while (it.hasNext()) {
-                sb.append(it.next().toString() + "\n")
-            }
-            sb.append("All Tasks printed\n")
-        } else sb.append("There are no tasks to print\n")
-        return sb.toString()
-    }
-
- */
