@@ -30,8 +30,9 @@ class MainActivity : AppCompatActivity() {
         markDoneTextView = findViewById(R.id.markDoneTextView)
         addButton = findViewById(R.id.addButton)
         markDoneButton = findViewById(R.id.markDoneButton)
-        //addButton.setOnClickListener(addTask())
-//        markDoneButton.setOnClickListener(addTask())
+
+        addButton.setOnClickListener() {view -> addTask()}
+        markDoneButton.setOnClickListener() {view -> markTaskDone()}
 
         listTasks()
     }
