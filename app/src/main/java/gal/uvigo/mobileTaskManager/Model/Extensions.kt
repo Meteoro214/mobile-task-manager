@@ -5,4 +5,4 @@ fun LocalDate.formattedDueDate(): String {
         .padStart(2, '0')
 }
 
-fun LocalDate.isFutureDate(): Boolean = this > LocalDate.now()
+fun LocalDate.isFutureDate(): Boolean = this >= LocalDate.now()

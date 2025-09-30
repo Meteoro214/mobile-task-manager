@@ -1,22 +1,52 @@
 package gal.uvigo.mobileTaskManager
 
+import Category
+import Task
+import TaskCollection
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
+
+    private val tasks: TaskCollection = TaskCollection()
+    private var nextId: Int = 1
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+    }
+
+
+    /**
+     * Adds a new task with the next available ID, the given title, current date as dueDate, Category other and no description.
+     * Returns null if add operation fails, or the task if it succeeds
+     */
+    private fun addTask(title: String): Task? {
+        try {
+            val t = Task(nextId, title, LocalDate.now());
+            tasks.addTask(t)
+            nextId++
+            return t
+        } catch (e: IllegalArgumentException) {
+            return null
         }
     }
+
+    /**
+     * Marks the task with given id as done. Returns false if it was already done, null if it does not exist or true if it's marked as done successfully
+     */
+    private fun markTaskDone(id: Int): Boolean? = tasks.markTaskDone(id)
+
+    /**
+     * Returns an Iterator over the TaskCollection.
+     */
+    private fun getAllTasks(): Iterator<Task> = this.tasks.iterator()
+
 }
 
 
@@ -86,41 +116,12 @@ fun listTasks(controller: TaskController){
 
 */
 
-
-
-
-
 /* TODO Remains of TaskController.kt
-    private val tasks: TaskCollection = TaskCollection()
-    private var nextId: Int = 1
-
- // mix with Main.kt in MainActivity
-    /**
-     * Marks the task with given id as done. Returns false if it was already done, null if it does not exist or true if it's marked as done successfully
-     */
-    fun markTaskDone(id: Int): Boolean? = tasks.markTaskDone(id)
-
-    fun addTask(title: String, description: String, dueDate: LocalDate, category: Category): Task? {
-        //constructor
-        try {
-            val t = Task(nextId, title, dueDate, category, description)
-            tasks.addTask(t)
-            nextId++
-            return t
-        } catch (e: IllegalArgumentException) {
-            return null
-        }
-    }
-
-
-
-    //TODO REFACTOR
-//Return iterators not strings
 
     /**
      * Iterates over the TaskCollection and returns a String with all tasks printed
      */
-    fun getAllTasks(): String {
+    private fun getAllTasks(): String {
         val sb = StringBuilder()
         if (!this.tasks.isEmpty()) {
             sb.append("Printing all Tasks:\n")
@@ -132,26 +133,5 @@ fun listTasks(controller: TaskController){
         } else sb.append("There are no tasks to print\n")
         return sb.toString()
     }
-
-
-    /**
-     * Iterates over the given list and returns a String with all tasks that fulfill the filter condition
-     */
-    fun filterTasks(completed: Boolean): String {
-        val sb = StringBuilder()
-        sb.append("Printing all tasks that are ")
-        if (!completed) sb.append("NOT ")
-        sb.append("completed:\n")
-
-        val filtered: Iterator<Task> = tasks.filter { it.isDone == completed }
-        if (filtered.hasNext()) { //At least 1 Task in the iterator
-            while (filtered.hasNext()) {
-                sb.append(filtered.next().toString() + "\n")
-            }
-            sb.append("All filtered tasks printed\n")
-        } else sb.append("No task exists after filtering\n")
-        return sb.toString()
-    }
-
 
  */
