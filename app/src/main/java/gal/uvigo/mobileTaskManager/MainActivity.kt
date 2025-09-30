@@ -1,13 +1,11 @@
 package gal.uvigo.mobileTaskManager
 
-import Task
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import java.time.LocalDate
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,8 +29,8 @@ class MainActivity : AppCompatActivity() {
         addButton = findViewById(R.id.addButton)
         markDoneButton = findViewById(R.id.markDoneButton)
 
-        addButton.setOnClickListener() {view -> addTask()}
-        markDoneButton.setOnClickListener() {view -> markTaskDone()}
+        addButton.setOnClickListener {view -> addTask()}
+        markDoneButton.setOnClickListener {view -> markTaskDone()}
 
         listTasks()
     }
@@ -59,11 +57,11 @@ class MainActivity : AppCompatActivity() {
      * Does not allow an empty title
      */
     fun addTask() {
-        val title = addTextView.text?.trim() ?: ""
+        val title = addTextView.text?.toString()?.trim() ?: ""
         msgView.text = if (title.isEmpty()) {
             getString(R.string.add_task_error_msg)
         } else {
-            val t = controller.addTask(title as String)
+            val t = controller.addTask(title)
             if (t == null) {
                 getString(R.string.add_task_error_msg_generic)
             } else {
@@ -71,17 +69,19 @@ class MainActivity : AppCompatActivity() {
                 getString(R.string.add_task_msg) + t.id
             }
         }
+        //Has to be an explicit setText; EditText.text will only allow Editable!
+        addTextView.setText("")
     }
 
     /**
      * Reads the id of the task to mark as done and attempts to mark it as done
      */
     fun markTaskDone() {
-        val id = markDoneTextView.text?.trim() ?: ""
+        val id = markDoneTextView.text?.toString()?.trim() ?: ""
         msgView.text = if (id.isEmpty() || !id.all { it.isDigit() }) {
             getString(R.string.mark_done_input_error_msg)
         } else {
-            val result = controller.markTaskDone(Integer.parseInt(id as String))
+            val result = controller.markTaskDone(id.toInt())
             if (result == null) {
                 getString(R.string.mark_done_noID_error_msg)
             } else if (result) {
@@ -89,6 +89,8 @@ class MainActivity : AppCompatActivity() {
                 getString(R.string.mark_done_msg) + id
             } else getString(R.string.mark_done_wasDone_error_msg)
         }
+        //Has to be an explicit setText; EditText.text will only allow Editable!
+        markDoneTextView.setText("")
     }
 
 }

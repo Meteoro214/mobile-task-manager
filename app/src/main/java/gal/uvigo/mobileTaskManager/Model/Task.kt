@@ -31,7 +31,7 @@ class Task(
      */
     override fun toString(): String {
         val sb = StringBuilder()
-        sb.append("Task ID = ${this.id} |")
+        sb.append("Task ID = ${this.id} | ")
         sb.append("Due Date = ${this.dueDate.formattedDueDate()}\n")
         sb.append("Title = ${this.title}\n")
         sb.append("Is it done? = ${this.isDone} | ")
