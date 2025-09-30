@@ -25,7 +25,7 @@
 
         <ScrollView
             android:id="@+id/taskScroller"
-            android:layout_width="match_parent"
+            android:layout_width="391dp"
             android:layout_height="192dp"
             android:layout_marginTop="20dp">
 
@@ -38,7 +38,7 @@
 
         <EditText
             android:id="@+id/addTextView"
-            android:layout_width="match_parent"
+            android:layout_width="391dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:ems="10"
@@ -47,7 +47,7 @@
 
         <EditText
             android:id="@+id/markDoneTextView"
-            android:layout_width="match_parent"
+            android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/mark_done_text_hint_msg"
