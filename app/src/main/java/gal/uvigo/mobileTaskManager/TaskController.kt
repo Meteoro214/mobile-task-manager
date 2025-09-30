@@ -43,6 +43,6 @@ class TaskController {
     /**
      * Returns an Iterator over all tasks that fulfill the filter condition
      */
-    fun filterTasks(completed: Boolean) : Iterator<Task> = tasks.filter { it.isDone == completed }
+    fun filterTasks(completed: Boolean): Iterator<Task> = tasks.filter { it.isDone == completed }
 
 }
