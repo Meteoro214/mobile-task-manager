@@ -90,7 +90,27 @@ class MainActivity : AppCompatActivity() {
             } else getString(R.string.mark_done_wasDone_error_msg)
         }
         //Has to be an explicit setText; EditText.text will only allow Editable!
-        markDoneTextView.setText("")
+        markDoneTextView.setText("") //clear()
     }
 
 }
+
+/*
+* TODO
+* scrollbars para mostrar la barra
+animationCache para fluidez
+
+dataBinding en el view holder?
+* taskControllee deprecar?
+hay que importar la rv
+
+en activity hacer funciones
+*
+crear los ph dentro de values
+
+preparar placeholders a futuro
+*
+*
+*
+* data binding en el viewholder, usar variable Task en el xml y recuperar con findView
+* */
