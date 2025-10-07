@@ -97,12 +97,9 @@ class MainActivity : AppCompatActivity() {
 
 /*
 * TODO
-* scrollbars para mostrar la barra
-animationCache para fluidez
 
 dataBinding en el view holder?
 * taskControllee deprecar?
-hay que importar la rv
 
 en activity hacer funciones
 *
