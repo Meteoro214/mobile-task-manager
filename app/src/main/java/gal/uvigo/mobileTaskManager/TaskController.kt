@@ -1,8 +1,6 @@
 package gal.uvigo.mobileTaskManager
 
-import Category
-import Task
-import TaskCollection
+import gal.uvigo.mobileTaskManager.model.*
 import java.time.LocalDate
 
 class TaskController {
