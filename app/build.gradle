@@ -7,6 +7,9 @@ android {
     namespace 'gal.uvigo.mobileTaskManager'
     compileSdk 36
 
+    buildFeatures{
+        dataBinding true
+    }
     defaultConfig {
         applicationId "gal.uvigo.mobileTaskManager"
         minSdk 33
