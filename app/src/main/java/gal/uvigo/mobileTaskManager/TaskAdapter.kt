@@ -28,7 +28,9 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         position: Int
     ) {
         holder.taskDataBinding.taskData = taskCollection.getTask(position)
+        //sin la linea: Carga la imagen y el titulo y falla
         holder.taskDataBinding.executePendingBindings()
+        //con la linea : Falla inmediatamente
     }
 
     override fun getItemCount(): Int = taskCollection.getSize()
