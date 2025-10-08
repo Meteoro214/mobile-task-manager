@@ -1,7 +1,6 @@
 package gal.uvigo.mobileTaskManager
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
@@ -28,6 +27,7 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         holder: TaskHolder,
         position: Int
     ) {
+        taskCollection.getTask(position)
         holder.taskDataBinding.taskData = taskCollection.getTask(position)
     }
 

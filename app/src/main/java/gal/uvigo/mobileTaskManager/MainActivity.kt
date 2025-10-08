@@ -1,10 +1,6 @@
 package gal.uvigo.mobileTaskManager
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -27,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     fun loadDummyData(){
         DataGenerator.createDumbData(controller.getCollection())
+        val gola = controller.getCollection()
     }
 
     fun loadLayout() {
