@@ -27,8 +27,8 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         holder: TaskHolder,
         position: Int
     ) {
-        taskCollection.getTask(position)
         holder.taskDataBinding.taskData = taskCollection.getTask(position)
+        holder.taskDataBinding.executePendingBindings()
     }
 
     override fun getItemCount(): Int = taskCollection.getSize()

@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     fun loadDummyData(){
         DataGenerator.createDumbData(controller.getCollection())
-        val gola = controller.getCollection()
     }
 
     fun loadLayout() {

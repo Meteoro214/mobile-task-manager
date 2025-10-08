@@ -16,7 +16,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
 
         <TextView
             android:id="@+id/idTV"
@@ -25,7 +26,7 @@
             android:layout_marginStart="30dp"
             android:text="@{taskData.id}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/isDoneMark"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.025"
@@ -46,7 +47,7 @@
         <TextView
             android:id="@+id/titleTV"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
 
             android:layout_marginEnd="341dp"
             android:text="@{taskData.title}"
@@ -55,7 +56,6 @@
             app:layout_constraintHorizontal_bias="0.75"
             app:layout_constraintStart_toEndOf="@+id/isDoneMark"
             app:layout_constraintTop_toTopOf="@id/dueDateTV" />
-
         <ImageView
             android:id="@+id/isDoneMark"
             android:layout_width="20dp"
