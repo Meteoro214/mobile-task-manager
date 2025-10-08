@@ -6,17 +6,16 @@ import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.TaskCollection
-import java.time.LocalDate
 
 class TaskAdapter(val taskCollection: TaskCollection) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
     class TaskHolder(val taskDataBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
-        fun bind(task: Task){
+        fun bind(task: Task?){
             this.taskDataBinding.taskData = task
             //sin la linea: Carga la imagen y el titulo y falla
-            this.taskDataBinding.executePendingBindings()
+     //       this.taskDataBinding.executePendingBindings()
             //con la linea : Falla inmediatamente
         }
         }
@@ -34,11 +33,10 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         holder: TaskHolder,
         position: Int
     ) {
-        //esta pillando null la task aunque la collection tenga
-        val t2 = taskCollection.getTask(position)
-        val t =  t2 ?: Task(1,"tesy", LocalDate.now(),isDone = true)
+        //RV has 0-based indexing, Tasks have 1-bases IDs
+        val t = taskCollection.getTask(position+1)
         holder.bind(t)
-    }
+    } //Debug, sin linea de execute hace llamadas aqui, tal vez problema nativo????
 
     override fun getItemCount(): Int = taskCollection.getSize()
 
