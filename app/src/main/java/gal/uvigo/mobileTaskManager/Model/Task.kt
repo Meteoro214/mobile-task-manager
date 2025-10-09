@@ -1,3 +1,4 @@
+package gal.uvigo.mobileTaskManager.model
 import java.time.LocalDate
 
 class Task(

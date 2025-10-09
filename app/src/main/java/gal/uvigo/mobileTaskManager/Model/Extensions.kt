@@ -1,3 +1,5 @@
+package gal.uvigo.mobileTaskManager.model
+
 import java.time.LocalDate
 
 fun LocalDate.formattedDueDate(): String {

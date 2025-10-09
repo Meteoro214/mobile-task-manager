@@ -1,8 +1,6 @@
 package gal.uvigo.mobileTaskManager
 
-import Category
-import Task
-import TaskCollection
+import gal.uvigo.mobileTaskManager.model.*
 import java.time.LocalDate
 
 class TaskController {
@@ -45,4 +43,5 @@ class TaskController {
      */
     fun filterTasks(completed: Boolean): Iterator<Task> = tasks.filter { it.isDone == completed }
 
+    fun getCollection() : TaskCollection = this.tasks
 }

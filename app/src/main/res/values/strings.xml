@@ -13,5 +13,7 @@
     <string name="mark_done_input_error_msg">Inputted ID is not valid, ID is a number > 0</string>
     <string name="mark_done_noID_error_msg">No task exists with given ID</string>
     <string name="mark_done_wasDone_error_msg">Task with given ID was already done</string>
+    <string name="mark_done_DONE_img">✅</string>
+    <string name="mark_done_UNDONE_img">❌</string>
 
 </resources>
