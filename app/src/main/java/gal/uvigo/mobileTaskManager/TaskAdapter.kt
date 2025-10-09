@@ -14,9 +14,7 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
         fun bind(task: Task?){
             this.taskDataBinding.taskData = task
-            //sin la linea: Carga la imagen y el titulo y falla
      //       this.taskDataBinding.executePendingBindings()
-            //con la linea : Falla inmediatamente
         }
         }
 
@@ -36,7 +34,7 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         //RV has 0-based indexing, Tasks have 1-bases IDs
         val t = taskCollection.getTask(position+1)
         holder.bind(t)
-    } //Debug, sin linea de execute hace llamadas aqui, tal vez problema nativo????
+    }
 
     override fun getItemCount(): Int = taskCollection.getSize()
 
