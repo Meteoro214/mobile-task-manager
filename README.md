@@ -5,7 +5,7 @@ This repository contains the implementation for **Assignment 5** of the Task Man
 
 ## 🎯 Assignment Goal
 
-Implement a new UI using RecicleeView, Data Binding and ContraintLayout.
+Implement a new UI using ReciclerView, Data Binding and ContraintLayout.
 
 ## ✅ Implemented Features
 
