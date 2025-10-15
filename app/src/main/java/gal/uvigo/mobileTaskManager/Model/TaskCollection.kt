@@ -58,7 +58,10 @@ class TaskCollection {
      * Marks the task with given id as done if it exists. Returns false if it was already done, null if it does not exist or true if it`s marked as done successfully
      * */
     fun markTaskDone(id: Int): Boolean? {
-        return this.getTask(id)?.markDone()
+        val t = this.getTask(id)
+        val toRet = if(t == null) null else !t.isDone
+        if(toRet == true) t?.isDone =true
+        return toRet
     }
 
     /**

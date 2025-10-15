@@ -14,7 +14,7 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
         fun bind(task: Task?){
             this.taskDataBinding.taskData = task
-     //       this.taskDataBinding.executePendingBindings()
+            this.taskDataBinding.executePendingBindings()
         }
         }
 
@@ -23,7 +23,8 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         viewType: Int
     ): TaskHolder {
         //Creates a data bind
-        val bind = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val bind = ItemTaskBinding.inflate(LayoutInflater.from(parent.context),
+            parent, false)
         return TaskHolder(bind)
     }
 
