@@ -7,8 +7,6 @@
 
         <import type="gal.uvigo.mobileTaskManager.model.ExtensionsKt" />
 
-        <import type="android.view.View" />
-
         <variable
             name="taskData"
             type="gal.uvigo.mobileTaskManager.model.Task" />
