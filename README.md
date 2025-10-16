@@ -31,4 +31,3 @@ Implement a new UI using ReciclerView, Data Binding and ContraintLayout.
 
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
 > See the course syllabus and lab instructions for more details.
-> See the course syllabus and lab instructions for more details.
