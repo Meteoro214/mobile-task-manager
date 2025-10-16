@@ -2,8 +2,10 @@ package gal.uvigo.mobileTaskManager
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
+import gal.uvigo.mobileTaskManager.fragments.TaskListFragmentDirections
 import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.TaskCollection
 
@@ -12,9 +14,14 @@ class TaskAdapter(val taskCollection: TaskCollection) :
 
     class TaskHolder(val taskDataBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
+
         fun bind(task: Task?){
             this.taskDataBinding.taskData = task
             this.taskDataBinding.executePendingBindings()
+            this.taskDataBinding.root.setOnClickListener {
+                val action = TaskListFragmentDirections.checkTaskDetails(this.taskDataBinding.taskData)
+                this.taskDataBinding.root.findNavController().navigate(action)
+            }
         }
         }
 

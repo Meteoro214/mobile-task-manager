@@ -32,23 +32,11 @@ Implement a new UI using ReciclerView, Data Binding and ContraintLayout.
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
 > See the course syllabus and lab instructions for more details.
 
-moverse entre activitys tiene transicion de pantalla
-fragments no
 los argumentos se definen en el fragment destino
-Para pasar clases tienen que ser Serializable o Parcelable
 
 
-importar las 2 librerias de navigation
-
-En main activity se crea el navHostFragment (se crea como fragment con defaultNavHost y añadiendo el navGraph que usemos)
-el name es la clase que usa (NavHostFragment)
-
-luego crear el grafo de nav en res/navigation, navigstionResourceFile
-Se crean tambien los fragments = .kt y .xml (hay plantillas)
 
 
-permite no overridear el onCreateView pasandole el layout al constructor de fagment
-el grafo primero se añaden los nodos (frags) y luego las conexiones (actions)
 Accion se define en el fragmento origen, incluye id del destino y el id de la propia accion
 En el .kt se definen listeners que ejecuten la navegacion
 
@@ -64,7 +52,3 @@ El orden en el que se leen los datos tiene que ser el mismo en el que se escribe
 describe contents no se suele usar,es para cuando se parcela una estructura de clases, 0 indica que los datos son simples, todos los que haremos son asi
 
 arguments el nombre es el mismo de la variable, y el tipo el tipo
-
-Para parcelar un LocalDate/objeto serializable   writeParcelable   mas bien es writeSerializable
-
-para date es mas eficiente pasar a long y parcelar long, parcelar un serializable es ineficiente

@@ -25,6 +25,9 @@
         <action
             android:id="@+id/returnToList"
             app:destination="@id/taskListFragment" />
+        <argument
+            android:name="task"
+            app:argType="gal.uvigo.mobileTaskManager.model.Task" />
     </fragment>
     <fragment
         android:id="@+id/taskFormFragment"

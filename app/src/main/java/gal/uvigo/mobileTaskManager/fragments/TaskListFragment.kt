@@ -16,21 +16,16 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     private lateinit var binding : FragmentTaskListBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         loadDummyData()
 
         binding.taskRV.layoutManager = LinearLayoutManager(context)
         binding.taskRV.adapter = TaskAdapter(controller.getCollection())
-        setListeners()
     }
 
     fun loadDummyData(){
         DataGenerator.createDumbData(controller.getCollection())
     }
-
-    fun setListeners() {
-        //TODO
-    }
-
 }
