@@ -8,5 +8,11 @@
     <string name="add_desc_hint_msg">Description for a new Task</string>
     <string name="mark_done_checkbox_msg">Mark as Done?</string>
     <string name="add_title_hint_msg">Title for a new Task</string>
+    <string name="check_task_ID">Task ID: @{Integer.toString(taskData.id)}</string>
+    <string name="check_task_isItDone">Completion Status:</string>
+    <string name="check_task_title">Task Title:\n@{taskData.title}</string>
+    <string name="check_task_category">Category: @{taskData.category.toString()}</string>
+    <string name="check_task_date">Due Date: @{ExtensionsKt.formattedDueDate(taskData.dueDate)}</string>
+    <string name="check_task_description">Description:\n\n@{taskData.description}</string>
 
 </resources>
