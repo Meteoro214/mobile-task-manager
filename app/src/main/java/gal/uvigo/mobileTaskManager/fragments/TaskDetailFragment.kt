@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
@@ -22,5 +23,10 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         //another way of binding
         binding = FragmentTaskDetailBinding.bind(view)
         binding.taskData = args.task
+
+        binding.backButton.setOnClickListener {
+            binding.root.findNavController().navigate(TaskDetailFragmentDirections.returnToList())
+        }
+
     }
 }

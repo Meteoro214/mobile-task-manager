@@ -19,8 +19,7 @@ class TaskAdapter(val taskCollection: TaskCollection) :
             this.taskDataBinding.taskData = task
             this.taskDataBinding.executePendingBindings()
             this.taskDataBinding.root.setOnClickListener {
-                val action = TaskListFragmentDirections.checkTaskDetails(task)
-                this.taskDataBinding.root.findNavController().navigate(action)
+                this.taskDataBinding.root.findNavController().navigate(TaskListFragmentDirections.checkTaskDetails(task))
             }
         }
         }

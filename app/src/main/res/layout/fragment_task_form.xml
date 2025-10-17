@@ -125,12 +125,22 @@
             android:id="@+id/addTaskButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:text="@string/add_button_msg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.15"/>
 
-            />
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back_button_msg"
+            app:layout_constraintBottom_toBottomOf="@id/addTaskButton"
+            app:layout_constraintTop_toTopOf="@id/addTaskButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/addTaskButton" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
