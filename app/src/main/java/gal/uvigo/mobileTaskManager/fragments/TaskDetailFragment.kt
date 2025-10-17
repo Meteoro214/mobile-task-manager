@@ -2,16 +2,11 @@ package gal.uvigo.mobileTaskManager.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.TaskAdapter
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
-import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
 
 class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
@@ -25,7 +20,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         binding.taskData = args.task
 
         binding.backButton.setOnClickListener {
-            binding.root.findNavController().navigate(TaskDetailFragmentDirections.returnToList())
+            findNavController().navigate(TaskDetailFragmentDirections.returnToList())
         }
 
     }

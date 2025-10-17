@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:checked="false"
+            android:checked="true"
             android:text="@string/add_task_isDone_msg"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addTitleTV" />
@@ -44,7 +44,7 @@
         <EditText
             android:id="@+id/titleInput"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:hint="@string/add_title_hint_msg"
             android:inputType="text"
@@ -66,7 +66,7 @@
         <EditText
             android:id="@+id/categoryInput"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:hint="@string/add_category_hint_msg"
             android:inputType="text"
@@ -90,7 +90,7 @@
         <EditText
             android:id="@+id/dueDateInput"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:hint="@string/add_dueDate_hint_msg"
             android:inputType="date"
@@ -115,11 +115,9 @@
             android:layout_marginTop="3dp"
             android:hint="@string/add_desc_hint_msg"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@id/addTaskButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTV"
-            app:layout_constraintVertical_bias="0.00" />
+            app:layout_constraintTop_toBottomOf="@id/descriptionTV"/>
 
         <Button
             android:id="@+id/addTaskButton"
@@ -130,7 +128,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.15"/>
+            app:layout_constraintTop_toBottomOf="@id/descriptionInput"
+            app:layout_constraintHorizontal_bias="0.1"/>
 
         <Button
             android:id="@+id/backButton"

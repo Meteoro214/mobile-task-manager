@@ -8,6 +8,7 @@ import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 import gal.uvigo.mobileTaskManager.fragments.TaskListFragmentDirections
 import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.TaskCollection
+import java.time.LocalDate
 
 class TaskAdapter(val taskCollection: TaskCollection) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
@@ -39,8 +40,10 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         position: Int
     ) {
         //RV has 0-based indexing, Tasks have 1-bases IDs
-        val t : Task = taskCollection.getTaskForceNotNull(position+1)
-        holder.bind(t)
+        val t : Task? = taskCollection.getTask(position+1)
+        val t2 = if (t==null) taskCollection.getTaskByIndex(itemCount) else t
+        //Should never be null, is only null on a certain error, TODO fix
+        holder.bind(t2)
     }
 
     override fun getItemCount(): Int = taskCollection.getSize()

@@ -18,10 +18,14 @@ class TaskCollection {
         return if (index == -1) null else taskList[index]
     }
 
-    fun getTaskForceNotNull(id:Int) : Task{
-        val index: Int = this.getIndex(id)
-        return taskList[index]
-    }
+    /**
+     * Exists only for workaround on reciclerView
+     * @deprecated
+     */
+    @Deprecated("Only use for ReciclerView workaround")
+    fun getTaskByIndex(index: Int): Task =
+         if (index < 0 || index >= getSize()) taskList[getSize() - 1] else taskList[index]
+
 
     /**
      * Returns the number of Tasks in the TaskCollection
@@ -64,8 +68,8 @@ class TaskCollection {
      * */
     fun markTaskDone(id: Int): Boolean? {
         val t = this.getTask(id)
-        val toRet = if(t == null) null else !t.isDone
-        if(toRet == true) t?.isDone =true
+        val toRet = if (t == null) null else !t.isDone
+        if (toRet == true) t?.isDone = true
         return toRet
     }
 

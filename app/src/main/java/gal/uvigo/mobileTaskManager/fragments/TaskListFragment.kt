@@ -6,9 +6,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.navigation.findNavController
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.DataGenerator
@@ -27,16 +28,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         loadDummyData()
-
-        val bar = binding.toolbar
-        val navController = binding.root.findNavController()
-
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        bar.setupWithNavController(navController, appBarConfiguration)
-        setHasOptionsMenu(true); // Indicate to the system that this fragment has an options menu
-
         binding.taskRV.layoutManager = LinearLayoutManager(context)
         binding.taskRV.adapter = TaskAdapter(controller.getCollection())
+        setHasOptionsMenu(true)
     }
 
     fun loadDummyData() {
@@ -44,16 +38,18 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.app_bar_menu, menu)
+        inflater.inflate(R.menu.app_bar_menu,menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.menu_add_btn -> {
-            binding.root.findNavController().navigate(TaskListFragmentDirections.addTask())
-            true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
+            R.id.menu_add_btn -> {
+                findNavController().navigate(TaskListFragmentDirections.addTask())
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        else -> super.onOptionsItemSelected(item)
-    }
 
 
 }

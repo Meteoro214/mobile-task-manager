@@ -96,7 +96,6 @@
             android:gravity="center"
             android:text="@string/add_task_category_msg"
             android:textAlignment="center"
-            android:textColor="@color/gray"
             app:layout_constraintBottom_toTopOf="@id/descriptionTV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.25"
@@ -110,7 +109,6 @@
             android:gravity="center"
             android:text="@{taskData.category.toString()}"
             android:textAlignment="center"
-            android:textColor="@color/gray"
             app:layout_constraintBottom_toBottomOf="@+id/categoryTV"
             app:layout_constraintStart_toEndOf="@id/categoryTV"
             app:layout_constraintTop_toTopOf="@+id/categoryTV" />
