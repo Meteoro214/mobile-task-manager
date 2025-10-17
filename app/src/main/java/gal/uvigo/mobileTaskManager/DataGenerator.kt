@@ -7,7 +7,7 @@ object DataGenerator {
 
     fun createDumbData( t : TaskCollection){
         for (i in 1..100){
-            t.addTask(Task(i, "title $i", dueDate = LocalDate.now(), category = Category.entries[i%Category.entries.size], isDone = (i%2==0)))
+            t.addTask(Task(i, "title $i",  LocalDate.now(),  Category.entries[i%Category.entries.size],"description description $i", (i%2==0)))
         }
     }
 }

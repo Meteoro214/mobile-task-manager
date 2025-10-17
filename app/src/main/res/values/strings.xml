@@ -23,14 +23,10 @@
     <string name="add_button_msg">Add new Task</string>
 
     <!-- Task Detail strings-->
-    <string name="check_task_ID">Task ID: @{Integer.toString(taskData.id)}</string>
     <string name="check_task_isItDone">Completion Status:</string>
-    <string name="check_task_title">Task Title:\n@{taskData.title}</string>
-    <string name="check_task_category">Category: @{taskData.category.toString()}</string>
-    <string name="check_task_date">Due Date: @{ExtensionsKt.formattedDueDate(taskData.dueDate)}</string>
-    <string name="check_task_description">Description:\n\n@{taskData.description}</string>
 
     <!-- Menu strings-->
     <string name="menu_add_task">Add Task</string>
+    <string name="task_id">Task ID: </string>
 
 </resources>

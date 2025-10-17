@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import gal.uvigo.mobileTaskManager.databinding.ActivityMainBinding
@@ -22,6 +23,10 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         val bar = binding.toolbar
         val navController = findNavController(R.id.fragHost)
+
+        setSupportActionBar(bar)
+
+
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController,appBarConfiguration)
         bar.setupWithNavController(navController)
