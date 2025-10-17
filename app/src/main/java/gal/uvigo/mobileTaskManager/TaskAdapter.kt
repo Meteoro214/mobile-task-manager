@@ -15,11 +15,11 @@ class TaskAdapter(val taskCollection: TaskCollection) :
     class TaskHolder(val taskDataBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
 
-        fun bind(task: Task?){
+        fun bind(task: Task){
             this.taskDataBinding.taskData = task
             this.taskDataBinding.executePendingBindings()
             this.taskDataBinding.root.setOnClickListener {
-                val action = TaskListFragmentDirections.checkTaskDetails(this.taskDataBinding.taskData)
+                val action = TaskListFragmentDirections.checkTaskDetails(task)
                 this.taskDataBinding.root.findNavController().navigate(action)
             }
         }
@@ -40,7 +40,7 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         position: Int
     ) {
         //RV has 0-based indexing, Tasks have 1-bases IDs
-        val t = taskCollection.getTask(position+1)
+        val t : Task = taskCollection.getTaskForceNotNull(position+1)
         holder.bind(t)
     }
 

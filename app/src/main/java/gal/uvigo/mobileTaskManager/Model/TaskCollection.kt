@@ -18,6 +18,11 @@ class TaskCollection {
         return if (index == -1) null else taskList[index]
     }
 
+    fun getTaskForceNotNull(id:Int) : Task{
+        val index: Int = this.getIndex(id)
+        return taskList[index]
+    }
+
     /**
      * Returns the number of Tasks in the TaskCollection
      */

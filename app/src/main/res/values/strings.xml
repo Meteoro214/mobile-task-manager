@@ -30,4 +30,7 @@
     <string name="check_task_date">Due Date: @{ExtensionsKt.formattedDueDate(taskData.dueDate)}</string>
     <string name="check_task_description">Description:\n\n@{taskData.description}</string>
 
+    <!-- Menu strings-->
+    <string name="menu_add_task">Add Task</string>
+
 </resources>
