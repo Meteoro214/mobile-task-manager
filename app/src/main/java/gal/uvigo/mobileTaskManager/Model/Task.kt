@@ -51,9 +51,11 @@ class Task(
 
     companion object CREATOR : Parcelable.Creator<Task> {
         override fun createFromParcel(parcel: Parcel): Task =
-                Task(parcel.readInt(),parcel.readString()?: "",
-                LocalDate.of(parcel.readInt(),parcel.readInt(),parcel.readInt()),
-                Category.entries[parcel.readInt()], parcel.readString() ?: "", parcel.readBoolean())
+            Task(
+                parcel.readInt(), parcel.readString() ?: "",
+                LocalDate.of(parcel.readInt(), parcel.readInt(), parcel.readInt()),
+                Category.entries[parcel.readInt()], parcel.readString() ?: "", parcel.readBoolean()
+            )
 
 
         /**

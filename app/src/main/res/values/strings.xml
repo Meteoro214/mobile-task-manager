@@ -18,10 +18,7 @@
     <string name="add_dueDate_hint_msg">MM/DD</string>
     <string name="add_category_hint_msg">TODO better input</string>
 
-
-
     <string name="add_button_msg">Add new Task</string>
-    <string name="back_button_msg">Return to List</string>
 
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Completion Status:</string>

@@ -3,10 +3,8 @@ package gal.uvigo.mobileTaskManager.fragments
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.DataGenerator
 import gal.uvigo.mobileTaskManager.R
@@ -34,18 +32,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.app_bar_menu,menu)
+        inflater.inflate(R.menu.app_bar_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.menu_add_btn -> {
-                findNavController().navigate(TaskListFragmentDirections.addTask())
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-
 
 }

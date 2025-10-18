@@ -16,22 +16,25 @@ class TaskAdapter(val taskCollection: TaskCollection) :
     class TaskHolder(val taskDataBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
 
-        fun bind(task: Task){
+        fun bind(task: Task) {
             this.taskDataBinding.taskData = task
             this.taskDataBinding.executePendingBindings()
             this.taskDataBinding.root.setOnClickListener {
-                this.taskDataBinding.root.findNavController().navigate(TaskListFragmentDirections.checkTaskDetails(task))
+                this.taskDataBinding.root.findNavController()
+                    .navigate(TaskListFragmentDirections.checkTaskDetails(taskDataBinding.taskData))
             }
         }
-        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): TaskHolder {
         //Creates a data bind
-        val bind = ItemTaskBinding.inflate(LayoutInflater.from(parent.context),
-            parent, false)
+        val bind = ItemTaskBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent, false
+        )
         return TaskHolder(bind)
     }
 
@@ -39,11 +42,9 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         holder: TaskHolder,
         position: Int
     ) {
-        //RV has 0-based indexing, Tasks have 1-bases IDs
-        val t : Task? = taskCollection.getTask(position+1)
-        val t2 = if (t==null) taskCollection.getTaskByIndex(itemCount) else t
-        //Should never be null, is only null on a certain error, TODO fix
-        holder.bind(t2)
+        //Should never be out of bounds
+        val t: Task = taskCollection.getTaskByIndex(position)
+        holder.bind(t)
     }
 
     override fun getItemCount(): Int = taskCollection.getSize()

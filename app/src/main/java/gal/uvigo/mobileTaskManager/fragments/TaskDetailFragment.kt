@@ -9,8 +9,8 @@ import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
 
 class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
-    private val args : TaskDetailFragmentArgs by navArgs()
-    private lateinit var binding : FragmentTaskDetailBinding
+    private val args: TaskDetailFragmentArgs by navArgs()
+    private lateinit var binding: FragmentTaskDetailBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

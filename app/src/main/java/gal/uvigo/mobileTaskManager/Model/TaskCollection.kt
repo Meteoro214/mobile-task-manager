@@ -19,14 +19,10 @@ class TaskCollection {
     }
 
     /**
-     * Exists only for workaround on reciclerView
-     * @deprecated
-     */
-    @Deprecated("Only use for ReciclerView workaround")
-    fun getTaskByIndex(index: Int): Task =
-         if (index < 0 || index >= getSize()) taskList[getSize() - 1] else taskList[index]
-
-
+     * Retrieves the task on the indexed position
+     * @throws IndexOutOfBoundsException if index is not on bounds
+      */
+    fun getTaskByIndex(index : Int) : Task = taskList[index]
     /**
      * Returns the number of Tasks in the TaskCollection
      */
