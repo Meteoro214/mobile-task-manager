@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/taskListFragment"
         android:name="gal.uvigo.mobileTaskManager.fragments.TaskListFragment"
-        android:label="fragment_task_list"
+        android:label="@string/app_title"
         tools:layout="@layout/fragment_task_list" >
         <action
             android:id="@+id/checkTaskDetails"
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="gal.uvigo.mobileTaskManager.fragments.TaskDetailFragment"
-        android:label="fragment_task_detail"
+        android:label="@string/app_title"
         tools:layout="@layout/fragment_task_detail" >
         <action
             android:id="@+id/returnToList"
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/taskFormFragment"
         android:name="gal.uvigo.mobileTaskManager.fragments.TaskFormFragment"
-        android:label="fragment_task_form"
+        android:label="@string/app_title"
         tools:layout="@layout/fragment_task_form" >
         <action
             android:id="@+id/abandonAddForm"
