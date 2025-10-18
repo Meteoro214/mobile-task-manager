@@ -43,5 +43,5 @@ class TaskController {
      */
     fun filterTasks(completed: Boolean): Iterator<Task> = tasks.filter { it.isDone == completed }
 
-    fun getCollection() : TaskCollection = this.tasks
+    fun getCollection(): TaskCollection = this.tasks
 }

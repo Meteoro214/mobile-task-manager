@@ -1,4 +1,7 @@
 package gal.uvigo.mobileTaskManager.model
+
+import android.os.Parcel
+import android.os.Parcelable
 import java.time.LocalDate
 
 class Task(
@@ -8,7 +11,7 @@ class Task(
     var category: Category = Category.OTHER,
     var description: String = "",
     var isDone: Boolean = false
-) {
+) : Parcelable {
 
     var title: String = title.trim()
         set(value) {
@@ -27,26 +30,42 @@ class Task(
         require(dueDate.isFutureDate()) { "due date must not be in the past" }
     }
 
-    /**
-     * Returns this as a String
-     */
-    override fun toString(): String {
-        val sb = StringBuilder()
-        sb.append("Task ID = ${this.id} | ")
-        sb.append("Due Date = ${this.dueDate.formattedDueDate()}\n")
-        sb.append("Title = ${this.title}\n")
-        sb.append("Is it done? = ${this.isDone} | ")
-        sb.append("Category = ${this.category}\n")
-        sb.append("Description = ${this.description}\n")
-        return sb.toString()
+    /*For Parcelable, could use @parcelize too to avoid code*/
+
+    override fun describeContents(): Int {
+        return 0
     }
 
-    /**
-     * Marks the given task as done, returns true if the task was not previously done
-     */
-    fun markDone(): Boolean {
-        val wasDone = this.isDone
-        this.isDone = true
-        return !wasDone
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeInt(id)
+        dest.writeString(title)
+        //Serializing the date is not efficient
+        dest.writeInt(dueDate.year)
+        dest.writeInt(dueDate.monthValue)
+        dest.writeInt(dueDate.dayOfMonth)
+        dest.writeInt(category.ordinal)
+        dest.writeString(description)
+        dest.writeBoolean(isDone)
+
     }
+
+    companion object CREATOR : Parcelable.Creator<Task> {
+        override fun createFromParcel(parcel: Parcel): Task =
+            Task(
+                parcel.readInt(), parcel.readString() ?: "",
+                LocalDate.of(parcel.readInt(), parcel.readInt(), parcel.readInt()),
+                Category.entries[parcel.readInt()], parcel.readString() ?: "", parcel.readBoolean()
+            )
+
+
+        /**
+         * Not implemented
+         * @deprecated
+         */
+        override fun newArray(size: Int): Array<Task?> {
+            //Not implemented
+            return arrayOfNulls(size)
+        }
+    }
+
 }
