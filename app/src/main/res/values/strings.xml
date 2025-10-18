@@ -16,7 +16,7 @@
     <string name="add_desc_hint_msg">Description for a new Task</string>
     <string name="add_title_hint_msg">Title for a new Task</string>
     <string name="add_dueDate_hint_msg">MM/DD</string>
-    <string name="add_category_hint_msg">TODO better input</string>
+    <string name="add_category_hint_msg">Category for a new Task</string>
 
     <string name="add_button_msg">Add new Task</string>
 
