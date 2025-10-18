@@ -9,15 +9,6 @@ Restructure the application to use a single activity - multiple fragment archite
 
 ## ✅ Implemented Features
 
-
-
-- Implemented DataGenerator to create dummy data for UI testing.
-- Refactored MainActivity.kt to use DataBinding and ReciclerView, onCreate functionalities have been split into smaller functions. listTasks has been removed due to being deprecated, as the ReciclerView already updates tasks when needed, and addTask/markTaskDone have been temporarily removed due to being unused.
-- Implemented TaskAdapter.
-- Modified TaskController to allow the MainActivity access to the TaskCollection, in order to use it on the ReciclerView
-- Changed activity_main.xml to make use of constraints and a ReciclerView.
-- Created item_task.xml.
-
 - Refactored MainActivity.kt to use fragments & navigation via a menu.
 - Implemented TaskListFragment.kt, TaskDetailFragment.kt and TaskFormFragment.kt to handle Fragment logic, all of them use DataBinding.
 - Moved over ReciclerView & data creation logic to TaskListFragment from MainActivity.
