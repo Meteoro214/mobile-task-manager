@@ -8,12 +8,12 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.TaskAdapter
-import gal.uvigo.mobileTaskManager.TaskController
+import gal.uvigo.mobileTaskManager.TaskRepository
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
-    private val controller: TaskController = TaskController()
+    private val repository: TaskRepository = TaskRepository
     private lateinit var binding: FragmentTaskListBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -21,7 +21,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         binding.taskRV.layoutManager = LinearLayoutManager(context)
-        binding.taskRV.adapter = TaskAdapter(controller.getCollection())
+        binding.taskRV.adapter = TaskAdapter(repository)
         setHasOptionsMenu(true)
     }
 
