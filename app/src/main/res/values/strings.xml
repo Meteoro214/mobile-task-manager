@@ -33,12 +33,13 @@
     <!-- Task Form Hint strings-->
     <string name="form_desc_hint_msg">Description for a new Task</string>
     <string name="form_title_hint_msg">Title for a new Task</string>
-    <string name="form_dueDate_hint_msg">MM/DD</string>
+    <string name="form_dueDate_hint_msg">MM DD</string>
     <string name="form_category_hint_msg">Category for a new Task</string>
 
 
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Completion Status:</string>
     <string name="check_task_id">Task ID: </string>
+    <string name="check_detail_title">TASK INFO</string>
 
 </resources>

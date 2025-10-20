@@ -5,12 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.TaskFormFragment">
 
+    <data>
+
+        <import type="gal.uvigo.mobileTaskManager.model.ExtensionsKt" />
+
+        <variable
+            name="taskData"
+            type="gal.uvigo.mobileTaskManager.model.Task" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/addTitleTV"
+            android:id="@+id/formTitleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
@@ -26,9 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:checked="@={taskData.isDone}"
             android:text="@string/form_task_isDone_msg"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addTitleTV" />
+            app:layout_constraintTop_toBottomOf="@+id/formTitleTV" />
 
         <TextView
             android:id="@+id/titleTV"
@@ -47,10 +57,10 @@
             android:layout_marginTop="3dp"
             android:hint="@string/form_title_hint_msg"
             android:inputType="text"
+            android:text="@={taskData.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleTV" />
-
 
         <TextView
             android:id="@+id/categoryTV"
@@ -62,14 +72,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/titleInput" />
 
-        <!-- TODO better input-->
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/categoryInput"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:hint="@string/form_category_hint_msg"
-            android:inputType="text"
+            android:inputType="none"
+            android:text="@{
+            when(taskData.category){
+            Category.OTHER -> @string/other_cat
+            Category.WORK -> @string/work_cat
+            Category.PERSONAL -> @string/personal_cat
+            Category.URGENT -> @string/urgent_cat
+            }
+            }"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/categoryTV" />
@@ -84,9 +101,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/categoryInput" />
 
-        <!-- Change categoryInput to better handle enum
-             Change dueDateInput to date input?
-        -->
         <EditText
             android:id="@+id/dueDateInput"
             android:layout_width="0dp"
@@ -94,6 +108,7 @@
             android:layout_marginTop="3dp"
             android:hint="@string/form_dueDate_hint_msg"
             android:inputType="date"
+            android:text="@{ExtensionsKt.formattedDueDate(taskData.dueDate)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dueDateTV" />
@@ -115,12 +130,13 @@
             android:layout_marginTop="3dp"
             android:hint="@string/form_desc_hint_msg"
             android:inputType="text"
+            android:text="@={taskData.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionTV" />
 
         <Button
-            android:id="@+id/addTaskButton"
+            android:id="@+id/saveTaskButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -129,7 +145,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionInput" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
