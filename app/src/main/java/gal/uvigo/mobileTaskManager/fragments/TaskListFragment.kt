@@ -32,7 +32,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.app_bar_menu, menu)
+        inflater.inflate(R.menu.task_list_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

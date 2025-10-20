@@ -1,9 +1,17 @@
 <resources>
     <!-- Common strings-->
     <string name="app_name">Mobile Task Manager</string>
-    <string name="app_title">MTM - Task Manager</string>
     <string name="mark_done_DONE_img">✅</string>
     <string name="mark_done_UNDONE_img">❌</string>
+
+    <!-- Menu Title strings-->
+    <string name="detail_title">Task Details</string>
+    <string name="form_title">Task Form</string>
+    <string name="app_title">MTM - Task Manager</string>
+
+    <!-- Menu strings-->
+    <string name="menu_add_task">Add Task</string>
+    <string name="menu_edit_task">Edit Task</string>
 
     <!-- Task Form strings-->
     <string name="add_task_title">NEW TASK</string>
@@ -12,19 +20,18 @@
     <string name="add_task_description_msg">Description:</string>
     <string name="add_task_category_msg">Category:</string>
     <string name="add_task_isDone_msg">Mark as Done?</string>
+    <string name="save_button_msg">Save Task</string>
 
+    <!-- Task Form Hint strings-->
     <string name="add_desc_hint_msg">Description for a new Task</string>
     <string name="add_title_hint_msg">Title for a new Task</string>
     <string name="add_dueDate_hint_msg">MM/DD</string>
     <string name="add_category_hint_msg">Category for a new Task</string>
 
-    <string name="add_button_msg">Add new Task</string>
 
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Completion Status:</string>
 
-    <!-- Menu strings-->
-    <string name="menu_add_task">Add Task</string>
     <string name="task_id">Task ID: </string>
 
 </resources>
