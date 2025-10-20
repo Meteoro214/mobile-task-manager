@@ -34,5 +34,8 @@
         android:name="gal.uvigo.mobileTaskManager.fragments.TaskFormFragment"
         android:label="@string/form_title"
         tools:layout="@layout/fragment_task_form" >
+        <argument
+            android:name="taskID"
+            app:argType="int" />
     </fragment>
 </navigation>
