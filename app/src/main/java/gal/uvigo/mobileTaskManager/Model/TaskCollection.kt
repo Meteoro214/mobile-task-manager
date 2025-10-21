@@ -4,11 +4,11 @@ class TaskCollection {
     private val taskList = mutableListOf<Task>()
 
     /**
-     * Add the given task t to the TaskCollection
+     * Add the given task t to the TaskCollection. Must have a title
+     * Returns true if added. Will not add if empty title
      */
-    fun addTask(t: Task) {
-        taskList.add(t)
-    }
+    fun addTask(t: Task): Boolean = if (t.title.isEmpty()) false else taskList.add(t)
+
 
     /**
      * Retrieves the task with the given id or returns null if no such task exists
@@ -21,17 +21,8 @@ class TaskCollection {
     /**
      * Retrieves the task on the indexed position
      * @throws IndexOutOfBoundsException if index is not on bounds
-      */
-    fun getTaskByIndex(index : Int) : Task = taskList[index]
-
-    /**
-     * Receives a Task and edits the task with the same ID. Returns true if a task was edited
      */
-    fun editTask(task : Task) : Boolean{
-        val deleted = deleteTask(task.id)
-        if(deleted) addTask(task)
-        return deleted
-    }
+    fun getTaskByIndex(index: Int): Task = taskList[index]
 
     /**
      * Deletes the task with the given ID, if it exists.

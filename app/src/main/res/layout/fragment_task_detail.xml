@@ -8,6 +8,7 @@
     <data>
 
         <import type="gal.uvigo.mobileTaskManager.model.ExtensionsKt" />
+        <import type="gal.uvigo.mobileTaskManager.model.Category" />
 
         <variable
             name="taskData"
@@ -90,14 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="@{
-            when(taskData.category){
-            Category.OTHER -> @string/other_cat
-            Category.WORK -> @string/work_cat
-            Category.PERSONAL -> @string/personal_cat
-            Category.URGENT -> @string/urgent_cat
-            }
-            }"
+            android:text='@{ (taskData.category==Category.OTHER) ? @string/other_cat : ((taskData.category==Category.WORK) ? @string/work_cat : ((taskData.category==Category.PERSONAL) ? @string/personal_cat : ((taskData.category==Category.URGENT) ? @string/urgent_cat : "")))}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/categoryTV" />

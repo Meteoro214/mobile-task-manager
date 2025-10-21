@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 class Task(
     val id: Int,
-    title: String,
+    title: String = "",
     dueDate: LocalDate,
     var category: Category = Category.OTHER,
     var description: String = "",
@@ -24,9 +24,9 @@ class Task(
             field = value
         }
 
+    //Title may be empty when creating, but no empty title will be accepted on collection
     init {
         require(id > 0) { "ID must be above 0" }
-        require(!title.trim().isEmpty()) { "title must not be empty" }
         require(dueDate.isFutureDate()) { "due date must not be in the past" }
     }
 

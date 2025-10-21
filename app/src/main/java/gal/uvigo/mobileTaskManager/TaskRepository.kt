@@ -16,48 +16,30 @@ object TaskRepository {
         title: String,
         description: String = "",
         dueDate: LocalDate = LocalDate.now(),
-        category: Category = Category.OTHER
-    ): Task? {
-        try {
-            val t = Task(nextId, title, dueDate, category, description)
-            tasks.addTask(t)
-            nextId++
-            return t
-        } catch (e: IllegalArgumentException) {
-            return null
-        }
-    }
-
-    /**
-     * Edits a task with the given ID (ID is not editable).
-     * Returns true if edit succeeds, false if it fails, or null if any parameter is not valid
-     */
-    fun editTask(
-        id: Int,
-        title: String,
-        description: String = "",
-        dueDate: LocalDate = LocalDate.now(),
         category: Category = Category.OTHER,
-        isDone : Boolean
-    ): Boolean? {
+        isDone: Boolean = false
+    ): Task? =
         try {
-            val t = Task(id, title, dueDate, category, description,isDone)
-            return tasks.editTask(t)
+            val t = Task(nextId, title, dueDate, category, description, isDone)
+            if (tasks.addTask(t)) {
+                nextId++
+                t
+            } else null
         } catch (e: IllegalArgumentException) {
-            return null
+            null
         }
-    }
+
 
     /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun getTaskByID(id : Int) : Task? = tasks.getTask(id)
+    fun getTaskByID(id: Int): Task? = tasks.getTask(id)
 
     /**
      * Retrieves the task on the indexed position
      * @throws IndexOutOfBoundsException if index is not on bounds
      */
-    fun getTaskByIndex(index : Int) : Task = tasks.getTaskByIndex(index)
+    fun getTaskByIndex(index: Int): Task = tasks.getTaskByIndex(index)
 
-    fun getSize() : Int = tasks.getSize()
+    fun getSize(): Int = tasks.getSize()
 }

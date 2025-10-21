@@ -38,7 +38,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.editTask -> {
-            findNavController().navigate(TaskDetailFragmentDirections.editTask(binding.taskData.id))
+            findNavController().navigate(TaskDetailFragmentDirections.editTask(binding.taskData?.id ?: -1))
             true
         }
 
@@ -47,12 +47,14 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
     override fun onResume() {
         super.onResume()
-        val handle = navController.currentBackStackEntry.savedStateHandle
-        val key = getString(R.string.handle_editedTask_Key)
-        val task = handle.get<Task>(key)
-        if(task != null){
-            binding.taskData = task
-            handle.remove<Task>(key)
+        val handle = navController.currentBackStackEntry?.savedStateHandle
+        if (handle != null) {
+            val key = getString(R.string.handle_editedTask_Key)
+            val task = handle.get<Task>(key)
+            if (task != null) {
+                binding.taskData = task
+                handle.remove<Task>(key)
+            }
         }
     }
 }
