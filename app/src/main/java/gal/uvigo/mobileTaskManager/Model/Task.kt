@@ -30,6 +30,17 @@ class Task(
         require(dueDate.isFutureDate()) { "due date must not be in the past" }
     }
 
+
+    fun copy(): Task =
+        Task(
+            this.id,
+            this.title,
+            this.dueDate,
+            this.category,
+            this.description,
+            this.isDone
+        )
+
     /*For Parcelable, could use @parcelize too to avoid code*/
 
     override fun describeContents(): Int {

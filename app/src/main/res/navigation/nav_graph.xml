@@ -36,6 +36,7 @@
         tools:layout="@layout/fragment_task_form" >
         <argument
             android:name="taskID"
-            app:argType="int" />
+            app:argType="int"
+            android:defaultValue="-1"/>
     </fragment>
 </navigation>
