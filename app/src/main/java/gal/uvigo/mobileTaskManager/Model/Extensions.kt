@@ -1,6 +1,5 @@
 package gal.uvigo.mobileTaskManager.model
 
-import android.icu.number.IntegerWidth
 import java.time.DateTimeException
 import java.time.LocalDate
 

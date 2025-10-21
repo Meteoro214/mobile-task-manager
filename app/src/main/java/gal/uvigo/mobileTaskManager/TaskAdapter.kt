@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 import gal.uvigo.mobileTaskManager.fragments.TaskListFragmentDirections
 import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.model.TaskCollection
-import java.time.LocalDate
 
 class TaskAdapter(val tasks: TaskRepository) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {

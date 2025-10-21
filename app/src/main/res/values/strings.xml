@@ -1,4 +1,7 @@
 <resources>
+    <!-- Handle Keys-->
+    <string name="handle_editedTask_Key">editedTask</string>
+
     <!-- Common strings-->
     <string name="app_name">Mobile Task Manager</string>
     <string name="mark_done_DONE_img">✅</string>

@@ -1,12 +1,13 @@
 package gal.uvigo.mobileTaskManager.fragments
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.TaskRepository
@@ -17,6 +18,7 @@ import kotlin.getValue
 class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     private val args: TaskFormFragmentArgs by navArgs()
+    private lateinit var navController: NavController
 
     private val repository: TaskRepository = TaskRepository
     private lateinit var binding : FragmentTaskFormBinding
@@ -25,16 +27,22 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         super.onViewCreated(view, savedInstanceState)
         //another way of binding
         binding = FragmentTaskFormBinding.bind(view)
-        if(args.taskID == -1){ //Default value, no real value passed
+        navController = findNavController()
 
-        }
-        else{//Existing task
-
-        }
+        //Loads task passed in SafeArgs
+        loadTask()
         //Config AutoCompleteTextView
         configACTVCategory()
+        binding.saveTaskButton.setOnClickListener { v -> saveTask() }
+    }
 
+    private fun loadTask() {
+        if(isEditingForm()){ //Existing task
 
+        }
+        else{ //New task
+
+        }
 
     }
 
@@ -57,7 +65,41 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
     }
 
+    private fun saveTask() {
+        //verificar los datos?, almacenar los datos
+        //que pasa si hay requires
+        //mejor validar aqui??
+        if(isEditingForm()){ //Existing task
 
+        }
+        else{ //New task
 
+        }
 
+        //Si ha salido bien abandonar pantalla O hacer que tenga que abandonar con un back?
+        //en el navgrafh no tiene accion
+        //un navigateUp funciona seguramente
+//Toast para decir
+    }
+
+    override fun onPause() {
+        //Envia hacia atras la task si es necesario, el almacenamiento es en el boton, guarda la info de alguna forma por si salimos y volvemos
+
+        //guardar un incomplete info o un taskInfo dependiendo de si es valida o no
+        //leerla en el onResume
+    }
+
+    override fun onResume() {
+//Recupera info guardada incompleta si existe
+        //Hacerlo en el loadTask?
+        //mejor aqui
+    }
+
+    private fun isEditingForm() : Boolean = args.taskID != -1 //-1 Default value, no real value passed
+
+    //edit the title
+    //safeargs to check mode
+    //  TaskDetail TaskForm
+    //edit button may explode
+    //when on binding may explode
 }
