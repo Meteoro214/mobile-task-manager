@@ -58,10 +58,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
             //ID will change when added, isDone/description/Category use the defaults
-            binding.taskData = Task(1, dueDate = LocalDate.now())
-
-            binding.dueDateInput.setText("") //Shows no value on the date, but internally will be .now()
-            binding.categoryInput.setText("") //Shows no value on the category, but internally will be Other
+            binding.taskData = Task(1)
+            // Category & Date will be null to start to show empty form
         }
     }
 
@@ -75,7 +73,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         binding.categoryInput.onFocusChangeListener =
             View.OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
-                    (view as AutoCompleteTextView).showDropDown()
+                    //Ensures a cleared selection because on edit only selected is shown as option
+                    (view as AutoCompleteTextView).setText("")
+                    view.showDropDown()
                 }
             }
         binding.categoryInput.onItemClickListener =
@@ -95,7 +95,6 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     private fun verifyTask(): Boolean =
         if (binding.taskData?.title?.isEmpty() ?: true) {
-            //Can this even happen? probably not its 2-way binded
             Toast.makeText(
                 requireContext(),
                 "Title must not be empty", Toast.LENGTH_SHORT
@@ -103,7 +102,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             false
         } else {
             val date =
-                binding.taskData?.dueDate?.createDateFromMMDD(binding.dueDateInput.text.toString())
+                LocalDate.of(1, 1, 1).createDateFromMMDD(binding.dueDateInput.text.toString())
             if (date == null) {
                 Toast.makeText(
                     requireContext(),
@@ -118,8 +117,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                         "Category must be selected", Toast.LENGTH_SHORT
                     ).show()
                     false
+                } else {
+                    true
                 }
-                true
             }
         }
 
@@ -148,7 +148,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             binding.taskData = (repository.addTask(
                 binding.taskData?.title ?: "",
                 binding.taskData?.description ?: "",
-                binding.taskData?.dueDate ?: LocalDate.of(1,1,1),
+                binding.taskData?.dueDate ?: LocalDate.of(1, 1, 1),
                 binding.taskData?.category ?: Category.OTHER,
                 binding.taskData?.isDone ?: true
             ) ?: binding.taskData)
@@ -160,7 +160,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     override fun onPause() {
         super.onPause()
-        val handle = navController.previousBackStackEntry?.savedStateHandle
+        //If app is exited, current is still the fragment
+        //If back button or save button is pressed, current changed to previous (stack is popped BEFORE onPause)
+        val handle = navController.currentBackStackEntry?.savedStateHandle
         if (handle != null) { //should always be true
             if (!saved) {
                 //store unfinished data for a posible reload
@@ -175,8 +177,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 handle.set(keyTitle, binding.taskData?.title)
                 handle.set(keyDesc, binding.taskData?.description)
                 handle.set(keyIsDone, binding.taskData?.isDone)
-                handle.set(keyDate, binding.dueDateInput.text)
-                handle.set(keyCat, binding.categoryInput.text)
+                handle.set(keyDate, binding.dueDateInput.text.toString())
+                handle.set(keyCat, binding.categoryInput.text.toString())
 
             } else if (isEditingForm()) {
                 //send task Info (completed) back, it was already saved
@@ -188,23 +190,27 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     override fun onResume() {
         super.onResume()
+        //If app resumes from exit, current is the fragment and will have a handle
+        //If it is access from another fragment, handle is on previous
         val handle = navController.previousBackStackEntry?.savedStateHandle
         val keyID = getString(R.string.handle_unfinishedFormID_Key)
-        val keyTitle = getString(R.string.handle_unfinishedFormTitle_Key)
-        val keyIsDone = getString(R.string.handle_unfinishedFormIsDone_Key)
-        val keyDate = getString(R.string.handle_unfinishedFormDate_Key)
-        val keyDesc = getString(R.string.handle_unfinishedFormDescription_Key)
-        val keyCat = getString(R.string.handle_unfinishedFormCategory_Key)
 
         if (handle != null && handle.contains(keyID)) {
+            val keyTitle = getString(R.string.handle_unfinishedFormTitle_Key)
+            val keyIsDone = getString(R.string.handle_unfinishedFormIsDone_Key)
+            val keyDate = getString(R.string.handle_unfinishedFormDate_Key)
+            val keyDesc = getString(R.string.handle_unfinishedFormDescription_Key)
+            val keyCat = getString(R.string.handle_unfinishedFormCategory_Key)
             //there was a previously unfinished form saved
             if (handle.get<Int>(keyID) == binding.taskData?.id) {
                 //Ensure the saved data has the same ID (on edit, we try to edit the same Task)
                 //Handle should hold all necesary data
-                binding.taskData?.title = handle.get<String>(keyTitle).toString()
-                binding.taskData?.description = handle.get<String>(keyDesc).toString()
+                binding.taskData?.title = handle.get<String>(keyTitle) ?: ""
+                binding.taskData?.description = handle.get<String>(keyDesc) ?: ""
                 binding.taskData?.isDone = handle.get<Boolean>(keyIsDone) == true
-                binding.dueDateInput.setText(handle.get<String>(keyDate))
+                val date =
+                    LocalDate.of(1, 1, 1).createDateFromMMDD(handle.get<String>(keyDate) ?: "")
+                if (date != null) binding.taskData?.dueDate = date
                 val cat = handle.get<String>(keyCat)
                 if (cat?.isNotBlank() ?: false) {
                     //turn string into cat
@@ -220,6 +226,48 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             handle.remove<String>(keyDesc)
             handle.remove<String>(keyCat)
         }
+
+        //If the fragment is resuming after going to background instead of being created,
+        //data will be in the current stack entru`s handle, not the previous
+        val currentHandle = navController.currentBackStackEntry?.savedStateHandle
+
+        if (currentHandle != null && currentHandle.contains(keyID)) {
+            val keyTitle = getString(R.string.handle_unfinishedFormTitle_Key)
+            val keyIsDone = getString(R.string.handle_unfinishedFormIsDone_Key)
+            val keyDate = getString(R.string.handle_unfinishedFormDate_Key)
+            val keyDesc = getString(R.string.handle_unfinishedFormDescription_Key)
+            val keyCat = getString(R.string.handle_unfinishedFormCategory_Key)
+            //there was a previously unfinished form saved
+            if (currentHandle.get<Int>(keyID) == binding.taskData?.id) {
+                //Ensure the saved data has the same ID (on edit, we try to edit the same Task)
+                //Handle should hold all necesary data
+                binding.taskData?.title = currentHandle.get<String>(keyTitle) ?: ""
+                binding.taskData?.description = currentHandle.get<String>(keyDesc) ?: ""
+                binding.taskData?.isDone = currentHandle.get<Boolean>(keyIsDone) == true
+                val date =
+                    LocalDate.of(1, 1, 1)
+                        .createDateFromMMDD(currentHandle.get<String>(keyDate) ?: "")
+                if (date != null) binding.taskData?.dueDate = date
+                val cat = currentHandle.get<String>(keyCat)
+                if (cat?.isNotBlank() ?: false) {
+                    //turn string into cat
+                    val index = resources.getStringArray(R.array.categories).indexOf(cat)
+                    binding.taskData?.category = Category.entries[index]
+                }
+            }
+            //Clear saved data (Note that if saved data was from an edit from other task, it will still be lost)
+            currentHandle.remove<Int>(keyID)
+            currentHandle.remove<String>(keyTitle)
+            currentHandle.remove<Boolean>(keyIsDone)
+            currentHandle.remove<String>(keyDate)
+            currentHandle.remove<String>(keyDesc)
+            currentHandle.remove<String>(keyCat)
+        }
+
+        //When loading unfinished data from an add operation, and only from an add operation,
+        // data is correctly binded but not displayed on the form
+        //forcing a setText resolves the issue
+        binding.taskData = binding.taskData
     }
 
     private fun isEditingForm(): Boolean =

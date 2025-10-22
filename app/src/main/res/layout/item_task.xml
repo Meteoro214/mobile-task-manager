@@ -5,8 +5,6 @@
 
     <data>
 
-        <import type="gal.uvigo.mobileTaskManager.model.ExtensionsKt" />
-
         <variable
             name="taskData"
             type="gal.uvigo.mobileTaskManager.model.Task" />
@@ -81,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginEnd="30dp"
-                android:text="@{ExtensionsKt.formattedDueDate(taskData.dueDate)}"
+                android:text="@{taskData.stringDate}"
                 app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />

@@ -19,14 +19,17 @@ object TaskRepository {
         category: Category = Category.OTHER,
         isDone: Boolean = false
     ): Task? =
-        try {
-            val t = Task(nextId, title, dueDate, category, description, isDone)
-            if (tasks.addTask(t)) {
-                nextId++
-                t
-            } else null
-        } catch (e: IllegalArgumentException) {
-            null
+        if (title.isBlank()) null
+        else {
+            try {
+                val t = Task(nextId, title, dueDate, category, description, isDone)
+                if (tasks.addTask(t)) {
+                    nextId++
+                    t
+                } else null
+            } catch (e: IllegalArgumentException) {
+                null
+            }
         }
 
 

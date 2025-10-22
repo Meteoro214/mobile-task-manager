@@ -37,14 +37,16 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.editTask -> {
-            findNavController().navigate(TaskDetailFragmentDirections.editTask(binding.taskData?.id ?: -1))
+        R.id.editTask -> { //peta aqui y por null en form
+            val action = TaskDetailFragmentDirections.openForm(binding.taskData?.id ?: -1)
+            navController.navigate(action)
             true
         }
 
         else -> super.onOptionsItemSelected(item)
     }
 
+    //Because the data is binded from the list, and the list was modified, this isnt actually needed
     override fun onResume() {
         super.onResume()
         val handle = navController.currentBackStackEntry?.savedStateHandle

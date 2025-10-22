@@ -3,10 +3,9 @@ package gal.uvigo.mobileTaskManager.model
 import java.time.DateTimeException
 import java.time.LocalDate
 
-fun LocalDate.formattedDueDate(): String {
-    return this.monthValue.toString().padStart(2, '0') + " " + this.dayOfMonth.toString()
+fun LocalDate.formattedDueDate(): String =
+    this.monthValue.toString().padStart(2, '0') + " " + this.dayOfMonth.toString()
         .padStart(2, '0')
-}
 
 
 /**

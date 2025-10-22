@@ -14,7 +14,7 @@
             android:id="@+id/checkTaskDetails"
             app:destination="@id/taskDetailFragment" />
         <action
-            android:id="@+id/addTask"
+            android:id="@+id/openForm"
             app:destination="@id/taskFormFragment" />
     </fragment>
     <fragment
@@ -23,7 +23,7 @@
         android:label="@string/detail_title"
         tools:layout="@layout/fragment_task_detail" >
         <action
-            android:id="@+id/editTask"
+            android:id="@+id/openForm"
             app:destination="@id/taskFormFragment" />
         <argument
             android:name="task"
