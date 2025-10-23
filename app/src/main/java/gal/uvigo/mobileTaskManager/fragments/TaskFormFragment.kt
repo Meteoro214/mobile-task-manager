@@ -82,6 +82,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 //Requires order be maintained in enum & array
                 binding.taskData?.category = Category.entries[position]
+                binding.categoryInput.error = null //remover error msg
+
             }
     }
 
@@ -93,35 +95,27 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
     }
 
-    private fun verifyTask(): Boolean =
+    private fun verifyTask(): Boolean {
+        var toRet = true
         if (binding.taskData?.title?.isEmpty() ?: true) {
-            Toast.makeText(
-                requireContext(),
-                "Title must not be empty", Toast.LENGTH_SHORT
-            ).show()
-            false
-        } else {
-            val date =
-                LocalDate.of(1, 1, 1).createDateFromMMDD(binding.dueDateInput.text.toString())
-            if (date == null) {
-                Toast.makeText(
-                    requireContext(),
-                    "Date is not valid", Toast.LENGTH_SHORT
-                ).show()
-                false
-            } else {
-                binding.taskData?.dueDate = date
-                if (binding.categoryInput.text.isEmpty()) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Category must be selected", Toast.LENGTH_SHORT
-                    ).show()
-                    false
-                } else {
-                    true
-                }
-            }
+            binding.titleInput.error = "Title must not be empty"
+            toRet = false
         }
+        val date =
+            LocalDate.of(1, 1, 1).createDateFromMMDD(binding.dueDateInput.text.toString())
+        if (date == null) {
+            binding.dueDateInput.error = "Date is not valid"
+            toRet = false
+        } else {
+            binding.taskData?.dueDate = date
+        }
+        if (binding.categoryInput.text.isEmpty()) {
+            binding.categoryInput.error = "Category must be selected"
+            toRet = false
+        }
+        return toRet
+
+    }
 
     private fun saveTask() {
         //Data is already verified
