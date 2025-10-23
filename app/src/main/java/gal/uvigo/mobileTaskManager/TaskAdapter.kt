@@ -7,10 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 import gal.uvigo.mobileTaskManager.fragments.TaskListFragmentDirections
 import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.model.TaskCollection
-import java.time.LocalDate
 
-class TaskAdapter(val taskCollection: TaskCollection) :
+class TaskAdapter(val tasks: TaskRepository) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
     class TaskHolder(val taskDataBinding: ItemTaskBinding) :
@@ -43,10 +41,10 @@ class TaskAdapter(val taskCollection: TaskCollection) :
         position: Int
     ) {
         //Should never be out of bounds
-        val t: Task = taskCollection.getTaskByIndex(position)
+        val t: Task = tasks.getTaskByIndex(position)
         holder.bind(t)
     }
 
-    override fun getItemCount(): Int = taskCollection.getSize()
+    override fun getItemCount(): Int = tasks.getSize()
 
 }

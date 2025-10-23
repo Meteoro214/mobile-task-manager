@@ -7,7 +7,7 @@
 
     <data>
 
-        <import type="gal.uvigo.mobileTaskManager.model.ExtensionsKt" />
+        <import type="gal.uvigo.mobileTaskManager.model.Category" />
 
         <variable
             name="taskData"
@@ -18,146 +18,144 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TextView
-            android:id="@+id/idTV"
+            android:id="@+id/detailsTitleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="@string/task_id"
-            app:layout_constraintBottom_toBottomOf="@+id/isDoneMark"
+            android:text="@string/check_detail_title"
+            android:textSize="20sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.25"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/idTV2"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="@{Integer.toString(taskData.id)}"
-            app:layout_constraintBottom_toBottomOf="@+id/idTV"
-            app:layout_constraintStart_toEndOf="@id/idTV"
-            app:layout_constraintTop_toTopOf="@id/idTV" />
-
-        <TextView
             android:id="@+id/isDoneTV"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:text="@string/check_task_isItDone"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="@+id/isDoneMark"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/idTV2"
-            app:layout_constraintTop_toTopOf="@+id/isDoneMark" />
+            app:layout_constraintBottom_toBottomOf="@id/isDoneCheck"
+            app:layout_constraintEnd_toStartOf="@id/isDoneCheck"
+            app:layout_constraintTop_toTopOf="@id/isDoneCheck" />
 
         <TextView
-            android:id="@+id/isDoneMark"
+            android:id="@+id/isDoneCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:paddingBottom="2dp"
             android:text="@{taskData.done ? @string/mark_done_DONE_img: @string/mark_done_UNDONE_img}"
             android:textAlignment="center"
             android:textSize="30sp"
-            app:layout_constraintBottom_toBottomOf="@id/idTV"
-            app:layout_constraintStart_toEndOf="@id/isDoneTV"
-            app:layout_constraintTop_toTopOf="@id/idTV" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.65"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsTitleTV" />
 
         <TextView
             android:id="@+id/titleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/add_task_title_msg"
-            android:textAlignment="center"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"
+            android:text="@string/form_task_title_msg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/idTV"
-            app:layout_constraintVertical_bias="0.10" />
+            app:layout_constraintTop_toBottomOf="@id/isDoneCheck" />
 
         <TextView
             android:id="@+id/titleTV2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginTop="3dp"
             android:text="@{taskData.title}"
-            android:textAlignment="center"
-            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTV" />
+            app:layout_constraintTop_toBottomOf="@id/titleTV" />
 
         <TextView
             android:id="@+id/categoryTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/add_task_category_msg"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@id/descriptionTV"
+            android:layout_marginTop="20dp"
+            android:text="@string/form_task_category_msg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.25"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/titleTV2" />
+            app:layout_constraintTop_toBottomOf="@id/titleTV2" />
 
         <TextView
             android:id="@+id/categoryTV2"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:text="@{taskData.category.toString()}"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="@+id/categoryTV"
-            app:layout_constraintStart_toEndOf="@id/categoryTV"
-            app:layout_constraintTop_toTopOf="@+id/categoryTV" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text='@{ (taskData.category==Category.OTHER) ? @string/other_cat : ((taskData.category==Category.WORK) ? @string/work_cat : ((taskData.category==Category.PERSONAL) ? @string/personal_cat : ((taskData.category==Category.URGENT) ? @string/urgent_cat : "")))}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryTV" />
 
         <TextView
             android:id="@+id/dueDateTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/add_task_dueDate_msg"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@id/descriptionTV"
+            android:layout_marginTop="20dp"
+            android:text="@string/form_task_dueDate_msg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/categoryTV2"
-            app:layout_constraintTop_toTopOf="@id/titleTV2" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/categoryTV2" />
 
         <TextView
             android:id="@+id/dueDateTV2"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:text="@{ExtensionsKt.formattedDueDate(taskData.dueDate)}"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="@id/dueDateTV"
-            app:layout_constraintStart_toEndOf="@+id/dueDateTV"
-            app:layout_constraintTop_toTopOf="@id/dueDateTV" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@{taskData.stringDate}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dueDateTV" />
 
         <TextView
             android:id="@+id/descriptionTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/add_task_description_msg"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toTopOf="@id/descriptionTV2"
+            android:layout_marginTop="20dp"
+            android:text="@string/form_task_description_msg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dueDateTV2" />
 
         <TextView
             android:id="@+id/descriptionTV2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginTop="3dp"
             android:text="@{taskData.description}"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/categoryTV" />
+            app:layout_constraintTop_toBottomOf="@id/descriptionTV" />
+
+        <TextView
+            android:id="@+id/idTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="@string/check_task_id"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionTV2" />
+
+        <TextView
+            android:id="@+id/idTV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@{Integer.toString(taskData.id)}"
+            app:layout_constraintBottom_toBottomOf="@+id/idTV"
+            app:layout_constraintStart_toEndOf="@id/idTV"
+            app:layout_constraintTop_toTopOf="@id/idTV" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

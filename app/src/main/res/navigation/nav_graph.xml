@@ -14,17 +14,17 @@
             android:id="@+id/checkTaskDetails"
             app:destination="@id/taskDetailFragment" />
         <action
-            android:id="@+id/addTask"
+            android:id="@+id/openForm"
             app:destination="@id/taskFormFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="gal.uvigo.mobileTaskManager.fragments.TaskDetailFragment"
-        android:label="@string/app_title"
+        android:label="@string/detail_title"
         tools:layout="@layout/fragment_task_detail" >
         <action
-            android:id="@+id/returnToList"
-            app:destination="@id/taskListFragment" />
+            android:id="@+id/openForm"
+            app:destination="@id/taskFormFragment" />
         <argument
             android:name="task"
             app:argType="gal.uvigo.mobileTaskManager.model.Task" />
@@ -32,10 +32,11 @@
     <fragment
         android:id="@+id/taskFormFragment"
         android:name="gal.uvigo.mobileTaskManager.fragments.TaskFormFragment"
-        android:label="@string/app_title"
+        android:label="@string/form_title"
         tools:layout="@layout/fragment_task_form" >
-        <action
-            android:id="@+id/abandonAddForm"
-            app:destination="@id/taskListFragment" />
+        <argument
+            android:name="taskID"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>

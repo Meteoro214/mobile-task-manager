@@ -1,30 +1,54 @@
 <resources>
+    <!-- Handle Keys-->
+    <string name="handle_editedTask_Key">editedTask</string>
+    <string name="handle_unfinishedFormTitle_Key">unfinishedFormTitle</string>
+    <string name="handle_unfinishedFormDate_Key">unfinishedFormDate</string>
+    <string name="handle_unfinishedFormDescription_Key">unfinishedFormDescription</string>
+    <string name="handle_unfinishedFormCategory_Key">unfinishedFormCategory</string>
+    <string name="handle_unfinishedFormIsDone_Key">unfinishedFormIsDone</string>
+    <string name="handle_unfinishedFormID_Key">unfinishedFormID</string>
+
     <!-- Common strings-->
     <string name="app_name">Mobile Task Manager</string>
-    <string name="app_title">MTM - Task Manager</string>
     <string name="mark_done_DONE_img">✅</string>
     <string name="mark_done_UNDONE_img">❌</string>
 
-    <!-- Task Form strings-->
-    <string name="add_task_title">NEW TASK</string>
-    <string name="add_task_title_msg">Title:</string>
-    <string name="add_task_dueDate_msg">Due Date:</string>
-    <string name="add_task_description_msg">Description:</string>
-    <string name="add_task_category_msg">Category:</string>
-    <string name="add_task_isDone_msg">Mark as Done?</string>
+    <!-- Category names-->
+    <string name="other_cat">Other/None</string>
+    <string name="work_cat">Work</string>
+    <string name="personal_cat">Personal</string>
+    <string name="urgent_cat">Urgent</string>
 
-    <string name="add_desc_hint_msg">Description for a new Task</string>
-    <string name="add_title_hint_msg">Title for a new Task</string>
-    <string name="add_dueDate_hint_msg">MM/DD</string>
-    <string name="add_category_hint_msg">Category for a new Task</string>
-
-    <string name="add_button_msg">Add new Task</string>
-
-    <!-- Task Detail strings-->
-    <string name="check_task_isItDone">Completion Status:</string>
+    <!-- Menu Title strings-->
+    <string name="app_title">MTM - Task Manager</string>
+    <string name="detail_title">Task Details</string>
+    <string name="form_title">Task Form</string>
 
     <!-- Menu strings-->
     <string name="menu_add_task">Add Task</string>
-    <string name="task_id">Task ID: </string>
+    <string name="menu_edit_task">Edit Task</string>
+
+    <!-- Task Form strings-->
+    <string name="add_form_title">NEW TASK</string>
+    <string name="default_form_title">TASK FORM</string>
+    <string name="edit_form_title">EDIT TASK</string>
+    <string name="form_task_title_msg">Title:</string>
+    <string name="form_task_dueDate_msg">Due Date:</string>
+    <string name="form_task_description_msg">Description:</string>
+    <string name="form_task_category_msg">Category:</string>
+    <string name="form_task_isDone_msg">Mark as Done?</string>
+    <string name="form_save_button_msg">Save Task</string>
+
+    <!-- Task Form Hint strings-->
+    <string name="form_desc_hint_msg">Description for a new Task</string>
+    <string name="form_title_hint_msg">Title for a new Task</string>
+    <string name="form_dueDate_hint_msg">MM DD</string>
+    <string name="form_category_hint_msg">Category for a new Task</string>
+
+
+    <!-- Task Detail strings-->
+    <string name="check_task_isItDone">Completion Status:</string>
+    <string name="check_task_id">Task ID: </string>
+    <string name="check_detail_title">TASK INFO</string>
 
 </resources>
