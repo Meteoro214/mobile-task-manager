@@ -45,3 +45,41 @@ Implement the Task Form to create & edit Tasks while using 2-way Data Binding.
 
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
 > See the course syllabus and lab instructions for more details.
+
+
+
+
+Cambios de configuracion:
+ Rotar pantalla
+  modo multi ventana (la pulsada esta activa la otra esta pausada)
+  nueva actividad/dialogo, si solo cubre parcialmente se pausa lo de debajo, si lo cubre totalmente se para
+
+Solucion = guardar estado de la interfaz, guardar el modelo de datos (ViewModel)
+
+ViewModel es mas rapido que el handle
+viewmodel no sobrevive al fin de la app
+
+
+Primero se importa el ViewModel
+crear clase viewmodel que herede de viewmodel
+
+cambiar taskRepository por el view model en donde se use
+private val vM : clase by viewModels() para delegar el scope
+en el fragment se usa una directiva diferente para el scope, porque siempre sera la actividad del fragment, la diferencia es como se hace referencia al scope
+Donde se utilizase el modelo de datoas antiguo usar el viewmodel
+
+liveData permite que las variables del viewmodel sean observadas para que automaticamente se avise a los observadores y estos se actualicen automaticamente
+
+
+mutableLiveData.value para acceder a lo que contiene
+
+como se crea inicialmente la lista que se contiene? el livedata va con constructor
+
+hay que configurar el codigo de actividad para observar el livedata
+
+asociar la tarea recuperada directamente en el binding en vez de recuperarla en codigo creo
+
+
+
+
+
