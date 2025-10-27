@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager
 
 class TaskCollection {
     private val taskList = mutableListOf<Task>()

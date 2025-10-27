@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager
 
 enum class Category {
     OTHER, WORK, PERSONAL, URGENT

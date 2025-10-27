@@ -1,9 +1,8 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager
 
 import android.os.Parcel
 import android.os.Parcelable
 import java.time.LocalDate
-import java.util.Locale
 
 class Task(
     val id: Int,
