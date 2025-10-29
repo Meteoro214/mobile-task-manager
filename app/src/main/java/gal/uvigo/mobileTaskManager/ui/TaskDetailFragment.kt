@@ -36,12 +36,15 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.editTask -> { //peta aqui y por null en form
+        R.id.editTask -> {
             val action = TaskDetailFragmentDirections.openForm(binding.taskData?.id ?: -1)
             navController.navigate(action)
             true
         }
-
+        R.id.deleteTask-> {
+            //TODO delete
+            navController.navigateUp()
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
