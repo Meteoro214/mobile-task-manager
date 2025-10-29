@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.time.LocalDate
+import kotlin.collections.orEmpty
+import kotlin.collections.toMutableList
 
 class TaskViewModel : ViewModel() {
 
@@ -44,7 +46,7 @@ class TaskViewModel : ViewModel() {
     fun addTask(t: Task): Boolean =
         if (t.title.isBlank() || t.dueDate == null || t.category == null) false
         else {
-            val current = this._tasks.value?.toMutableList() ?: emptyList<Task>().toMutableList()
+            val current = this._tasks.value.orEmpty().toMutableList()
             current.add(t)
             nextId++
             _tasks.value = current
@@ -61,7 +63,7 @@ class TaskViewModel : ViewModel() {
             || updated.dueDate == null || updated.category == null
         ) false
         else {
-            val current = this._tasks.value?.toMutableList() ?: emptyList<Task>().toMutableList()
+            val current = this._tasks.value.orEmpty().toMutableList()
             current.removeAt(index)
             //Maintains order
             current.add(index,updated)
@@ -81,14 +83,14 @@ class TaskViewModel : ViewModel() {
      * Retrieves the task on the indexed position
      * @throws IndexOutOfBoundsException if index is not on bounds
      */
-    fun getTaskByIndex(index: Int): Task = (tasks.value ?: emptyList())[index]
+    fun getTaskByIndex(index: Int): Task = tasks.value.orEmpty()[index]
 
     /**
      * Deletes the task with the given ID, if it exists.
      * Returns true if the task gets deleted, or false if it doesn't exist
      */
     fun deleteTask(id: Int): Boolean {
-        val current = _tasks.value?.toMutableList() ?: emptyList<Task>().toMutableList()
+        val current = _tasks.value.orEmpty().toMutableList()
         val toRet = current.removeIf { it.id == id }
         _tasks.value = current
         return toRet
