@@ -27,8 +27,8 @@ class Task(
             field = value
         }
 
-    //Title may be empty, but no empty title will be accepted on collection
-    //date & category may be null when creating only
+    //Title may be empty,date & category may be null
+    // but will not be accepted on adding/editing
     init {
         require(id > 0) { "ID must be above 0" }
         require(dueDate?.isFutureDate() ?: true) { "due date must not be in the past" }

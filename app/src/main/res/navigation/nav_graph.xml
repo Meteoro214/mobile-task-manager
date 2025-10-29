@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/taskListFragment"
-        android:name="gal.uvigo.mobileTaskManager.fragments.TaskListFragment"
+        android:name="gal.uvigo.mobileTaskManager.ui.tasklist.TaskListFragment"
         android:label="@string/app_title"
         tools:layout="@layout/fragment_task_list" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="gal.uvigo.mobileTaskManager.fragments.TaskDetailFragment"
+        android:name="gal.uvigo.mobileTaskManager.ui.TaskDetailFragment"
         android:label="@string/detail_title"
         tools:layout="@layout/fragment_task_detail" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/taskFormFragment"
-        android:name="gal.uvigo.mobileTaskManager.fragments.TaskFormFragment"
+        android:name="gal.uvigo.mobileTaskManager.ui.TaskFormFragment"
         android:label="@string/form_title"
         tools:layout="@layout/fragment_task_form" >
         <argument

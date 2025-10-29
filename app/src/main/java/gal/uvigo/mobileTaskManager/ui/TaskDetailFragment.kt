@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.fragments
+package gal.uvigo.mobileTaskManager.ui
 
 import android.os.Bundle
 import android.view.Menu

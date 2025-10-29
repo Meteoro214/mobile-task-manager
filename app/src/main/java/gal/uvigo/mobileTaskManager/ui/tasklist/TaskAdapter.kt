@@ -1,11 +1,10 @@
-package gal.uvigo.mobileTaskManager
+package gal.uvigo.mobileTaskManager.ui.tasklist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
-import gal.uvigo.mobileTaskManager.fragments.TaskListFragmentDirections
 import gal.uvigo.mobileTaskManager.model.Task
 
 class TaskAdapter(val tasks: TaskRepository) :

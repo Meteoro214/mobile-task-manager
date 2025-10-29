@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.fragments
+package gal.uvigo.mobileTaskManager.ui.tasklist
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.TaskAdapter
-import gal.uvigo.mobileTaskManager.TaskRepository
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
