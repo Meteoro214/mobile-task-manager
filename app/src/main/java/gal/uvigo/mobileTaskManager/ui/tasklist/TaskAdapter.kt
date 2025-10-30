@@ -1,14 +1,13 @@
-package gal.uvigo.mobileTaskManager
+package gal.uvigo.mobileTaskManager.ui.tasklist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
-import gal.uvigo.mobileTaskManager.fragments.TaskListFragmentDirections
 import gal.uvigo.mobileTaskManager.model.Task
 
-class TaskAdapter(val tasks: TaskRepository) :
+class TaskAdapter(var tasks: List<Task>) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
 
     class TaskHolder(val taskDataBinding: ItemTaskBinding) :
@@ -19,7 +18,7 @@ class TaskAdapter(val tasks: TaskRepository) :
             this.taskDataBinding.executePendingBindings()
             this.taskDataBinding.root.setOnClickListener {
                 this.taskDataBinding.root.findNavController()
-                    .navigate(TaskListFragmentDirections.checkTaskDetails(task))
+                    .navigate(TaskListFragmentDirections.checkTaskDetails(task.id))
             }
         }
     }
@@ -41,10 +40,11 @@ class TaskAdapter(val tasks: TaskRepository) :
         position: Int
     ) {
         //Should never be out of bounds
-        val t: Task = tasks.getTaskByIndex(position)
+        val t: Task = tasks[position]
         holder.bind(t)
     }
 
-    override fun getItemCount(): Int = tasks.getSize()
+    override fun getItemCount(): Int = tasks.size
 
+    fun submitTaskList(newTasks : List<Task>){tasks = newTasks}
 }

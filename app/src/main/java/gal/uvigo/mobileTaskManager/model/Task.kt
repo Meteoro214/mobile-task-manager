@@ -3,7 +3,6 @@ package gal.uvigo.mobileTaskManager.model
 import android.os.Parcel
 import android.os.Parcelable
 import java.time.LocalDate
-import java.util.Locale
 
 class Task(
     val id: Int,
@@ -24,12 +23,12 @@ class Task(
 
     var category: Category? = category
         set(value) {
-            require(value != null) { "Cannot set a null categoru" }
+            require(value != null) { "Cannot set a null category" }
             field = value
         }
 
-    //Title may be empty, but no empty title will be accepted on collection
-    //date & category may be null when creating only
+    //Title may be empty,date & category may be null
+    // but will not be accepted on adding/editing
     init {
         require(id > 0) { "ID must be above 0" }
         require(dueDate?.isFutureDate() ?: true) { "due date must not be in the past" }

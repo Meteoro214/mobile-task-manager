@@ -27,6 +27,7 @@
     <!-- Menu strings-->
     <string name="menu_add_task">Add Task</string>
     <string name="menu_edit_task">Edit Task</string>
+    <string name="menu_delete_task">Delete Task</string>
 
     <!-- Task Form strings-->
     <string name="add_form_title">NEW TASK</string>
@@ -45,10 +46,22 @@
     <string name="form_dueDate_hint_msg">MM DD</string>
     <string name="form_category_hint_msg">Category for a new Task</string>
 
+    <!-- Task Form Error strings-->
+    <string name="form_load_error_msg">Critical Edit Error : Task Not Found</string>
+    <string name="form_title_empty_msg">Title must not be empty</string>
+    <string name="form_date_invalid_msg">Date is not valid</string>
+    <string name="form_category_empty_msg">Category must be selected</string>
+    <string name="form_edit_error_msg">Critical Edit Error : Could Not Update</string>
+
 
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Completion Status:</string>
     <string name="check_task_id">Task ID: </string>
     <string name="check_detail_title">TASK INFO</string>
+
+    <!-- Task Detail Error strings-->
+    <string name="check_delete_OK_msg">Deleted a Task</string>
+    <string name="check_delete_error_msg">Critical Error : Could Not Delete</string>
+
 
 </resources>

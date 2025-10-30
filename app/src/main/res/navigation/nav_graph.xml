@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/taskListFragment"
-        android:name="gal.uvigo.mobileTaskManager.fragments.TaskListFragment"
+        android:name="gal.uvigo.mobileTaskManager.ui.tasklist.TaskListFragment"
         android:label="@string/app_title"
-        tools:layout="@layout/fragment_task_list" >
+        tools:layout="@layout/fragment_task_list">
         <action
             android:id="@+id/checkTaskDetails"
             app:destination="@id/taskDetailFragment" />
@@ -19,24 +19,25 @@
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
-        android:name="gal.uvigo.mobileTaskManager.fragments.TaskDetailFragment"
+        android:name="gal.uvigo.mobileTaskManager.ui.TaskDetailFragment"
         android:label="@string/detail_title"
-        tools:layout="@layout/fragment_task_detail" >
+        tools:layout="@layout/fragment_task_detail">
         <action
             android:id="@+id/openForm"
             app:destination="@id/taskFormFragment" />
         <argument
-            android:name="task"
-            app:argType="gal.uvigo.mobileTaskManager.model.Task" />
+            android:name="taskID"
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/taskFormFragment"
-        android:name="gal.uvigo.mobileTaskManager.fragments.TaskFormFragment"
+        android:name="gal.uvigo.mobileTaskManager.ui.TaskFormFragment"
         android:label="@string/form_title"
-        tools:layout="@layout/fragment_task_form" >
+        tools:layout="@layout/fragment_task_form">
         <argument
             android:name="taskID"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
 </navigation>

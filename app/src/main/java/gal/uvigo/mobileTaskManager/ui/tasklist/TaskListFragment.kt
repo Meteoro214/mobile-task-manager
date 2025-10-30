@@ -1,19 +1,19 @@
-package gal.uvigo.mobileTaskManager.fragments
+package gal.uvigo.mobileTaskManager.ui.tasklist
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.TaskAdapter
-import gal.uvigo.mobileTaskManager.TaskRepository
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
+import gal.uvigo.mobileTaskManager.model.TaskViewModel
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
-    private val repository: TaskRepository = TaskRepository
+    private val viewModel: TaskViewModel by activityViewModels()
     private lateinit var binding: FragmentTaskListBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -21,7 +21,12 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         binding.taskRV.layoutManager = LinearLayoutManager(context)
-        binding.taskRV.adapter = TaskAdapter(repository)
+        val adapter = TaskAdapter(viewModel.tasks.value.orEmpty())
+        binding.taskRV.adapter = adapter
+        viewModel.tasks.observe(viewLifecycleOwner){
+            tasks -> adapter.submitTaskList(tasks)
+        }
+
         setHasOptionsMenu(true)
     }
 
