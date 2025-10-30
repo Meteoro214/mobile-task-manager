@@ -70,9 +70,15 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         binding.categoryInput.onFocusChangeListener =
             View.OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
+                    val autoCompleteTV = view as AutoCompleteTextView
                     //Ensures a cleared selection because on edit only selected is shown as option
-                    (view as AutoCompleteTextView).setText("")
-                    view.showDropDown()
+                    autoCompleteTV.setText("")
+                    //Ensures ACTV is internally ready to show the options
+                    view.post {
+                        if(autoCompleteTV.isAttachedToWindow && autoCompleteTV.isFocused && autoCompleteTV.adapter != null){
+                            view.showDropDown() //Shows the options
+                        }
+                    }
                 }
             }
         binding.categoryInput.onItemClickListener =
