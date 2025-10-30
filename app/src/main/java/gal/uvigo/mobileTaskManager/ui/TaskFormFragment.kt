@@ -7,14 +7,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskFormBinding
-import gal.uvigo.mobileTaskManager.model.Category
-import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
+import gal.uvigo.mobileTaskManager.model.*
 import java.time.LocalDate
 import kotlin.getValue
 
@@ -22,8 +21,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     private val args: TaskFormFragmentArgs by navArgs()
     private lateinit var navController: NavController
-
-    private val repository: TaskRepository = TaskRepository
+    private val viewModel: TaskViewModel by activityViewModels()
     private lateinit var binding: FragmentTaskFormBinding
     private var saved = false
 
@@ -33,6 +31,14 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         binding = FragmentTaskFormBinding.bind(view)
         navController = findNavController()
 
+        /* TODO maybe needed
+                if(isEditingForm()){
+                    viewModel.tasks.observe(viewLifecycleOwner){
+                            _ -> loadTask()
+                    }
+
+                }
+        */
         //Loads task passed in SafeArgs
         loadTask()
         //Config AutoCompleteTextView
@@ -42,7 +48,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     private fun loadTask() {
         if (isEditingForm()) { //Existing task
-            val t = repository.getTaskByID(args.taskID)?.copy()
+            val t = viewModel.getTaskByID(args.taskID)?.copy()
             if (t == null) {
                 //Should never happen
                 Toast.makeText(
@@ -113,22 +119,15 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             toRet = false
         }
         return toRet
-
     }
 
     private fun saveTask() {
         //Data is already verified
         if (isEditingForm()) { //Existing task
-            val storedTask = repository.getTaskByID(binding.taskData?.id ?: -1)
-            if (storedTask != null) {
-                storedTask.isDone = binding.taskData?.isDone ?: storedTask.isDone
-                storedTask.title = binding.taskData?.title ?: storedTask.title
-                storedTask.dueDate = binding.taskData?.dueDate ?: storedTask.dueDate
-                storedTask.description = binding.taskData?.description ?: storedTask.description
-                storedTask.category = binding.taskData?.category ?: storedTask.category
-            } else { //Should never happen
+            val validUpdate = viewModel.updateTask(binding.taskData)
+            if (!validUpdate) { //Should never happen
                 Toast.makeText(
-                    requireContext(), "Critical Edit Error : Task Not Found",
+                    requireContext(), "Critical Edit Error : Could not update",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -138,7 +137,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             // Returning task is saved to change the ID (is a val)
             //Should never be null, data has already been checked
             //If a safe check fails, it will fail (will never happen)
-            binding.taskData = (repository.addTask(
+            binding.taskData = (viewModel.addTask(
                 binding.taskData?.title ?: "",
                 binding.taskData?.description ?: "",
                 binding.taskData?.dueDate ?: LocalDate.of(1, 1, 1),

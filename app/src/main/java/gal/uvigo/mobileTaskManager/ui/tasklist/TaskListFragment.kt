@@ -13,7 +13,7 @@ import gal.uvigo.mobileTaskManager.model.TaskViewModel
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
-    private val taskViewModel: TaskViewModel by activityViewModels()
+    private val viewModel: TaskViewModel by activityViewModels()
     private lateinit var binding: FragmentTaskListBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -21,9 +21,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         binding.taskRV.layoutManager = LinearLayoutManager(context)
-        val adapter = TaskAdapter(taskViewModel.tasks.value.orEmpty())
+        val adapter = TaskAdapter(viewModel.tasks.value.orEmpty())
         binding.taskRV.adapter = adapter
-        taskViewModel.tasks.observe(viewLifecycleOwner){
+        viewModel.tasks.observe(viewLifecycleOwner){
             tasks -> adapter.submitTaskList(tasks)
         }
 
