@@ -12,14 +12,12 @@ Update the app architecture to use a ViewModel with LiveData to make reactive UI
 - Deleted TaskCollection.
 - Refactored TaskCollection into TaskViewModel.
 - Reorganized file organization : renamed fragments package to ui, and created a tasklist package to hold TaskListFragment & TaskAdapter.
-
 - Implemented TaskViewModel, which uses LiveData to hold a List of Tasks. There is a private MutableLiveData, which is exposed as LiveData.
 - TaskViewModel has CRUD functions : 
     - addTask(), which accepts both a full task and the info for a new task with an ID given by the viewmodel
     - updateTask(task), which updates the existing task with the new task (ID is used to identify tasks, and cannot be edited).
     - get methods, both by ID and Index.
-    - deleteTask(taskID)
-
+    - deleteTask(taskID), a new method to delete a task.
 - Refactored TaskDetailFragment to use TaskViewModel. Also, now receives an ID instead of a task when navigating from TaskListFragment & implemented a delete option.
 - Refactored TaskFormFragment to use TaskViewModel.
 - Refactored TaskAdapter to use TaskViewModel & implemented submitTaskList() to update the task list.
@@ -38,5 +36,4 @@ Update the app architecture to use a ViewModel with LiveData to make reactive UI
 ---
 
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
-> See the course syllabus and lab instructions for more details.
 > See the course syllabus and lab instructions for more details.
