@@ -31,6 +31,14 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         binding = FragmentTaskDetailBinding.bind(view)
         navController = findNavController()
         binding.taskData = viewModel.getTaskByID(args.taskID)
+        /* TODO maybe needed
+               if(isEditingForm()){
+                   viewModel.tasks.observe(viewLifecycleOwner){
+                           _ -> loadTask()
+                   }
+
+               }
+       */
         setHasOptionsMenu(true)
     }
 
@@ -46,15 +54,20 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             navController.navigate(action)
             true
         }
-        R.id.deleteTask-> {
-            viewModel.deleteTask(binding.taskData.id)
-            Toast.makeText(requireContext(),)
+
+        R.id.deleteTask -> {
+            val msg = ((viewModel.deleteTask(binding.taskData.id))
+            ? getString(R.string.check_delete_OK_msg)
+            : getString(R.string.check_delete_error_msg))
+
+
+            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
             navController.navigateUp()
         }
+
         else -> super.onOptionsItemSelected(item)
     }
 
-    //Because the data is binded from the list, and the list was modified, this isnt actually needed
     override fun onResume() {
         super.onResume()
         val handle = navController.currentBackStackEntry?.savedStateHandle
