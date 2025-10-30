@@ -9,7 +9,7 @@ import kotlin.collections.toMutableList
 
 class TaskViewModel : ViewModel() {
 
-    private val _tasks = MutableLiveData<List<Task>>(emptyList<Task>())
+    private val _tasks = MutableLiveData<List<Task>>(emptyList())
     val tasks: LiveData<List<Task>>
         get() = _tasks
 
@@ -34,7 +34,7 @@ class TaskViewModel : ViewModel() {
                 if (this.addTask(t)) {
                     t
                 } else null
-            } catch (e: IllegalArgumentException) {
+            } catch (_: IllegalArgumentException) {
                 null
             }
         }
@@ -67,6 +67,7 @@ class TaskViewModel : ViewModel() {
             current.removeAt(index)
             //Maintains order
             current.add(index,updated)
+            _tasks.value = current
             true
         }
     }

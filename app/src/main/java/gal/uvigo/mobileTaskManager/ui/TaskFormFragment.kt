@@ -124,7 +124,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private fun saveTask() {
         //Data is already verified
         if (isEditingForm()) { //Existing task
-            val validUpdate = viewModel.updateTask(binding.taskData)
+            val validUpdate = viewModel.updateTask(binding.taskData?: Task(-1))
             if (!validUpdate) { //Should never happen
                 Toast.makeText(
                     requireContext(), getString(R.string.form_edit_error_msg),
@@ -145,7 +145,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 binding.taskData?.isDone ?: true
             ) ?: binding.taskData)
         }
-        saved = true;
+        saved = true
         //Returns to previous fragment
         navController.navigateUp()
     }
@@ -157,7 +157,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         val handle = navController.currentBackStackEntry?.savedStateHandle
         if (handle != null) { //should always be true
             if (!saved) {
-                //store unfinished data for a posible reload
+                //store unfinished data for a possible reload
                 val keyID = getString(R.string.handle_unfinishedFormID_Key)
                 val keyTitle = getString(R.string.handle_unfinishedFormTitle_Key)
                 val keyIsDone = getString(R.string.handle_unfinishedFormIsDone_Key)
@@ -165,17 +165,17 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 val keyDesc = getString(R.string.handle_unfinishedFormDescription_Key)
                 val keyCat = getString(R.string.handle_unfinishedFormCategory_Key)
 
-                handle.set(keyID, binding.taskData?.id)
-                handle.set(keyTitle, binding.taskData?.title)
-                handle.set(keyDesc, binding.taskData?.description)
-                handle.set(keyIsDone, binding.taskData?.isDone)
-                handle.set(keyDate, binding.dueDateInput.text.toString())
-                handle.set(keyCat, binding.categoryInput.text.toString())
+                handle[keyID] = binding.taskData?.id
+                handle[keyTitle] = binding.taskData?.title
+                handle[keyDesc] = binding.taskData?.description
+                handle[keyIsDone] = binding.taskData?.isDone
+                handle[keyDate] = binding.dueDateInput.text.toString()
+                handle[keyCat] = binding.categoryInput.text.toString()
 
             } else if (isEditingForm()) {
                 //send task Info (completed) back, it was already saved
                 val key = getString(R.string.handle_editedTask_Key)
-                handle.set(key, this.binding.taskData)
+                handle[key] = this.binding.taskData
             }
         }
     }
@@ -196,7 +196,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             //there was a previously unfinished form saved
             if (handle.get<Int>(keyID) == binding.taskData?.id) {
                 //Ensure the saved data has the same ID (on edit, we try to edit the same Task)
-                //Handle should hold all necesary data
+                //Handle should hold all necessary data
                 binding.taskData?.title = handle.get<String>(keyTitle) ?: ""
                 binding.taskData?.description = handle.get<String>(keyDesc) ?: ""
                 binding.taskData?.isDone = handle.get<Boolean>(keyIsDone) == true
@@ -220,7 +220,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
 
         //If the fragment is resuming after going to background instead of being created,
-        //data will be in the current stack entru`s handle, not the previous
+        //data will be in the current stack entry`s handle, not the previous
         val currentHandle = navController.currentBackStackEntry?.savedStateHandle
 
         if (currentHandle != null && currentHandle.contains(keyID)) {
@@ -232,7 +232,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             //there was a previously unfinished form saved
             if (currentHandle.get<Int>(keyID) == binding.taskData?.id) {
                 //Ensure the saved data has the same ID (on edit, we try to edit the same Task)
-                //Handle should hold all necesary data
+                //Handle should hold all necessary data
                 binding.taskData?.title = currentHandle.get<String>(keyTitle) ?: ""
                 binding.taskData?.description = currentHandle.get<String>(keyDesc) ?: ""
                 binding.taskData?.isDone = currentHandle.get<Boolean>(keyIsDone) == true
@@ -257,7 +257,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
 
         //When loading unfinished data from an add operation, and only from an add operation,
-        // data is correctly binded but not displayed on the form
+        // data is correctly bound but not displayed on the form
         //forcing a setText resolves the issue
         binding.taskData = binding.taskData
     }

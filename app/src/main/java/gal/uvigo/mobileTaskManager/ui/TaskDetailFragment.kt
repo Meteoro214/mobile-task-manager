@@ -56,12 +56,20 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         }
 
         R.id.deleteTask -> {
-            val msg = ((viewModel.deleteTask(binding.taskData.id))
-            ? getString(R.string.check_delete_OK_msg)
-            : getString(R.string.check_delete_error_msg))
+            val deleted = viewModel.deleteTask(binding.taskData?.id ?: -1)
 
+            if(deleted){
+                Toast.makeText(requireContext(),
+                    getString(R.string.check_delete_OK_msg),
+                    Toast.LENGTH_SHORT).show()
+            }
+            else {
+                Toast.makeText(requireContext(),
+                    getString(R.string.check_delete_error_msg),
+                    Toast.LENGTH_SHORT).show()
 
-            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+            }
+
             navController.navigateUp()
         }
 

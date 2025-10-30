@@ -23,7 +23,7 @@ class Task(
 
     var category: Category? = category
         set(value) {
-            require(value != null) { "Cannot set a null categoru" }
+            require(value != null) { "Cannot set a null category" }
             field = value
         }
 
