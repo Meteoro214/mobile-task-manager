@@ -31,14 +31,6 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         binding = FragmentTaskDetailBinding.bind(view)
         navController = findNavController()
         binding.taskData = viewModel.getTaskByID(args.taskID)
-        /* TODO maybe needed
-               if(isEditingForm()){
-                   viewModel.tasks.observe(viewLifecycleOwner){
-                           _ -> loadTask()
-                   }
-
-               }
-       */
         setHasOptionsMenu(true)
     }
 

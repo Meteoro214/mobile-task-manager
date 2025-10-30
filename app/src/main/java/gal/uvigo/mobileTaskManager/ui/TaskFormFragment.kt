@@ -31,14 +31,6 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         binding = FragmentTaskFormBinding.bind(view)
         navController = findNavController()
 
-        /* TODO maybe needed
-                if(isEditingForm()){
-                    viewModel.tasks.observe(viewLifecycleOwner){
-                            _ -> loadTask()
-                    }
-
-                }
-        */
         //Loads task passed in SafeArgs
         loadTask()
         //Config AutoCompleteTextView
@@ -87,7 +79,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 //Requires order be maintained in enum & array
                 binding.taskData?.category = Category.entries[position]
-                binding.categoryInput.error = null //remover error msg
+                binding.categoryInput.error = null //remove error msg
 
             }
     }
