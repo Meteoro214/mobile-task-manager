@@ -6,18 +6,23 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
 import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.model.TaskViewModel
+import kotlin.getValue
 
 class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
     private val args: TaskDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentTaskDetailBinding
     private lateinit var navController: NavController
+    private val viewModel: TaskViewModel by activityViewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -25,7 +30,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         //another way of binding
         binding = FragmentTaskDetailBinding.bind(view)
         navController = findNavController()
-        binding.taskData = args.task
+        binding.taskData = viewModel.getTaskByID(args.taskID)
         setHasOptionsMenu(true)
     }
 
@@ -42,7 +47,8 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             true
         }
         R.id.deleteTask-> {
-            //TODO delete
+            viewModel.deleteTask(binding.taskData.id)
+            Toast.makeText(requireContext(),)
             navController.navigateUp()
         }
         else -> super.onOptionsItemSelected(item)

@@ -18,7 +18,7 @@ class TaskAdapter(var tasks: List<Task>) :
             this.taskDataBinding.executePendingBindings()
             this.taskDataBinding.root.setOnClickListener {
                 this.taskDataBinding.root.findNavController()
-                    .navigate(TaskListFragmentDirections.checkTaskDetails(task))
+                    .navigate(TaskListFragmentDirections.checkTaskDetails(task.id))
             }
         }
     }

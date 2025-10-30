@@ -52,7 +52,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             if (t == null) {
                 //Should never happen
                 Toast.makeText(
-                    requireContext(), "Critical Edit Error : Task Not Found",
+                    requireContext(), getString(R.string.form_load_error_msg),
                     Toast.LENGTH_SHORT
                 ).show()
                 saved = true
@@ -103,19 +103,19 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private fun verifyTask(): Boolean {
         var toRet = true
         if (binding.taskData?.title?.isEmpty() ?: true) {
-            binding.titleInput.error = "Title must not be empty"
+            binding.titleInput.error = getString(R.string.form_title_empty_msg)
             toRet = false
         }
         val date =
             LocalDate.of(1, 1, 1).createDateFromMMDD(binding.dueDateInput.text.toString())
         if (date == null) {
-            binding.dueDateInput.error = "Date is not valid"
+            binding.dueDateInput.error = getString(R.string.form_date_invalid_msg)
             toRet = false
         } else {
             binding.taskData?.dueDate = date
         }
         if (binding.categoryInput.text.isEmpty()) {
-            binding.categoryInput.error = "Category must be selected"
+            binding.categoryInput.error = getString(R.string.form_category_empty_msg)
             toRet = false
         }
         return toRet
@@ -127,7 +127,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             val validUpdate = viewModel.updateTask(binding.taskData)
             if (!validUpdate) { //Should never happen
                 Toast.makeText(
-                    requireContext(), "Critical Edit Error : Could not update",
+                    requireContext(), getString(R.string.form_edit_error_msg),
                     Toast.LENGTH_SHORT
                 ).show()
             }
