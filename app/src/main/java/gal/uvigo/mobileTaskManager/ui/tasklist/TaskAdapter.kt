@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
-import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.data_model.Task
 
 class TaskAdapter(var tasks: List<Task>) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {

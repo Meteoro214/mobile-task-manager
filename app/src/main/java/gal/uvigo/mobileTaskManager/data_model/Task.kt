@@ -1,11 +1,15 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager.data_model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
+@Entity(tableName = "tasks")
 class Task(
-    val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     var title: String = "",
     dueDate: LocalDate? = null,
     category: Category? = null,
@@ -13,7 +17,7 @@ class Task(
     var isDone: Boolean = false
 ) : Parcelable {
 
-    var dueDate: LocalDate? = dueDate
+    @ColumnInfo(name = "due_date") var dueDate: LocalDate? = dueDate
         set(value) {
             require(
                 value?.isFutureDate() ?: false

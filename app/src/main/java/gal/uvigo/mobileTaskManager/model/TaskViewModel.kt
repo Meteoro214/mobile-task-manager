@@ -3,6 +3,8 @@ package gal.uvigo.mobileTaskManager.model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import gal.uvigo.mobileTaskManager.data_model.Category
+import gal.uvigo.mobileTaskManager.data_model.Task
 import java.time.LocalDate
 import kotlin.collections.orEmpty
 import kotlin.collections.toMutableList

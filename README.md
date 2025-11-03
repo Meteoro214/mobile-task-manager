@@ -76,3 +76,5 @@ las operaciones de lectura no hace falta suspend
 el nextid fuera
 
 VM tiene un repositoryo y lo usa para obtener la lista (live data) eliinando el privado mutable
+
+la livedata hay que o refrescarla o actualizarña

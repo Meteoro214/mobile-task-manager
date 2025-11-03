@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager.data_model
 
 import java.time.DateTimeException
 import java.time.LocalDate
@@ -20,18 +20,15 @@ fun LocalDate.createDateFromMMDD(mmdd: String): LocalDate? =
         val parsed = mmdd.split(" ")
         val day = Integer.parseInt(parsed[1])
         val month = Integer.parseInt(parsed[0])
-        var toRet: LocalDate?
         try {
-            toRet = LocalDate.of(currentYear, month, day)
+            val toRet: LocalDate? = LocalDate.of(currentYear, month, day)
             //Ensures the date is in the future if it is calid
-            if (!(toRet?.isFutureDate() ?: true)) {
+            if (toRet?.isFutureDate() == false) {
                 LocalDate.of(currentYear + 1, month, day)
             } else toRet
-
         } catch (e: DateTimeException) { //Invalid date null
             null
         }
     }
-
 
 fun LocalDate.isFutureDate(): Boolean = this >= LocalDate.now()

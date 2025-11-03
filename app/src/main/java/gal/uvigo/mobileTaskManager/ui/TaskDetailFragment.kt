@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
-import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.data_model.Task
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 import kotlin.getValue
 
