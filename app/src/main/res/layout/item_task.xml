@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
-                android:text="@{Integer.toString(taskData.id)}"
+                android:text="@{Long.toString(taskData.id)}"
                 app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
                 app:layout_constraintEnd_toStartOf="@id/isDoneMark"
                 app:layout_constraintStart_toStartOf="parent"

@@ -58,7 +58,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
             //ID will change when added, isDone/description/Category use the defaults
-            binding.taskData = Task(1)
+            binding.taskData = Task(-1)
             // Category & Date will be null to start to show empty form
         }
     }
@@ -133,18 +133,16 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 ).show()
             }
         } else { //New task
-            //Adds the task to the repository with the info on the binding
-            //Only change will be the ID (binding has a placeholder)
-            // Returning task is saved to change the ID (is a val)
-            //Should never be null, data has already been checked
-            //If a safe check fails, it will fail (will never happen)
-            binding.taskData = (viewModel.addTask(
+            //Adds the task  the info on the binding
+            //Only change will be the ID (binding has a placeholder, database will save with a real ID)
+            //Should never fail, data has already been checked
+            viewModel.addTask(
                 binding.taskData?.title ?: "",
                 binding.taskData?.description ?: "",
                 binding.taskData?.dueDate ?: LocalDate.of(1, 1, 1),
                 binding.taskData?.category ?: Category.OTHER,
                 binding.taskData?.isDone ?: true
-            ) ?: binding.taskData)
+            )
         }
         saved = true
         //Returns to previous fragment
@@ -195,7 +193,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             val keyDesc = getString(R.string.handle_unfinishedFormDescription_Key)
             val keyCat = getString(R.string.handle_unfinishedFormCategory_Key)
             //there was a previously unfinished form saved
-            if (handle.get<Int>(keyID) == binding.taskData?.id) {
+            if (handle.get<Long>(keyID) == binding.taskData?.id) {
                 //Ensure the saved data has the same ID (on edit, we try to edit the same Task)
                 //Handle should hold all necessary data
                 binding.taskData?.title = handle.get<String>(keyTitle) ?: ""
@@ -212,7 +210,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 }
             }
             //Clear saved data (Note that if saved data was from an edit from other task, it will still be lost)
-            handle.remove<Int>(keyID)
+            handle.remove<Long>(keyID)
             handle.remove<String>(keyTitle)
             handle.remove<Boolean>(keyIsDone)
             handle.remove<String>(keyDate)
@@ -231,7 +229,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             val keyDesc = getString(R.string.handle_unfinishedFormDescription_Key)
             val keyCat = getString(R.string.handle_unfinishedFormCategory_Key)
             //there was a previously unfinished form saved
-            if (currentHandle.get<Int>(keyID) == binding.taskData?.id) {
+            if (currentHandle.get<Long>(keyID) == binding.taskData?.id) {
                 //Ensure the saved data has the same ID (on edit, we try to edit the same Task)
                 //Handle should hold all necessary data
                 binding.taskData?.title = currentHandle.get<String>(keyTitle) ?: ""
@@ -249,7 +247,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 }
             }
             //Clear saved data (Note that if saved data was from an edit from other task, it will still be lost)
-            currentHandle.remove<Int>(keyID)
+            currentHandle.remove<Long>(keyID)
             currentHandle.remove<String>(keyTitle)
             currentHandle.remove<Boolean>(keyIsDone)
             currentHandle.remove<String>(keyDate)
@@ -264,6 +262,6 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     }
 
     private fun isEditingForm(): Boolean =
-        args.taskID != -1 //-1 Default value, no real value passed
+        args.taskID != -1L //-1 Default value, no real value passed
 
 }
