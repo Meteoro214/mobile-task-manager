@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 
 class TaskRepository(context: Context) {
 
-    val taskDAO: TaskDAO = TaskDB.getInstance(context).taskDAO()
+    private val taskDAO: TaskDAO = TaskDB.getInstance(context).taskDAO()
     val dispatcher = Dispatchers.IO
 
     suspend fun addTask(task: Task): Long? =
@@ -18,10 +18,7 @@ class TaskRepository(context: Context) {
             if (id <= 0L) null else id
         }
 
-    suspend fun getAll() =
-        withContext(dispatcher) {
-            taskDAO.getAll()
-        }
+    fun getAll() = taskDAO.getAll()
 
     suspend fun updateTask(updated: Task): Boolean =
         withContext(dispatcher) {

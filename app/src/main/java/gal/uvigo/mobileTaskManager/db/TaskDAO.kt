@@ -27,5 +27,5 @@ interface TaskDAO {
 
     //Returns empty list if no data
     @Query("SELECT * FROM tasks ORDER BY id ASC")
-    suspend fun getAll(): LiveData<List<Task>>
+    fun getAll(): LiveData<List<Task>>
 }

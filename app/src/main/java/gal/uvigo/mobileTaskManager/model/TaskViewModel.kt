@@ -1,21 +1,26 @@
 package gal.uvigo.mobileTaskManager.model
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import gal.uvigo.mobileTaskManager.data_model.Category
 import gal.uvigo.mobileTaskManager.data_model.Task
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import kotlin.collections.orEmpty
 import kotlin.collections.toMutableList
 
-class TaskViewModel : ViewModel() {
+class TaskViewModel(app: Application) : AndroidViewModel(app) {
 
-    private val _tasks = MutableLiveData<List<Task>>(emptyList())
+    private val repo = TaskRepository(app)
+
+    //Saves the list from the repo to only update it if modified, getter may be called without updates
+    private var _tasks: LiveData<List<Task>> = repo.getAll()
+
     val tasks: LiveData<List<Task>>
         get() = _tasks
 
-    private var nextId: Int = 1
 
     /**
      * Adds a new task with the next available ID, and the given info.
@@ -28,32 +33,21 @@ class TaskViewModel : ViewModel() {
         dueDate: LocalDate = LocalDate.now(),
         category: Category = Category.OTHER,
         isDone: Boolean = false
-    ): Task? =
-        if (title.isBlank()) null
+    ) {
+        if (title.isBlank()) throw IllegalArgumentException()
         else {
-            try {
-                val t = Task(nextId, title, dueDate, category, description, isDone)
-                if (this.addTask(t)) {
-                    t
-                } else null
-            } catch (_: IllegalArgumentException) {
-                null
-            }
+            val t = Task(0, title, dueDate, category, description, isDone)
+            add(t)
         }
+    }
 
-    /**
-     * Add the given task t to the Task List. Must have a title and no null values
-     * Returns true if added. Will not add if empty title or null values
-     */
-    fun addTask(t: Task): Boolean =
-        if (t.title.isBlank() || t.dueDate == null || t.category == null) false
-        else {
-            val current = this._tasks.value.orEmpty().toMutableList()
-            current.add(t)
-            nextId++
-            _tasks.value = current
-            true
+    private fun add(t: Task){
+        viewModelScope.launch {
+            repo.addTask(t)
         }
+        //TODO progbably needed
+        //        _tasks = repo.getAll()
+    }
 
     /**
      * Updates the given task maintaining order. Replaces the existing task with the same id on the Task List with the given task.
@@ -65,19 +59,23 @@ class TaskViewModel : ViewModel() {
             || updated.dueDate == null || updated.category == null
         ) false
         else {
-            val current = this._tasks.value.orEmpty().toMutableList()
-            current.removeAt(index)
-            //Maintains order
-            current.add(index,updated)
-            _tasks.value = current
+            update(updated)
             true
         }
+    }
+
+    private fun update(t: Task) {
+        viewModelScope.launch {
+            repo.updateTask(t)
+        }
+        //TODO progbably needed
+        //        _tasks = repo.getAll()
     }
 
     /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun getTaskByID(id: Int): Task? {
+    fun getTaskByID(id: Long): Task? {
         val index: Int = this.getIndex(id)
         return if (index == -1) null else getTaskByIndex(index)
     }
@@ -92,28 +90,27 @@ class TaskViewModel : ViewModel() {
      * Deletes the task with the given ID, if it exists.
      * Returns true if the task gets deleted, or false if it doesn't exist
      */
-    fun deleteTask(id: Int): Boolean {
-        val current = _tasks.value.orEmpty().toMutableList()
-        val toRet = current.removeIf { it.id == id }
-        _tasks.value = current
-        return toRet
+    fun deleteTask(id: Long): Boolean {
+        val t = this.getTaskByID(id)
+        if (t != null) {
+            this.delete(t)
+        }
+        return t != null
     }
 
-    /**
-     * Returns the number of Tasks stored
-     */
-    fun size(): Int = tasks.value?.size ?: 0
-
-    /**
-     * Checks whenever the internal Task List is empty
-     */
-    fun isEmpty(): Boolean = this.size() == 0
+    private fun delete(t: Task) {
+        viewModelScope.launch {
+            repo.deleteTask(t)
+        }
+        //TODO progbably needed
+        //        _tasks = repo.getAll()
+    }
 
     /**
      * Auxiliary private method to find the index of a Task with the given id.
      * Returns the index, or -1 if the task does not exist
      */
-    private fun getIndex(id: Int): Int =
+    private fun getIndex(id: Long): Int =
         tasks.value?.indexOfFirst { it.id == id } ?: -1
 
 }
