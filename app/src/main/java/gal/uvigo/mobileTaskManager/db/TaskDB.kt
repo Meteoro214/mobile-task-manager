@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import gal.uvigo.mobileTaskManager.data_model.Task
 
-@Database (entities = [Task::class], version=1)
+@Database (entities = [Task::class], version=1, exportSchema = false)
+@TypeConverters (LocalDateConverter::class)
 abstract class TaskDB : RoomDatabase() {
     abstract fun taskDAO() : TaskDAO
 
