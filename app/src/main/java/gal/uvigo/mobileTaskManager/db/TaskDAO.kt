@@ -13,8 +13,9 @@ import gal.uvigo.mobileTaskManager.data_model.Task
 interface TaskDAO {
 
     //Returns rowID (equivalent to taskID) will always give the last task ID+1
+    //Should return -1 on error
     @Insert(onConflict =  OnConflictStrategy.IGNORE)
-    suspend fun insert(task : Task) : Int
+    suspend fun insert(task : Task) : Long
 
     //Returns number of updated rows
     @Update

@@ -8,7 +8,7 @@ import gal.uvigo.mobileTaskManager.data_model.Task
 
 @Database (entities = [Task::class], version=1)
 abstract class TaskDB : RoomDatabase() {
-    abstract fun taskDAO : TaskDAO
+    abstract fun taskDAO() : TaskDAO
 
     companion object {
         @Volatile

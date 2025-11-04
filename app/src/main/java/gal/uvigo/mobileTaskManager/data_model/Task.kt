@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 @Entity(tableName = "tasks")
 class Task(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long,
     var title: String = "",
     dueDate: LocalDate? = null,
     category: Category? = null,
@@ -60,7 +60,7 @@ class Task(
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeInt(id)
+        dest.writeLong(id)
         dest.writeString(title)
         //Serializing the date is not efficient
         dest.writeInt(dueDate?.year ?: -1)
@@ -74,7 +74,7 @@ class Task(
 
     companion object CREATOR : Parcelable.Creator<Task> {
         override fun createFromParcel(parcel: Parcel): Task {
-            val id = parcel.readInt()
+            val id = parcel.readLong()
             val title = parcel.readString() ?: ""
             val year = parcel.readInt()
             val month = parcel.readInt()
