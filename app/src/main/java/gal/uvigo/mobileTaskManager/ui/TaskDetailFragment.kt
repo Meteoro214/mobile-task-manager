@@ -30,7 +30,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         //another way of binding
         binding = FragmentTaskDetailBinding.bind(view)
         navController = findNavController()
-        binding.taskData = viewModel.getTaskByID(args.taskID)
+        binding.taskData = viewModel.get(args.taskID)
         setHasOptionsMenu(true)
     }
 

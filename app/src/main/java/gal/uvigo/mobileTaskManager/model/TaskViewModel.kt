@@ -36,17 +36,15 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     ) {
         if (title.isBlank()) throw IllegalArgumentException()
         else {
-            val t = Task(0, title, dueDate, category, description, isDone)
-            add(t)
+            val t = Task(1, title, dueDate, category, description, isDone)
+            addTask(t)
         }
     }
 
-    private fun add(t: Task){
+    private fun addTask(t: Task) {
         viewModelScope.launch {
             repo.addTask(t)
         }
-        //TODO progbably needed
-        //        _tasks = repo.getAll()
     }
 
     /**
@@ -54,8 +52,8 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
      * Returns true if update is correct, false if no task with the task id exists.
      */
     fun updateTask(updated: Task): Boolean {
-        val index = this.getIndex(updated.id)
-        return if (index == -1 || updated.title.isBlank()
+        val current = this.get(updated.id)
+        return if (current == null || updated.title.isBlank()
             || updated.dueDate == null || updated.category == null
         ) false
         else {
@@ -68,14 +66,12 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             repo.updateTask(t)
         }
-        //TODO progbably needed
-        //        _tasks = repo.getAll()
     }
 
     /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun getTaskByID(id: Long): Task? {
+    fun get(id: Long): Task?{
         val index: Int = this.getIndex(id)
         return if (index == -1) null else getTaskByIndex(index)
     }
@@ -91,7 +87,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
      * Returns true if the task gets deleted, or false if it doesn't exist
      */
     fun deleteTask(id: Long): Boolean {
-        val t = this.getTaskByID(id)
+        val t = this.get(id)
         if (t != null) {
             this.delete(t)
         }
@@ -102,8 +98,6 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             repo.deleteTask(t)
         }
-        //TODO progbably needed
-        //        _tasks = repo.getAll()
     }
 
     /**

@@ -12,9 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.data_model.Category
-import gal.uvigo.mobileTaskManager.data_model.Task
-import gal.uvigo.mobileTaskManager.data_model.createDateFromMMDD
+import gal.uvigo.mobileTaskManager.data_model.*
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskFormBinding
 import gal.uvigo.mobileTaskManager.model.*
 import java.time.LocalDate
@@ -43,7 +41,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
     private fun loadTask() {
         if (isEditingForm()) { //Existing task
-            val t = viewModel.getTaskByID(args.taskID)?.copy()
+            val t = viewModel.get(args.taskID)?.copy()
             if (t == null) {
                 //Should never happen
                 Toast.makeText(
@@ -58,7 +56,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
             //ID will change when added, isDone/description/Category use the defaults
-            binding.taskData = Task(-1)
+            binding.taskData = Task(1)
             // Category & Date will be null to start to show empty form
         }
     }
