@@ -8,18 +8,13 @@ import gal.uvigo.mobileTaskManager.data_model.Category
 import gal.uvigo.mobileTaskManager.data_model.Task
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import kotlin.collections.orEmpty
-import kotlin.collections.toMutableList
 
 class TaskViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repo = TaskRepository(app)
 
-    //Saves the list from the repo to only update it if modified, getter may be called without updates
-    private var _tasks: LiveData<List<Task>> = repo.getAll()
-
     val tasks: LiveData<List<Task>>
-        get() = _tasks
+        get() = repo.tasks
 
 
     /**
@@ -72,16 +67,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun get(id: Long): Task?{
-        val index: Int = this.getIndex(id)
-        return if (index == -1) null else getTaskByIndex(index)
-    }
-
-    /**
-     * Retrieves the task on the indexed position
-     * @throws IndexOutOfBoundsException if index is not on bounds
-     */
-    fun getTaskByIndex(index: Int): Task = tasks.value.orEmpty()[index]
+    fun get(id: Long): Task?= repo.get(id)
 
     /**
      * Deletes the task with the given ID, if it exists.
@@ -100,12 +86,5 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
             repo.deleteTask(t)
         }
     }
-
-    /**
-     * Auxiliary private method to find the index of a Task with the given id.
-     * Returns the index, or -1 if the task does not exist
-     */
-    private fun getIndex(id: Long): Int =
-        tasks.value?.indexOfFirst { it.id == id } ?: -1
 
 }
