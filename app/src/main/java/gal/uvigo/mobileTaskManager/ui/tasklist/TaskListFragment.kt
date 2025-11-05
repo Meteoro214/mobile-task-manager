@@ -21,10 +21,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         binding.taskRV.layoutManager = LinearLayoutManager(context)
-        val adapter = TaskAdapter(viewModel.tasks.value.orEmpty())
-        binding.taskRV.adapter = adapter
         viewModel.tasks.observe(viewLifecycleOwner){
-            tasks -> adapter.submitTaskList(tasks)
+            tasks -> binding.taskRV.adapter = TaskAdapter(tasks)
         }
 
         setHasOptionsMenu(true)

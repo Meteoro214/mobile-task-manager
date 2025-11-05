@@ -46,5 +46,4 @@ class TaskAdapter(var tasks: List<Task>) :
 
     override fun getItemCount(): Int = tasks.size
 
-    fun submitTaskList(newTasks : List<Task>){tasks = newTasks}
 }

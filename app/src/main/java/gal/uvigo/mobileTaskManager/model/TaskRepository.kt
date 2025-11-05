@@ -2,6 +2,7 @@ package gal.uvigo.mobileTaskManager.model
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import gal.uvigo.mobileTaskManager.data_model.Task
 import gal.uvigo.mobileTaskManager.db.TaskDAO
 import gal.uvigo.mobileTaskManager.db.TaskDB
@@ -13,12 +14,11 @@ class TaskRepository(context: Context) {
     private val taskDAO: TaskDAO = TaskDB.getInstance(context).taskDAO()
     val dispatcher = Dispatchers.IO
 
-    //Saves the list from the repo to not call getAll() on get
-    private var _tasks: LiveData<List<Task>> = this.getAll()
+    //Saves the list from the repo to store info on memory for quicker access & allow get() easier access without DB access
+    private var _tasks: MutableMap<Long, Task> = mutableMapOf()
 
     //LiveData will keep the list updated after CUD operations
-    val tasks: LiveData<List<Task>>
-        get() = _tasks
+    val tasks: LiveData<List<Task>> = this.getAll()
 
     suspend fun addTask(task: Task): Long? =
         withContext(dispatcher) {
@@ -29,12 +29,14 @@ class TaskRepository(context: Context) {
     /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun get(id: Long): Task? {
-        val index: Int = this.getIndex(id)
-        return if (index == -1) null else getTaskByIndex(index)
-    }
+    fun get(id: Long): Task? = _tasks[id]
 
-    private fun getAll() = taskDAO.getAll()
+    //Livedata will ensure DAO only performs getAll once, but when DAO performs a CUD operation,
+    // LiveData updates without a query and .map updates memory-only map
+    private fun getAll() = taskDAO.getAll().map { tasks ->
+        for (t in tasks) _tasks[t.id] = t
+        tasks
+    }
 
     suspend fun updateTask(updated: Task): Boolean =
         withContext(dispatcher) {
@@ -47,18 +49,4 @@ class TaskRepository(context: Context) {
             val res = taskDAO.delete(task)
             res == 1
         }
-
-    /**
-     * Retrieves the task on the indexed position
-     * @throws IndexOutOfBoundsException if index is not on bounds
-     */
-    private fun getTaskByIndex(index: Int): Task = tasks.value.orEmpty()[index]
-
-    /**
-     * Auxiliary private method to find the index of a Task with the given id.
-     * Returns the index, or -1 if the task does not exist
-     */
-    private fun getIndex(id: Long): Int =
-        tasks.value?.indexOfFirst { it.id == id } ?: -1
-
 }
