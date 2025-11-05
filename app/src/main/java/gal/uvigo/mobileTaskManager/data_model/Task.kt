@@ -34,7 +34,7 @@ class Task(
     //Title may be empty,date & category may be null
     // but will not be accepted on adding/editing
     init {
-        require(id > 0) { "ID must be above 0" }
+        require(id >= 0) { "ID mustn`t be negative" }
         require(dueDate?.isFutureDate() ?: true) { "due date must not be in the past" }
     }
 

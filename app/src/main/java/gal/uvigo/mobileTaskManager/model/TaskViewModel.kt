@@ -36,7 +36,8 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     ) {
         if (title.isBlank()) throw IllegalArgumentException()
         else {
-            val t = Task(1, title, dueDate, category, description, isDone)
+            // ID MUST BE 0 OR AUTOINCREMENTAL PK WILL TAKE THE PLACEHOLDER VALUE!!!
+            val t = Task(0, title, dueDate, category, description, isDone)
             addTask(t)
         }
     }

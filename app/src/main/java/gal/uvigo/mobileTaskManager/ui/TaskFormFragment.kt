@@ -56,7 +56,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
             //ID will change when added, isDone/description/Category use the defaults
-            binding.taskData = Task(1)
+            binding.taskData = Task(0)
             // Category & Date will be null to start to show empty form
         }
     }
