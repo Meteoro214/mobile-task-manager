@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
-import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.data_model.Task
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 import kotlin.getValue
 
@@ -30,7 +30,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         //another way of binding
         binding = FragmentTaskDetailBinding.bind(view)
         navController = findNavController()
-        binding.taskData = viewModel.getTaskByID(args.taskID)
+        binding.taskData = viewModel.get(args.taskID)
         setHasOptionsMenu(true)
     }
 

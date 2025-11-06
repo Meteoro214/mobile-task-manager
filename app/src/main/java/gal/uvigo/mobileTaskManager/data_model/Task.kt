@@ -1,11 +1,15 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager.data_model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.LocalDate
 
+@Entity(tableName = "tasks")
 class Task(
-    val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long,
     var title: String = "",
     dueDate: LocalDate? = null,
     category: Category? = null,
@@ -13,7 +17,7 @@ class Task(
     var isDone: Boolean = false
 ) : Parcelable {
 
-    var dueDate: LocalDate? = dueDate
+    @ColumnInfo(name = "due_date") var dueDate: LocalDate? = dueDate
         set(value) {
             require(
                 value?.isFutureDate() ?: false
@@ -30,7 +34,7 @@ class Task(
     //Title may be empty,date & category may be null
     // but will not be accepted on adding/editing
     init {
-        require(id > 0) { "ID must be above 0" }
+        require(id >= 0) { "ID mustn`t be negative" }
         require(dueDate?.isFutureDate() ?: true) { "due date must not be in the past" }
     }
 
@@ -56,7 +60,7 @@ class Task(
     }
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeInt(id)
+        dest.writeLong(id)
         dest.writeString(title)
         //Serializing the date is not efficient
         dest.writeInt(dueDate?.year ?: -1)
@@ -70,7 +74,7 @@ class Task(
 
     companion object CREATOR : Parcelable.Creator<Task> {
         override fun createFromParcel(parcel: Parcel): Task {
-            val id = parcel.readInt()
+            val id = parcel.readLong()
             val title = parcel.readString() ?: ""
             val year = parcel.readInt()
             val month = parcel.readInt()

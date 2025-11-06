@@ -7,11 +7,11 @@
 
     <data>
 
-        <import type="gal.uvigo.mobileTaskManager.model.Category" />
+        <import type="gal.uvigo.mobileTaskManager.data_model.Category" />
 
         <variable
             name="taskData"
-            type="gal.uvigo.mobileTaskManager.model.Task" />
+            type="gal.uvigo.mobileTaskManager.data_model.Task" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="@{Integer.toString(taskData.id)}"
+            android:text="@{Long.toString(taskData.id)}"
             app:layout_constraintBottom_toBottomOf="@+id/idTV"
             app:layout_constraintStart_toEndOf="@id/idTV"
             app:layout_constraintTop_toTopOf="@id/idTV" />

@@ -27,8 +27,8 @@
             app:destination="@id/taskFormFragment" />
         <argument
             android:name="taskID"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            android:defaultValue="-1L"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/taskFormFragment"
@@ -37,7 +37,7 @@
         tools:layout="@layout/fragment_task_form">
         <argument
             android:name="taskID"
-            android:defaultValue="-1"
-            app:argType="integer" />
+            android:defaultValue="-1L"
+            app:argType="long" />
     </fragment>
 </navigation>
