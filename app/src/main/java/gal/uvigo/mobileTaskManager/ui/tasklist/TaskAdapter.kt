@@ -16,17 +16,17 @@ class TaskAdapter(var tasks: List<Task>) :
         fun bind(task: Task) {
             this.taskDataBinding.taskData = task
             this.taskDataBinding.executePendingBindings()
-            this.taskDataBinding.root.setOnClickListener {
+            this.taskDataBinding.root.setOnClickListener { //el listener pasarlo como argumento del adapter
                 this.taskDataBinding.root.findNavController()
                     .navigate(TaskListFragmentDirections.checkTaskDetails(task.id))
             }
         }
     }
 
-    override fun onCreateViewHolder(
+    override fun onCreateViewHolder( //cambiar tipo de retorno
         parent: ViewGroup,
         viewType: Int
-    ): TaskHolder {
+    ): TaskHolder { //variar el metodo segun el viewType
         //Creates a data bind
         val bind = ItemTaskBinding.inflate(
             LayoutInflater.from(parent.context),
