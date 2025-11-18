@@ -2,49 +2,68 @@ package gal.uvigo.mobileTaskManager.ui.tasklist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.databinding.ItemHeaderBinding
+import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 
 class TaskAdapter(onTaskItemClick: (Task) -> Unit) :
     ListAdapter<TaskListItem, RecyclerView.ViewHolder>(TaskListItemDiff) {
     private val _onTaskItemClick: (Task) -> Unit = onTaskItemClick
 
+    class HeaderVH(val headerBinding: ItemHeaderBinding) :
+        RecyclerView.ViewHolder(headerBinding.root) {
 
-    class TaskHolder(val taskDataBinding: ItemTaskBinding) :
+        fun bind(header: TaskListItem.Header) {
+            this.headerBinding.category = header.category
+        }
+
+    }
+
+    inner class TaskItemVH(val taskDataBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
 
-        fun bind(task: Task) {
+        fun bind(taskItem: TaskListItem.TaskItem) {
+            val task = taskItem.task
             this.taskDataBinding.taskData = task
+            this.taskDataBinding.root.setOnClickListener { _onTaskItemClick(task) }
             this.taskDataBinding.executePendingBindings()
-            this.taskDataBinding.root.setOnClickListener { //el listener pasarlo como argumento del adapter
-                this.taskDataBinding.root.findNavController()
-                    .navigate(TaskListFragmentDirections.checkTaskDetails(task.id))
+        }
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            TaskItemTypes.HEADER.ordinal -> {
+                val bind = ItemHeaderBinding.inflate(inflater, parent, false)
+                HeaderVH(bind)
+            }
+
+            TaskItemTypes.TASK_ITEM.ordinal -> {
+                val bind = ItemTaskBinding.inflate(inflater, parent, false)
+                TaskItemVH(bind)
+            }
+
+            else -> { //should never happen
+                val bind = ItemTaskBinding.inflate(inflater, parent, false)
+                TaskItemVH(bind)
             }
         }
     }
 
-    override fun onCreateViewHolder( //cambiar tipo de retorno
-        parent: ViewGroup,
-        viewType: Int
-    ): TaskHolder { //variar el metodo segun el viewType
-        //Creates a data bind
-        val bind = ItemTaskBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent, false
-        )
-        return TaskHolder(bind)
-    }
-
     override fun onBindViewHolder(
-        holder: TaskHolder,
+        holder: RecyclerView.ViewHolder,
         position: Int
     ) {
-        //Should never be out of bounds
-        val t: Task = tasks[position]
-        holder.bind(t)
+        when (holder) {
+            is HeaderVH -> holder.bind(getItem(position) as TaskListItem.Header)
+            is TaskItemVH -> holder.bind(getItem(position) as TaskListItem.TaskItem)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
