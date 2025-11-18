@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
@@ -22,10 +23,13 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         binding.taskRV.layoutManager = LinearLayoutManager(context)
+        binding.taskRV.adapter = TaskAdapter { task ->
+            findNavController()
+                .navigate(TaskListFragmentDirections.checkTaskDetails(task.id))
+        }
 
-        //Modify
-        viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
-            binding.taskRV.adapter = TaskAdapter(tasks)
+        viewModel.taskListItems.observe(viewLifecycleOwner) { taskList ->
+            (binding.taskRV.adapter as TaskAdapter).submitList(taskList)
         }
 
         setHasOptionsMenu(true)
