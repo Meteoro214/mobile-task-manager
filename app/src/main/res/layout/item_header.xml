@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- PLACEHOLDER -->
+    <data>
+
+        <variable
+            name="taskData"
+            type="gal.uvigo.mobileTaskManager.data_model.Task" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            tools:context=".MainActivity">
+
+            <TextView
+                android:id="@+id/idTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="@{Long.toString(taskData.id)}"
+                app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
+                app:layout_constraintEnd_toStartOf="@id/isDoneMark"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/isDoneMark" />
+
+            <TextView
+                android:id="@+id/isDoneMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:text="@{taskData.done ? @string/mark_done_DONE_img: @string/mark_done_UNDONE_img}"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="@id/idTV"
+                app:layout_constraintStart_toEndOf="@id/idTV"
+                app:layout_constraintTop_toTopOf="@id/idTV" />
+
+
+            <TextView
+                android:id="@+id/titleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:text="@{taskData.title}"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/categoryTV"
+                app:layout_constraintStart_toEndOf="@+id/isDoneMark"
+                app:layout_constraintTop_toTopOf="@id/isDoneMark" />
+
+            <TextView
+                android:id="@+id/categoryTV"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:gravity="bottom"
+                android:text="@{taskData.category.toString()}"
+                android:textColor="@color/gray"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
+                app:layout_constraintStart_toEndOf="@+id/isDoneMark"
+                app:layout_constraintTop_toBottomOf="@id/titleTV" />
+
+
+            <!-- La funcion de extension hay que importarla, actua como un metodo static de Java con el objeto sobre el que se usa como parametro-->
+
+            <TextView
+                android:id="@+id/dueDateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="30dp"
+                android:text="@{taskData.stringDate}"
+                app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/isDoneMark" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

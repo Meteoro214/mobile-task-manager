@@ -47,8 +47,18 @@ class TaskAdapter(onTaskItemClick: (Task) -> Unit) :
         holder.bind(t)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is TaskListItem.Header -> TaskItemTypes.HEADER.ordinal
+            is TaskListItem.TaskItem -> TaskItemTypes.TASK_ITEM.ordinal
+        }
+    }
 
     companion object {
+        private enum class TaskItemTypes {
+            HEADER, TASK_ITEM
+        }
+
         private val TaskListItemDiff = object : DiffUtil.ItemCallback<TaskListItem>() {
             override fun areItemsTheSame(
                 oldItem: TaskListItem,
@@ -58,7 +68,7 @@ class TaskAdapter(onTaskItemClick: (Task) -> Unit) :
                 oldItem is TaskListItem.TaskItem && newItem is TaskListItem.TaskItem -> oldItem.task.id == newItem.task.id
                 else -> false
             }
-            
+
             override fun areContentsTheSame(
                 oldItem: TaskListItem,
                 newItem: TaskListItem
