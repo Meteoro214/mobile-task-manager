@@ -17,7 +17,8 @@ class Task(
     var isDone: Boolean = false
 ) : Parcelable {
 
-    @ColumnInfo(name = "due_date") var dueDate: LocalDate? = dueDate
+    @ColumnInfo(name = "due_date")
+    var dueDate: LocalDate? = dueDate
         set(value) {
             require(
                 value?.isFutureDate() ?: false
@@ -50,7 +51,6 @@ class Task(
         )
 
     fun getStringDate(): String = dueDate?.formattedDueDate() ?: ""
-
 
 
     /*For Parcelable, could use @parcelize too to avoid code*/

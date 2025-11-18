@@ -91,3 +91,8 @@ el header hacerlo que sea una linea pequeña con el no,mbre de la category con e
 
 
 en el item task que la categoria use los resources tambien, tal vez pasarle los textos como un atributo y la category como otro
+
+
+
+Revisar todos los xml
+Revisar el xml para las category, hacer bindingadapters para fecha y para category

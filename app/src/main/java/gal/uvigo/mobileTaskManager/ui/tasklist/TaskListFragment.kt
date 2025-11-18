@@ -3,8 +3,8 @@ package gal.uvigo.mobileTaskManager.ui.tasklist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
@@ -22,8 +22,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         binding.taskRV.layoutManager = LinearLayoutManager(context)
-        viewModel.tasks.observe(viewLifecycleOwner){
-            tasks -> binding.taskRV.adapter = TaskAdapter(tasks)
+
+        //Modify
+        viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
+            binding.taskRV.adapter = TaskAdapter(tasks)
         }
 
         setHasOptionsMenu(true)

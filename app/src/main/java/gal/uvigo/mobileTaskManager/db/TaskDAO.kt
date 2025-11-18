@@ -14,16 +14,16 @@ interface TaskDAO {
 
     //Returns rowID (equivalent to taskID) will always give the last task ID+1
     //Should return -1 on error
-    @Insert(onConflict =  OnConflictStrategy.IGNORE)
-    suspend fun insert(task : Task) : Long
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(task: Task): Long
 
     //Returns number of updated rows
     @Update
-    suspend fun update(updated : Task) : Int
+    suspend fun update(updated: Task): Int
 
     //Returns number of deleted rows
     @Delete
-    suspend fun delete(task : Task) : Int
+    suspend fun delete(task: Task): Int
 
     //Returns empty list if no data
     @Query("SELECT * FROM tasks ORDER BY id ASC")
