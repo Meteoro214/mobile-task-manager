@@ -50,8 +50,6 @@ class Task(
             this.isDone
         )
 
-    fun getStringDate(): String = dueDate?.formattedDueDate() ?: ""
-
     override fun equals(other: Any?): Boolean =
         if (other == null || other !is Task) false
         else this.id == other.id && this.title == other.title
