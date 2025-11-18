@@ -3,12 +3,15 @@ package gal.uvigo.mobileTaskManager.ui.tasklist.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import gal.uvigo.mobileTaskManager.data_model.Task
-import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 
-class TaskAdapter(var tasks: List<Task>) :
-    RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
+class TaskAdapter(onTaskItemClick: (Task) -> Unit) :
+    ListAdapter<TaskListItem, RecyclerView.ViewHolder>(TaskListItemDiff) {
+    private val _onTaskItemClick: (Task) -> Unit = onTaskItemClick
+
 
     class TaskHolder(val taskDataBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
@@ -44,6 +47,22 @@ class TaskAdapter(var tasks: List<Task>) :
         holder.bind(t)
     }
 
-    override fun getItemCount(): Int = tasks.size
 
+    companion object {
+        private val TaskListItemDiff = object : DiffUtil.ItemCallback<TaskListItem>() {
+            override fun areItemsTheSame(
+                oldItem: TaskListItem,
+                newItem: TaskListItem
+            ): Boolean = when {
+                oldItem is TaskListItem.Header && newItem is TaskListItem.Header -> oldItem.category == newItem.category
+                oldItem is TaskListItem.TaskItem && newItem is TaskListItem.TaskItem -> oldItem.task.id == newItem.task.id
+                else -> false
+            }
+            
+            override fun areContentsTheSame(
+                oldItem: TaskListItem,
+                newItem: TaskListItem
+            ): Boolean = oldItem == newItem
+        }
+    }
 }

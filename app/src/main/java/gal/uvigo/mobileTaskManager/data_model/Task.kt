@@ -52,6 +52,12 @@ class Task(
 
     fun getStringDate(): String = dueDate?.formattedDueDate() ?: ""
 
+    override fun equals(other: Any?): Boolean =
+        if (other == null || other !is Task) false
+        else this.id == other.id && this.title == other.title
+                && this.dueDate == other.dueDate && this.category == other.category
+                && this.description == other.description && this.isDone == other.isDone
+
 
     /*For Parcelable, could use @parcelize too to avoid code*/
 
