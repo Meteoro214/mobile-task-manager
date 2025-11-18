@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
+import gal.uvigo.mobileTaskManager.ui.tasklist.adapter.TaskAdapter
 
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 

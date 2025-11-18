@@ -1,11 +1,11 @@
-package gal.uvigo.mobileTaskManager.ui.tasklist
+package gal.uvigo.mobileTaskManager.ui.tasklist.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 
 class TaskAdapter(var tasks: List<Task>) :
     RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
