@@ -63,5 +63,9 @@
     <string name="check_delete_OK_msg">Deleted a Task</string>
     <string name="check_delete_error_msg">Critical Error : Could Not Delete</string>
 
+    <!-- Task List Error strings-->
+    <string name="swipe_mark_OK_msg">Marked a Task as Done</string>
+    <string name="swipe_mark_wasDone_msg">Task Already Done</string>
+    <string name="swipe_mark_error_msg">Critical Error : Could Not Mark Done</string>
 
 </resources>

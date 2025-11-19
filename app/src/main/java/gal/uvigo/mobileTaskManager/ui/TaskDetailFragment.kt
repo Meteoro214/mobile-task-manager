@@ -61,7 +61,6 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
                     getString(R.string.check_delete_error_msg),
                     Toast.LENGTH_SHORT
                 ).show()
-
             }
 
             navController.navigateUp()

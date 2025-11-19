@@ -21,6 +21,10 @@ interface TaskDAO {
     @Update
     suspend fun update(updated: Task): Int
 
+    //Returns number of updated rows
+    @Query("UPDATE tasks SET isDone = true WHERE id = :id")
+    suspend fun markDone(id : Long) : Int
+
     //Returns number of deleted rows
     @Delete
     suspend fun delete(task: Task): Int
