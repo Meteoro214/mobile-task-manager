@@ -21,7 +21,7 @@ class Task(
     var dueDate: LocalDate? = dueDate
         set(value) {
             require(
-                value?.isFutureDate() ?: false
+                value?.isBefore(LocalDate.now()) == false
             ) { "due date must exists and not be in the past" }
             field = value
         }
@@ -36,7 +36,7 @@ class Task(
     // but will not be accepted on adding/editing
     init {
         require(id >= 0) { "ID mustn`t be negative" }
-        require(dueDate?.isFutureDate() ?: true) { "due date must not be in the past" }
+        require(dueDate?.isBefore(LocalDate.now()) != true) { "due date must not be in the past" }
     }
 
 
