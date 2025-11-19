@@ -12,15 +12,15 @@ import java.time.LocalDate
 
 @BindingAdapter("category")
 fun bindCategoryText(tv: TextView, category: Category?) {
-    tv.text =  when(category){
+    tv.text = when (category) {
         Category.OTHER -> tv.context.getString(R.string.other_cat)
         Category.WORK -> tv.context.getString(R.string.work_cat)
         Category.PERSONAL -> tv.context.getString(R.string.personal_cat)
         Category.URGENT -> tv.context.getString(R.string.urgent_cat)
         else -> ""
     }
-    if(tv !is AutoCompleteTextView){
-        val color =  when(category){
+    if (tv !is AutoCompleteTextView) {
+        val color = when (category) {
             Category.OTHER -> tv.context.getColor(R.color.grassgreen)
             Category.WORK -> tv.context.getColor(R.color.skyblue)
             Category.PERSONAL -> tv.context.getColor(R.color.purple)
@@ -33,7 +33,7 @@ fun bindCategoryText(tv: TextView, category: Category?) {
 
 @BindingAdapter("cat_background_color")
 fun bindCategoryColorBackground(v: View, category: Category?) {
-    val color =  when(category){
+    val color = when (category) {
         Category.OTHER -> v.context.getColor(R.color.grassgreen)
         Category.WORK -> v.context.getColor(R.color.skyblue)
         Category.PERSONAL -> v.context.getColor(R.color.purple)
@@ -50,15 +50,15 @@ fun bindDueDateText(tv: TextView, dueDate: LocalDate?) {
 
 @BindingAdapter("expected_date")
 fun bindDueDateText(tv: TextView, task: Task) {
-    if(!task.isDone){
+    if (!task.isDone) {
         val currentDate = LocalDate.now()
-        val color = if(task.dueDate?.isBefore(currentDate) == true) {
+        val color = if (task.dueDate?.isBefore(currentDate) == true) {
             //if task is undone and already due, red
             tv.context.getColor(R.color.red)
-        } else if(task.dueDate?.isEqual(currentDate) == true){
+        } else if (task.dueDate?.isEqual(currentDate) == true) {
             //if task is undone and due TODAY, Orange
             tv.context.getColor(R.color.orange)
-        } else if(task.dueDate?.isAfter(currentDate.plusWeeks(1)) == false){
+        } else if (task.dueDate?.isAfter(currentDate.plusWeeks(1)) == false) {
             //if task is undone and due this week, yellow
             tv.context.getColor(R.color.yellow)
         } else {
