@@ -15,6 +15,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repo = TaskRepository(app)
 
+
     val taskListItems: LiveData<List<TaskListItem>> =
         repo.tasks.map { tasks ->
             if (tasks.isEmpty()) {
@@ -122,10 +123,20 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         return t != null
     }
 
-    private fun delete(t: Task) {
+    private fun delete(t: Task){
         viewModelScope.launch {
             repo.deleteTask(t)
         }
+    }
+
+
+    fun move(from :Int,to : Int) : Boolean{
+        //check both are same category and not header
+        val tempList = taskListItems.value.orEmpty().toMutableList()
+
+
+
+        return true
     }
 
 }
