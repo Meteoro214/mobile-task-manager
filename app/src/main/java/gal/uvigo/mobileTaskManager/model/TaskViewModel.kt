@@ -69,9 +69,14 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     fun updateTask(updated: Task): Boolean {
         val current = this.get(updated.id)
         return if (current == null || updated.title.isBlank()
-            || updated.dueDate == null || updated.category == null
+            || updated.dueDate?.isBefore(LocalDate.now()) ?: true || updated.category == null
         ) false
         else {
+            current.isDone = updated.isDone
+            current.category = updated.category
+            current.title = updated.title
+            current.description = updated.description
+            current.dueDate = updated.dueDate
             update(updated)
             true
         }
