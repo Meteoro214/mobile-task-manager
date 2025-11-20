@@ -129,14 +129,4 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-
-    fun move(from :Int,to : Int) : Boolean{
-        //check both are same category and not header
-        val tempList = taskListItems.value.orEmpty().toMutableList()
-
-
-
-        return true
-    }
-
 }

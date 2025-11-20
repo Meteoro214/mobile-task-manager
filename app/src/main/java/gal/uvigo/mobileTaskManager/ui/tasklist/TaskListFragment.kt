@@ -194,9 +194,23 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
                 val from = viewHolder.bindingAdapterPosition
                 val to = target.bindingAdapterPosition
+                val adapter = (recyclerView.adapter as TaskAdapter)
+                val list = adapter.currentList.toMutableList()
+                val fromItem = list.getOrNull(from)
+                val toItem = list.getOrNull(to)
 
-                val moved = viewModel.move(from,to)
-                return moved
+                return if (fromItem is TaskListItem.TaskItem && toItem is TaskListItem.TaskItem
+                    && fromItem.task.category == toItem.task.category
+                ) {
+                    list.removeAt(to)
+                    list.add(to, fromItem)
+                    list.removeAt(from)
+                    list.add(from, toItem)
+                    adapter.submitList(list)
+                    true
+                } else {
+                    false
+                }
             }
 
             override fun clearView(
@@ -204,7 +218,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 viewHolder: RecyclerView.ViewHolder
             ) {
                 super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.elevation = 0F
+                viewHolder.itemView.elevation = 5.5F
                 viewHolder.itemView.alpha = 1F
             }
 
@@ -212,8 +226,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 viewHolder: RecyclerView.ViewHolder?,
                 actionState: Int
             ) {
-                viewHolder?.itemView?.elevation = 16F
-                viewHolder?.itemView?.alpha = 0.9F
+                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
+                    viewHolder.itemView.elevation = 16F
+                    viewHolder.itemView.alpha = 0.8F
+                }
                 super.onSelectedChanged(viewHolder, actionState)
             }
 
@@ -236,58 +252,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 return if (item is TaskListItem.TaskItem) makeMovementFlags(drags, 0) else 0
             }
 
-            override fun onChildDraw( //Change
-                c: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                dX: Float,
-                dY: Float,
-                actionState: Int,
-                isCurrentlyActive: Boolean
-            ) {
-                //gets the position of the viewholder on the adapter
-                val pos = viewHolder.bindingAdapterPosition
-                //retrieves the item
-                val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
-                val itemView = viewHolder.itemView
-                if (item is TaskListItem.TaskItem && actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    if (dX > 0) { //Swipping right
-                        c.drawColor(itemView.context.getColor(R.color.grassgreen))
-                        val d = itemView.context.getDrawable(R.drawable.ic_checkmark)
-                        if (d != null) {
-                            val iconMargin = (itemView.height - d.intrinsicHeight) / 2
-                            val iconTop = itemView.top + iconMargin
-                            val iconBottom = iconTop + d.intrinsicHeight
-                            val iconLeft = itemView.left + iconMargin
-                            val iconRight = iconLeft + d.intrinsicWidth
-                            d.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                            d.draw(c)
-                        }
-                    } else if (dX < 0) { //Swipping left
-                        c.drawColor(itemView.context.getColor(R.color.red))
-                        val d = itemView.context.getDrawable(R.drawable.ic_delete)
-
-                        if (d != null) {
-                            val iconMargin = (itemView.height - d.intrinsicHeight) / 2
-                            val iconTop = itemView.top + iconMargin
-                            val iconBottom = iconTop + d.intrinsicHeight
-                            val iconRight = itemView.right - iconMargin
-                            val iconLeft = iconRight - d.intrinsicWidth
-                            d.setBounds(iconLeft, iconTop, iconRight, iconBottom)
-                            d.draw(c)
-                        }
-                    }
-                }
-                super.onChildDraw(
-                    c,
-                    recyclerView,
-                    viewHolder,
-                    dX,
-                    dY,
-                    actionState,
-                    isCurrentlyActive
-                )
-            }
         })
 
         dragHelper.attachToRecyclerView(binding.taskRV)
