@@ -34,9 +34,9 @@ class Task(
 
     //Title may be empty,date & category may be null
     // but will not be accepted on adding/editing
+    //will accept past dates, only in constructor
     init {
         require(id >= 0) { "ID mustn`t be negative" }
-        require(dueDate?.isBefore(LocalDate.now()) != true) { "due date must not be in the past" }
     }
 
 
