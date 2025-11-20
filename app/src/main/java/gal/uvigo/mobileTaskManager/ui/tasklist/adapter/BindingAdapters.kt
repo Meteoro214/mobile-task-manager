@@ -50,9 +50,9 @@ fun bindDueDateText(tv: TextView, dueDate: LocalDate?) {
 
 @BindingAdapter("expected_date")
 fun bindDueDateText(tv: TextView, task: Task) {
-    if (!task.isDone) {
+    val color = if (!task.isDone) {
         val currentDate = LocalDate.now()
-        val color = if (task.dueDate?.isBefore(currentDate) == true) {
+        if (task.dueDate?.isBefore(currentDate) == true) {
             //if task is undone and already due, red
             tv.context.getColor(R.color.red)
         } else if (task.dueDate?.isEqual(currentDate) == true) {
@@ -63,9 +63,13 @@ fun bindDueDateText(tv: TextView, task: Task) {
             tv.context.getColor(R.color.yellow)
         } else {
             //else normal color
-            tv.currentTextColor
+            tv.context.getColor(R.color.black)
         }
-        tv.setTextColor(color)
-
+    } else {
+        //there is a strange bug ONLY in a testing version that does not force future dates
+        // the bug causes dueDates on TaskList to be colored when task is done in really strange ways when view is modified from TaskList (scrolling & markDone)
+        //the bug causes non-deterministic date coloring, ONLY on tasks marked as done, no matter the date, markDone can cause the color to shift between colors
+        tv.context.getColor(R.color.black)
     }
+    tv.setTextColor(color)
 }
