@@ -49,7 +49,7 @@ fun bindDueDateText(tv: TextView, dueDate: LocalDate?) {
 }
 
 @BindingAdapter("expected_date")
-fun bindDueDateText(tv: TextView, task: Task) {
+fun bindDueDateColor(tv: TextView, task: Task) {
     val color = if (!task.isDone) {
         val currentDate = LocalDate.now()
         if (task.dueDate?.isBefore(currentDate) == true) {
