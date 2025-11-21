@@ -11,7 +11,6 @@ class LocalDateConverter {
     fun stringToDate(string: String): LocalDate {
         val date = LocalDate.of(1, 1, 1)
         //should never give a null
-
         return date.createDateFromMMDD(string, false) ?: date
 
     }
