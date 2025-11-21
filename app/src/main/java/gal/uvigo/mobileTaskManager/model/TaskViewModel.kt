@@ -92,12 +92,14 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
      * Marks the task with given id as done. Returns false if it was already done,
      * null if it does not exist or true if it's marked as done successfully
      */
-    fun markTaskDone(id : Long) : Boolean?{
+    fun markTaskDone(id: Long): Boolean? {
         val current = this.get(id)
-        return if(current == null){ null} else{
-            if(current.isDone){
+        return if (current == null) {
+            null
+        } else {
+            if (current.isDone) {
                 false
-            } else{
+            } else {
                 current.isDone = true
                 this.markDone(id)
                 true
@@ -128,7 +130,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         return t != null
     }
 
-    private fun delete(t: Task){
+    private fun delete(t: Task) {
         viewModelScope.launch {
             repo.deleteTask(t)
         }

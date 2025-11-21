@@ -44,7 +44,7 @@ class TaskRepository(context: Context) {
             res == 1
         }
 
-    suspend fun markTaskDone(id: Long) : Boolean =
+    suspend fun markTaskDone(id: Long): Boolean =
         withContext(dispatcher) {
             val res = taskDAO.markDone(id)
             res == 1

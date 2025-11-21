@@ -8,10 +8,9 @@ fun LocalDate.formattedDueDate(): String =
         .padStart(2, '0')
 
 fun LocalDate.formattedDueDateWithYear(): String =
-            this.monthValue.toString().padStart(2, '0') + " " +
+    this.monthValue.toString().padStart(2, '0') + " " +
             this.dayOfMonth.toString().padStart(2, '0') + " " +
             this.year.toString().padStart(4, '0')
-
 
 
 /**
@@ -29,7 +28,7 @@ fun LocalDate.createDateFromMMDD(mmdd: String, autoYear: Boolean = true): LocalD
         val parsed = mmdd.split(" ")
         val day = Integer.parseInt(parsed[1])
         val month = Integer.parseInt(parsed[0])
-        val currentYear = if(autoYear)LocalDate.now().year else Integer.parseInt(parsed[2])
+        val currentYear = if (autoYear) LocalDate.now().year else Integer.parseInt(parsed[2])
         try {
             val toRet = if (day == 29 && month == 2) { //need to be a leap year
                 val nextLeapYear =
