@@ -6,9 +6,6 @@
     tools:context=".ui.TaskFormFragment">
 
     <data>
-
-        <import type="gal.uvigo.mobileTaskManager.data_model.Category" />
-
         <variable
             name="taskData"
             type="gal.uvigo.mobileTaskManager.data_model.Task" />
@@ -77,10 +74,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:completionThreshold="0"
             android:hint="@string/form_category_hint_msg"
             android:inputType="none"
-            android:text='@{ (taskData.category==Category.OTHER) ? @string/other_cat : ((taskData.category==Category.WORK) ? @string/work_cat : ((taskData.category==Category.PERSONAL) ? @string/personal_cat : ((taskData.category==Category.URGENT) ? @string/urgent_cat : "")))}'
-            android:completionThreshold="0"
+            app:category="@{taskData.category}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/categoryTV" />
@@ -102,7 +99,7 @@
             android:layout_marginTop="3dp"
             android:hint="@string/form_dueDate_hint_msg"
             android:inputType="text"
-            android:text="@{taskData.stringDate}"
+            app:dueDate="@{taskData.dueDate}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dueDateTV" />

@@ -23,7 +23,7 @@
 
             <TextView
                 android:id="@+id/idTV"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
@@ -64,22 +64,20 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="10dp"
                 android:gravity="bottom"
-                android:text="@{taskData.category.toString()}"
+                app:category="@{taskData.category}"
                 android:textColor="@color/gray"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintTop_toBottomOf="@id/titleTV" />
 
-
-            <!-- La funcion de extension hay que importarla, actua como un metodo static de Java con el objeto sobre el que se usa como parametro-->
-
             <TextView
                 android:id="@+id/dueDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginEnd="30dp"
-                android:text="@{taskData.stringDate}"
+                app:dueDate="@{taskData.dueDate}"
+                app:expected_date="@{taskData}"
                 app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />

@@ -17,10 +17,11 @@ class Task(
     var isDone: Boolean = false
 ) : Parcelable {
 
-    @ColumnInfo(name = "due_date") var dueDate: LocalDate? = dueDate
+    @ColumnInfo(name = "due_date")
+    var dueDate: LocalDate? = dueDate
         set(value) {
             require(
-                value?.isFutureDate() ?: false
+                value?.isBefore(LocalDate.now()) == false
             ) { "due date must exists and not be in the past" }
             field = value
         }
@@ -33,9 +34,9 @@ class Task(
 
     //Title may be empty,date & category may be null
     // but will not be accepted on adding/editing
+    //will accept past dates, only in constructor
     init {
         require(id >= 0) { "ID mustn`t be negative" }
-        require(dueDate?.isFutureDate() ?: true) { "due date must not be in the past" }
     }
 
 
@@ -49,8 +50,11 @@ class Task(
             this.isDone
         )
 
-    fun getStringDate(): String = dueDate?.formattedDueDate() ?: ""
-
+    override fun equals(other: Any?): Boolean =
+        if (other == null || other !is Task) false
+        else this.id == other.id && this.title == other.title
+                && this.dueDate == other.dueDate && this.category == other.category
+                && this.description == other.description && this.isDone == other.isDone
 
 
     /*For Parcelable, could use @parcelize too to avoid code*/

@@ -6,9 +6,6 @@
     tools:context=".ui.TaskDetailFragment">
 
     <data>
-
-        <import type="gal.uvigo.mobileTaskManager.data_model.Category" />
-
         <variable
             name="taskData"
             type="gal.uvigo.mobileTaskManager.data_model.Task" />
@@ -90,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text='@{ (taskData.category==Category.OTHER) ? @string/other_cat : ((taskData.category==Category.WORK) ? @string/work_cat : ((taskData.category==Category.PERSONAL) ? @string/personal_cat : ((taskData.category==Category.URGENT) ? @string/urgent_cat : "")))}'
+            app:category="@{taskData.category}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/categoryTV" />
@@ -110,7 +107,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:text="@{taskData.stringDate}"
+            app:dueDate="@{taskData.dueDate}"
+            app:expected_date="@{taskData}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dueDateTV" />

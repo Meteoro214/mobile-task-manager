@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
 import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
-import kotlin.getValue
 
 class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
@@ -50,16 +49,18 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
         R.id.deleteTask -> {
             val deleted = viewModel.deleteTask(binding.taskData?.id ?: -1)
 
-            if(deleted){
-                Toast.makeText(requireContext(),
+            if (deleted) {
+                Toast.makeText(
+                    requireContext(),
                     getString(R.string.check_delete_OK_msg),
-                    Toast.LENGTH_SHORT).show()
-            }
-            else {
-                Toast.makeText(requireContext(),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
                     getString(R.string.check_delete_error_msg),
-                    Toast.LENGTH_SHORT).show()
-
+                    Toast.LENGTH_SHORT
+                ).show()
             }
 
             navController.navigateUp()

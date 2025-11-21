@@ -3,9 +3,11 @@ package gal.uvigo.mobileTaskManager.model
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import gal.uvigo.mobileTaskManager.data_model.Category
 import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.ui.tasklist.adapter.TaskListItem
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -13,8 +15,25 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
 
     private val repo = TaskRepository(app)
 
-    val tasks: LiveData<List<Task>>
-        get() = repo.tasks
+
+    val taskListItems: LiveData<List<TaskListItem>> =
+        repo.tasks.map { tasks ->
+            if (tasks.isEmpty()) {
+                emptyList()
+            } else {
+                // category will never be null
+                tasks
+                    .sortedWith(
+                        compareBy<Task> { it.category?.name }
+                            .thenBy { it.dueDate }
+                    )
+                    .groupBy { it.category }
+                    .flatMap { (category, categoryTasks) ->
+                        listOf(TaskListItem.Header(category ?: Category.OTHER)) +
+                                categoryTasks.map { TaskListItem.TaskItem(it) }
+                    }
+            }
+        }
 
 
     /**
@@ -50,9 +69,14 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     fun updateTask(updated: Task): Boolean {
         val current = this.get(updated.id)
         return if (current == null || updated.title.isBlank()
-            || updated.dueDate == null || updated.category == null
+            || updated.dueDate?.isBefore(LocalDate.now()) ?: true || updated.category == null
         ) false
         else {
+            current.isDone = updated.isDone
+            current.category = updated.category
+            current.title = updated.title
+            current.description = updated.description
+            current.dueDate = updated.dueDate
             update(updated)
             true
         }
@@ -65,9 +89,34 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
+     * Marks the task with given id as done. Returns false if it was already done,
+     * null if it does not exist or true if it's marked as done successfully
+     */
+    fun markTaskDone(id: Long): Boolean? {
+        val current = this.get(id)
+        return if (current == null) {
+            null
+        } else {
+            if (current.isDone) {
+                false
+            } else {
+                current.isDone = true
+                this.markDone(id)
+                true
+            }
+        }
+    }
+
+    private fun markDone(id: Long) {
+        viewModelScope.launch {
+            repo.markTaskDone(id)
+        }
+    }
+
+    /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun get(id: Long): Task?= repo.get(id)
+    fun get(id: Long): Task? = repo.get(id)
 
     /**
      * Deletes the task with the given ID, if it exists.

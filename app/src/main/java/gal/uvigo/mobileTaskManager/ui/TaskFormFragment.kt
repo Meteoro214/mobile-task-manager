@@ -1,22 +1,23 @@
 package gal.uvigo.mobileTaskManager.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.data_model.*
+import gal.uvigo.mobileTaskManager.data_model.Category
+import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.data_model.createDateFromMMDD
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskFormBinding
-import gal.uvigo.mobileTaskManager.model.*
+import gal.uvigo.mobileTaskManager.model.TaskViewModel
 import java.time.LocalDate
-import kotlin.getValue
 
 class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
@@ -76,7 +77,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                     autoCompleteTV.setText("")
                     //Ensures ACTV is internally ready to show the options
                     view.post {
-                        if(autoCompleteTV.isAttachedToWindow && autoCompleteTV.isFocused && autoCompleteTV.adapter != null){
+                        if (autoCompleteTV.isAttachedToWindow && autoCompleteTV.isFocused && autoCompleteTV.adapter != null) {
                             view.showDropDown() //Shows the options
                         }
                     }
@@ -123,7 +124,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
     private fun saveTask() {
         //Data is already verified
         if (isEditingForm()) { //Existing task
-            val validUpdate = viewModel.updateTask(binding.taskData?: Task(-1))
+            val validUpdate = viewModel.updateTask(binding.taskData ?: Task(-1))
             if (!validUpdate) { //Should never happen
                 Toast.makeText(
                     requireContext(), getString(R.string.form_edit_error_msg),
