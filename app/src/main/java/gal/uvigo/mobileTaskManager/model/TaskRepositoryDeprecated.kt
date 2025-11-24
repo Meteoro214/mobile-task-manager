@@ -1,14 +1,19 @@
 package gal.uvigo.mobileTaskManager.model
+/**
+ deprecated for now
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.db.TaskDAO
+import gal.uvigo.mobileTaskManager.db.TaskDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TaskRepository(context: Context? = null) {
-    //constructor takes context to maintain compatibility with previous weeks TaskRepository,is not needed
+class TaskRepositoryDeprecated(context: Context) {
 
+    private val taskDAO: TaskDAO = TaskDB.getInstance(context).taskDAO()
     val dispatcher = Dispatchers.IO
 
     //Saves the list from the repo to store info on memory for quicker access & allow get() easier access without DB access
@@ -19,11 +24,8 @@ class TaskRepository(context: Context? = null) {
 
     suspend fun addTask(task: Task): Long? =
         withContext(dispatcher) {
-            /* TODO
             val id = taskDAO.insert(task)
             if (id <= 0L) null else id
-            */
-             null
         }
 
     /**
@@ -33,37 +35,27 @@ class TaskRepository(context: Context? = null) {
 
     //Livedata will ensure DAO only performs getAll once, but when DAO performs a CUD operation,
     // LiveData updates without a query and .map updates memory-only map
-    private fun getAll() = null
-        /* TODO taskDAO.getAll().map { tasks ->
+    private fun getAll() = taskDAO.getAll().map { tasks ->
         for (t in tasks) _tasks[t.id] = t
         tasks
     }
-    */
 
     suspend fun updateTask(updated: Task): Boolean =
         withContext(dispatcher) {
-            /* TODO
             val res = taskDAO.update(updated)
-            res == 1 */
-                    false
+            res == 1
         }
 
     suspend fun markTaskDone(id: Long): Boolean =
         withContext(dispatcher) {
-            /* TODO
             val res = taskDAO.markDone(id)
             res == 1
-            */
-             false
         }
 
     suspend fun deleteTask(task: Task): Boolean =
         withContext(dispatcher) {
-            /* TODO
             val res = taskDAO.delete(task)
             res == 1
-             */
-            false
         }
-
 }
+ */
