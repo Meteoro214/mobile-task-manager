@@ -28,6 +28,15 @@ This repository contains the implementation for **Assignment 11** of the Task Ma
 
 
 
+//como manejar el id autogenerado y el id de crudcrud?
+    //una dataclass que tenga _id y task y sea lo que se recibe?
+    //inicio cargarlas todas y convertirlas a tasks normales en cahce
+    //almacenar equivalencia entre ids
+    //al acabar = las que no tengan equivalencia post, las que tengan y no existan delete
+    // almacenar las tasks exactas cargadas para saber si update
+    //hay alguna forma de ordenarla? como trabajar con _id? como hacer el id viejo?
+    
+    
 enmodo oscuro las fechas se ven negtras
 
 poner la url con resource y la api aparte en resuorces

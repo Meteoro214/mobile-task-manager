@@ -63,7 +63,7 @@ fun bindDueDateColor(tv: TextView, task: Task) {
             tv.context.getColor(R.color.yellow)
         } else {
             //else normal color
-            tv.context.getColor(R.color.black)
+            tv.context.getColor(R.color.gray)
         }
     } else {
         //there is a strange bug ONLY in a testing version that does not force future dates
