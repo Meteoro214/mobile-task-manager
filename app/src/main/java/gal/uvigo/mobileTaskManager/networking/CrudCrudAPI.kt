@@ -7,15 +7,13 @@ class CrudCrudAPI(context: Context) {
     private val service = RetrofitClient.getInstance(context).service
 
     //Used to know what tasks are stored in CrudCrud
-    private val _fromCCIndex : MutableMap<String, Long> = mutableMapOf()
-    private val _toCCIndex: MutableMap<Long, String> = mutableMapOf()
+    private val _toCCIndex: MutableMap<Long, TaskCC> = mutableMapOf()
 
-    val fromCCIndex : Map<String,Long>
-        get() = _fromCCIndex
-    val toCCIndex: Map<Long, String>
+    val toCCIndex: Map<Long, TaskCC>
         get() = _toCCIndex
 
-    suspend fun insert(task: Task): Long = service.insert(task).id
+    suspend fun insert(task: Task): Long =
+        if(!toCCIndex.containsKey(task.id)) service.insert(task).id else 0
 
     //Returns empty list if no data
     suspend fun getAll(): List<Task>{
@@ -24,15 +22,14 @@ class CrudCrudAPI(context: Context) {
         val stored = service.getAll()
         for (taskCC in stored){
             list.add(taskCC.getTask())
-            _fromCCIndex[taskCC._id] = taskCC.id
-            _toCCIndex[taskCC.id] = taskCC._id
+            _toCCIndex[taskCC.id] = taskCC
         }
-        return list
+        return list.sortedBy { it.id }
     }
 
     //Returns number of updated rows
     suspend fun update(updated: Task): Int{
-        val id = toCCIndex[updated.id]
+        val id = toCCIndex[updated.id]?._id
         return if(id != null){
             service.update(id,updated)
         } else 0
@@ -40,10 +37,18 @@ class CrudCrudAPI(context: Context) {
 
     //Returns number of deleted rows
     suspend fun delete(task: Task): Int{
-        val id = toCCIndex[task.id]
+        val id = toCCIndex[task.id]?._id
         return if(id != null){
             service.delete(id)
         } else 0
     }
 
+    suspend fun upload(taskList : List<Task>){
+        //Almacena los datos en CrudCrud
+        //si no estan asociados a un _id, insert
+        //si estan asociados a un _id, comprobar si actualizados
+        //si actualizados, update
+        //si existe un _id no asociado a nada, delete
+
+    }
 }

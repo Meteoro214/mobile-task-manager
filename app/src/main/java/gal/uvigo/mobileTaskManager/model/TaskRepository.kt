@@ -1,69 +1,109 @@
 package gal.uvigo.mobileTaskManager.model
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.networking.CrudCrudAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TaskRepository(context: Context? = null) {
-    //constructor takes context to maintain compatibility with previous weeks TaskRepository,is not needed
+class TaskRepository(context: Context) {
 
-    val dispatcher = Dispatchers.IO
+    //Some values that use context for network error messages,stored to not store a context
+    private val logTag = context.getString(R.string.Log_Tag)
+    private val uploadErrorMsg = context.getString(R.string.network_error_up)
+    private val downloadErrorMsg = context.getString(R.string.network_error_down)
+    private val toastMsg = Toast.makeText(context, R.string.network_error_user, Toast.LENGTH_SHORT)
 
-    //Saves the list from the repo to store info on memory for quicker access & allow get() easier access without DB access
-    private var _tasks: MutableMap<Long, Task> = mutableMapOf()
 
-    //LiveData will keep the list updated after CUD operations
-    val tasks: LiveData<List<Task>> = this.getAll()
+    private val dispatcher = Dispatchers.IO
+    private val networkAPI = CrudCrudAPI(context)
 
-    suspend fun addTask(task: Task): Long? =
-        withContext(dispatcher) {
-            /* TODO
-            val id = taskDAO.insert(task)
-            if (id <= 0L) null else id
-            */
-             null
-        }
+    private val _tasks = MutableLiveData<List<Task>>(emptyList())
+    val tasks: LiveData<List<Task>>
+        get() = _tasks
+
+    //There is no Room now to autogenerate IDs
+    private var nextId: Long = 1
+
+
+    fun addTask(task: Task): Long? {
+        val t = Task(nextId, task.title, task.dueDate, task.category, task.description, task.isDone)
+        nextId++
+        val list = _tasks.value.orEmpty().toMutableList()
+        list.add(t)
+        _tasks.value = list
+        return nextId - 1
+    }
 
     /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun get(id: Long): Task? = _tasks[id]
+    fun get(id: Long): Task? = tasks.value.orEmpty().find { it.id == id }
 
-    //Livedata will ensure DAO only performs getAll once, but when DAO performs a CUD operation,
-    // LiveData updates without a query and .map updates memory-only map
-    private fun getAll() = null
-        /* TODO taskDAO.getAll().map { tasks ->
-        for (t in tasks) _tasks[t.id] = t
-        tasks
+    fun updateTask(updated: Task): Boolean {
+        val list = _tasks.value.orEmpty().toMutableList()
+        val old = get(updated.id)
+        return if (old != null) {
+            val index = list.indexOf(old)
+            list.removeAt(index)
+            list.add(index, updated)
+            _tasks.value = list
+            true
+        } else false
     }
-    */
 
-    suspend fun updateTask(updated: Task): Boolean =
-        withContext(dispatcher) {
-            /* TODO
-            val res = taskDAO.update(updated)
-            res == 1 */
-                    false
+
+    fun markTaskDone(id: Long): Boolean {
+        val list = _tasks.value.orEmpty().toMutableList()
+        val old = get(id)
+        if (old != null) {
+            val updated = old.copy()
+            updated.isDone = true
+            val index = list.indexOf(old)
+            list.removeAt(index)
+            list.add(index, updated)
+            _tasks.value = list
+            true
         }
 
-    suspend fun markTaskDone(id: Long): Boolean =
-        withContext(dispatcher) {
-            /* TODO
-            val res = taskDAO.markDone(id)
-            res == 1
-            */
-             false
-        }
+    }
 
-    suspend fun deleteTask(task: Task): Boolean =
-        withContext(dispatcher) {
-            /* TODO
-            val res = taskDAO.delete(task)
-            res == 1
-             */
-            false
-        }
 
+    fun deleteTask(task: Task): Boolean {
+        val list = _tasks.value.orEmpty().toMutableList()
+        val toRet = list.remove(task)
+        _tasks.value = list
+        return toRet
+    }
+
+    suspend fun upload() {
+        withContext(dispatcher) {
+            try {
+                networkAPI.upload(tasks.value.orEmpty())
+            } catch (_: Exception) { //network errors
+                Log.e(logTag, uploadErrorMsg)
+            }
+        }
+    }
+
+    suspend fun download() {
+        withContext(dispatcher) {
+            try {
+                _tasks.value = networkAPI.getAll()
+            } catch (_: Exception) { //network errors
+                Log.e(logTag, downloadErrorMsg)
+                //Allow app to function, warn user
+                toastMsg.show()
+                _tasks.value = emptyList<Task>()
+            }
+            //No Room to autogenerate ids
+            nextId = _tasks.value?.get(_tasks.value.orEmpty().size - 1)?.id ?: 1
+        }
+    }
+    
 }

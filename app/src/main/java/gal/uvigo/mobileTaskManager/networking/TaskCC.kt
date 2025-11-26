@@ -17,8 +17,6 @@ data class TaskCC(
     val description: String,
     val isDone: Boolean
 ){
- constructor(task : Task) : this("",task.id,task.title,task.dueDate ?: LocalDate.now(),task.category ?: Category.OTHER,task.description,task.isDone)
-
     fun getTask(): Task = Task(this.id,this.title,this.dueDate,this.category,this.description,this.isDone)
 
     fun isTask(other : Task) : Boolean =  this.id == other.id
