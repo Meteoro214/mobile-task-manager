@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Base URL for networking-->
+    <string name="URL">https://crudcrud.com/api/</string>
+
+    <!--API key for networking on CrudCrud, update before launching, resets daily-->
+    <string name="API_KEY">c38f113e759c47ee92e9a97fac42b81b</string>
+
+</resources>
