@@ -5,9 +5,11 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import java.time.LocalDate
 
 @Entity(tableName = "tasks")
+@JsonClass (generateAdapter = true)
 class Task(
     @PrimaryKey(autoGenerate = true) val id: Long,
     var title: String = "",
