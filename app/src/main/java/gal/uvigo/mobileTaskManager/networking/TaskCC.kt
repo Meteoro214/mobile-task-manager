@@ -9,7 +9,7 @@ import java.time.LocalDate
 //Used to hold _id to use with CrudCrud
 @JsonClass (generateAdapter = true)
 data class TaskCC(
-    val _id: String?,
+    val _id: String,
     val id: Long,
     val title: String,
     val dueDate: LocalDate,
@@ -17,7 +17,7 @@ data class TaskCC(
     val description: String,
     val isDone: Boolean
 ){
- constructor(task : Task) : this(null,task.id,task.title,task.dueDate ?: LocalDate.now(),task.category ?: Category.OTHER,task.description,task.isDone)
+ constructor(task : Task) : this("",task.id,task.title,task.dueDate ?: LocalDate.now(),task.category ?: Category.OTHER,task.description,task.isDone)
 
     fun getTask(): Task = Task(this.id,this.title,this.dueDate,this.category,this.description,this.isDone)
 
