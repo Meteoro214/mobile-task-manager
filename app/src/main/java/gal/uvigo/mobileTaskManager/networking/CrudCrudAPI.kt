@@ -9,11 +9,9 @@ class CrudCrudAPI(context: Context) {
     //Used to know what tasks are stored in CrudCrud
     private val _toCCIndex: MutableMap<Long, TaskCC> = mutableMapOf()
 
-    val toCCIndex: Map<Long, TaskCC>
-        get() = _toCCIndex
 
     suspend fun insert(task: Task): Long =
-        if(!toCCIndex.containsKey(task.id)) service.insert(task).id else 0
+        if(!_toCCIndex.containsKey(task.id)) service.insert(task).id else 0
 
     //Returns empty list if no data
     suspend fun getAll(): List<Task>{
@@ -29,7 +27,7 @@ class CrudCrudAPI(context: Context) {
 
     //Returns number of updated rows
     suspend fun update(updated: Task): Int{
-        val id = toCCIndex[updated.id]?._id
+        val id = _toCCIndex[updated.id]?._id
         return if(id != null){
             service.update(id,updated)
         } else 0
@@ -37,18 +35,33 @@ class CrudCrudAPI(context: Context) {
 
     //Returns number of deleted rows
     suspend fun delete(task: Task): Int{
-        val id = toCCIndex[task.id]?._id
+        val id = _toCCIndex[task.id]?._id
         return if(id != null){
             service.delete(id)
         } else 0
     }
 
     suspend fun upload(taskList : List<Task>){
-        //Almacena los datos en CrudCrud
-        //si no estan asociados a un _id, insert
-        //si estan asociados a un _id, comprobar si actualizados
-        //si actualizados, update
-        //si existe un _id no asociado a nada, delete
-
+        //Upload all takss
+        var taskCC : TaskCC?
+        for(task in taskList){
+            taskCC = _toCCIndex.get(task.id)
+            if(taskCC != null){ //task existed in server
+                //task was not deleted or inserted
+                //check if updated
+                if(task != taskCC.getTask()){//updated
+                    update(task)
+                }
+                //Removes from index to allow delete checks
+                _toCCIndex.remove(task.id)
+            } else{ //we upload, it is new
+                insert(task)
+            }
+        }
+        //Check for deletions
+        //if task was not in taskList but is in index, it was deleted
+        for(taskCC in _toCCIndex.values){
+            delete(taskCC.getTask())
+        }
     }
 }

@@ -61,7 +61,7 @@ class TaskRepository(context: Context) {
     fun markTaskDone(id: Long): Boolean {
         val list = _tasks.value.orEmpty().toMutableList()
         val old = get(id)
-        if (old != null) {
+       return  if (old != null) {
             val updated = old.copy()
             updated.isDone = true
             val index = list.indexOf(old)
@@ -69,8 +69,7 @@ class TaskRepository(context: Context) {
             list.add(index, updated)
             _tasks.value = list
             true
-        }
-
+        } else false
     }
 
 
@@ -105,5 +104,4 @@ class TaskRepository(context: Context) {
             nextId = _tasks.value?.get(_tasks.value.orEmpty().size - 1)?.id ?: 1
         }
     }
-    
 }

@@ -19,9 +19,5 @@ data class TaskCC(
 ){
     fun getTask(): Task = Task(this.id,this.title,this.dueDate,this.category,this.description,this.isDone)
 
-    fun isTask(other : Task) : Boolean =  this.id == other.id
-
-    fun isSameTask(other : Task) : Boolean =  this.getTask() == other
-
 }
 
