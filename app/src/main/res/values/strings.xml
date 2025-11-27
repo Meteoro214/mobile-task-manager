@@ -75,6 +75,5 @@
     <string name="network_error_down">There has been a network error, could not download data</string>
 
 
-    <string name="network_error_user">Could not download data</string>
 
 </resources>

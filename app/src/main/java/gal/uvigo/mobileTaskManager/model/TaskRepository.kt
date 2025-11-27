@@ -17,7 +17,7 @@ class TaskRepository(context: Context) {
     private val logTag = context.getString(R.string.Log_Tag)
     private val uploadErrorMsg = context.getString(R.string.network_error_up)
     private val downloadErrorMsg = context.getString(R.string.network_error_down)
-    private val toastMsg = Toast.makeText(context, R.string.network_error_user, Toast.LENGTH_SHORT)
+    private val toastMsg = Toast.makeText(context, "", Toast.LENGTH_SHORT)
 
 
     private val dispatcher = Dispatchers.IO
@@ -80,29 +80,33 @@ class TaskRepository(context: Context) {
         return toRet
     }
 
-    suspend fun upload() {
+    suspend fun upload(){
             try {
                 withContext(dispatcher) {
                 networkAPI.upload(tasks.value.orEmpty())
             }
             } catch (_: Exception) { //network errors
                 Log.e(logTag, uploadErrorMsg)
+                toastMsg.setText(uploadErrorMsg)
+                toastMsg.show()
             }
     }
 
     suspend fun download() {
-           // try {
+            try {
                 val temp : List<Task>
                 withContext(dispatcher) {
                 temp = networkAPI.getAll()
                 }
         _tasks.value = temp
-        /*} catch (_: Exception) { //network errors
+        } catch (_: Exception) { //network errors
                 Log.e(logTag, downloadErrorMsg)
                 //Allow app to function, warn user
                 toastMsg.show()
                 _tasks.value = emptyList<Task>()
-            }*/
+                toastMsg.setText(downloadErrorMsg)
+                toastMsg.show()
+            }
             //No Room to autogenerate ids
             val nextIndex = _tasks.value.orEmpty().size - 1
             val lastId = if(nextIndex > -1) {(_tasks.value?.get(nextIndex)?.id?: 0) +1} else 1

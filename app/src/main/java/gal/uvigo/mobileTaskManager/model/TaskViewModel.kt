@@ -25,7 +25,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
                 tasks
                     .sortedWith(
                         compareBy<Task> { it.category?.name }
-                            .thenBy { it.dueDate }.thenBy{ it.id }
+                            .thenBy { it.dueDate }.thenBy { it.id }
                     )
                     .groupBy { it.category }
                     .flatMap { (category, categoryTasks) ->
@@ -138,17 +138,6 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     private fun delete(t: Task) {
         viewModelScope.launch {
             repo.deleteTask(t)
-        }
-    }
-
-    /**
-     * Uploads stored local data to Server
-     */
-    override fun onCleared() {
-        viewModelScope.launch {
-            repo.upload()
-            super.onCleared()
-            throw RuntimeException()
         }
     }
 
