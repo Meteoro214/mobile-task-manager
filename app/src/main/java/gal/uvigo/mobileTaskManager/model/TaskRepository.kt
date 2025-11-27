@@ -40,8 +40,9 @@ class TaskRepository(context: Context) {
             nextId++
             _tasks.value = list
             return nextId - 1
-        } catch (_: Exception) {
+        } catch (e: Exception) {
             Log.e(logTag, uploadErrorMsg)
+            Log.e(logTag, e.toString())
             toastMsg.setText(uploadErrorMsg)
             toastMsg.show()
             return null
@@ -64,8 +65,9 @@ class TaskRepository(context: Context) {
                 networkAPI.update(updated)
                 _tasks.value = list
                 true
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 Log.e(logTag, uploadErrorMsg)
+                Log.e(logTag, e.toString())
                 toastMsg.setText(uploadErrorMsg)
                 toastMsg.show()
                 false
@@ -87,8 +89,9 @@ class TaskRepository(context: Context) {
                 networkAPI.update(updated)
                 _tasks.value = list
                 true
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 Log.e(logTag, uploadErrorMsg)
+                Log.e(logTag, e.toString())
                 toastMsg.setText(uploadErrorMsg)
                 toastMsg.show()
                 false
@@ -104,8 +107,9 @@ class TaskRepository(context: Context) {
             try {
                 networkAPI.delete(task)
                 _tasks.value = list
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 Log.e(logTag, uploadErrorMsg)
+                Log.e(logTag, e.toString())
                 toastMsg.setText(uploadErrorMsg)
                 toastMsg.show()
                 return false
@@ -122,8 +126,9 @@ class TaskRepository(context: Context) {
                 temp = networkAPI.getAll()
             }
             _tasks.value = temp
-        } catch (_: Exception) { //network errors
+        } catch (e: Exception) { //network errors
             Log.e(logTag, downloadErrorMsg)
+            Log.e(logTag, e.toString())
             //Allow app to function, warn user
             _tasks.value = emptyList<Task>()
             toastMsg.setText(downloadErrorMsg)

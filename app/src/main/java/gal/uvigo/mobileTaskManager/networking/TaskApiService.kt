@@ -12,13 +12,13 @@ import retrofit2.http.Path
 interface TaskApiService {
 
     @POST("tasks")
-    suspend fun insert(@Body task : Task) : Task
+    suspend fun insert(@Body task : Task) : TaskCC
 
-    @PUT("tasks/{_id}")
-    suspend fun update(@Path("_id") id : String,updated : Task) : Int
+    @PUT("tasks/{idCrudCrud}")
+    suspend fun update(@Path("idCrudCrud") _id : String,@Body updated : Task)
 
-    @DELETE("tasks/{_id}")
-    suspend fun delete(@Path("_id") id : String): Int
+    @DELETE("tasks/{idCrudCrud}")
+    suspend fun delete(@Path("idCrudCrud") _id : String)
 
     @GET("tasks")
     suspend fun getAll(): List<TaskCC>

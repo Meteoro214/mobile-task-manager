@@ -70,6 +70,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                     when (direction) {
                         ItemTouchHelper.LEFT -> {
                             val deleted = viewModel.deleteTask(item.task.id)
+                            //Needed incase delete fails on network error
+                            binding.taskRV.adapter?.notifyItemChanged(pos)
                             if (deleted) {
                                 Toast.makeText(
                                     requireContext(),
