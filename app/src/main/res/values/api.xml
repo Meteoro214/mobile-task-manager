@@ -4,6 +4,6 @@
     <string name="URL">https://crudcrud.com/api/</string>
 
     <!--API key for networking on CrudCrud, update before launching, resets daily-->
-    <string name="API_KEY">c38f113e759c47ee92e9a97fac42b81b</string>
+    <string name="API_KEY">478eeb4499be4b5794e0b7983e759418</string>
 
 </resources>

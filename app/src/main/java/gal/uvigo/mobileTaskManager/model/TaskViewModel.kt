@@ -147,6 +147,8 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     override fun onCleared() {
         viewModelScope.launch {
             repo.upload()
+            super.onCleared()
+            throw RuntimeException()
         }
     }
 

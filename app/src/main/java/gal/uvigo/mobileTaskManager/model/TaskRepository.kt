@@ -83,25 +83,30 @@ class TaskRepository(context: Context) {
     suspend fun upload() {
         withContext(dispatcher) {
             try {
+                withContext(dispatcher) {
                 networkAPI.upload(tasks.value.orEmpty())
+            }
             } catch (_: Exception) { //network errors
                 Log.e(logTag, uploadErrorMsg)
             }
-        }
     }
 
     suspend fun download() {
-        withContext(dispatcher) {
-            try {
-                _tasks.value = networkAPI.getAll()
-            } catch (_: Exception) { //network errors
+           // try {
+                val temp : List<Task>
+                withContext(dispatcher) {
+                temp = networkAPI.getAll()
+                }
+        _tasks.value = temp
+        /*} catch (_: Exception) { //network errors
                 Log.e(logTag, downloadErrorMsg)
                 //Allow app to function, warn user
                 toastMsg.show()
                 _tasks.value = emptyList<Task>()
-            }
+            }*/
             //No Room to autogenerate ids
-            nextId = _tasks.value?.get(_tasks.value.orEmpty().size - 1)?.id ?: 1
+            val nextIndex = _tasks.value.orEmpty().size - 1
+            val lastId = if(nextIndex > -1) {(_tasks.value?.get(nextIndex)?.id?: 0) +1} else 1
+            nextId =  lastId
         }
-    }
 }
