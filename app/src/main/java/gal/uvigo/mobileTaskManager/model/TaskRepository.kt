@@ -81,7 +81,6 @@ class TaskRepository(context: Context) {
     }
 
     suspend fun upload() {
-        withContext(dispatcher) {
             try {
                 withContext(dispatcher) {
                 networkAPI.upload(tasks.value.orEmpty())
