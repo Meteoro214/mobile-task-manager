@@ -31,13 +31,21 @@ class TaskRepository(context: Context) {
     private var nextId: Long = 1
 
 
-    fun addTask(task: Task): Long? {
+    suspend fun addTask(task: Task): Long? {
         val t = Task(nextId, task.title, task.dueDate, task.category, task.description, task.isDone)
-        nextId++
         val list = _tasks.value.orEmpty().toMutableList()
         list.add(t)
-        _tasks.value = list
-        return nextId - 1
+        try {
+            networkAPI.insert(t)
+            nextId++
+            _tasks.value = list
+            return nextId - 1
+        } catch (_: Exception) {
+            Log.e(logTag, uploadErrorMsg)
+            toastMsg.setText(uploadErrorMsg)
+            toastMsg.show()
+            return null
+        }
     }
 
     /**
@@ -45,71 +53,87 @@ class TaskRepository(context: Context) {
      */
     fun get(id: Long): Task? = tasks.value.orEmpty().find { it.id == id }
 
-    fun updateTask(updated: Task): Boolean {
+    suspend fun updateTask(updated: Task): Boolean {
         val list = _tasks.value.orEmpty().toMutableList()
         val old = get(updated.id)
         return if (old != null) {
             val index = list.indexOf(old)
             list.removeAt(index)
             list.add(index, updated)
-            _tasks.value = list
-            true
+            try {
+                networkAPI.update(updated)
+                _tasks.value = list
+                true
+            } catch (_: Exception) {
+                Log.e(logTag, uploadErrorMsg)
+                toastMsg.setText(uploadErrorMsg)
+                toastMsg.show()
+                false
+            }
         } else false
     }
 
 
-    fun markTaskDone(id: Long): Boolean {
+    suspend fun markTaskDone(id: Long): Boolean {
         val list = _tasks.value.orEmpty().toMutableList()
         val old = get(id)
-       return  if (old != null) {
+        return if (old != null) {
             val updated = old.copy()
             updated.isDone = true
             val index = list.indexOf(old)
             list.removeAt(index)
             list.add(index, updated)
-            _tasks.value = list
-            true
+            try {
+                networkAPI.update(updated)
+                _tasks.value = list
+                true
+            } catch (_: Exception) {
+                Log.e(logTag, uploadErrorMsg)
+                toastMsg.setText(uploadErrorMsg)
+                toastMsg.show()
+                false
+            }
         } else false
     }
 
 
-    fun deleteTask(task: Task): Boolean {
+    suspend fun deleteTask(task: Task): Boolean {
         val list = _tasks.value.orEmpty().toMutableList()
         val toRet = list.remove(task)
-        _tasks.value = list
-        return toRet
-    }
-
-    suspend fun upload(){
+        if (toRet) {
             try {
-                withContext(dispatcher) {
-                networkAPI.upload(tasks.value.orEmpty())
-            }
-            } catch (_: Exception) { //network errors
+                networkAPI.delete(task)
+                _tasks.value = list
+            } catch (_: Exception) {
                 Log.e(logTag, uploadErrorMsg)
                 toastMsg.setText(uploadErrorMsg)
                 toastMsg.show()
+                return false
             }
+        }
+        return toRet
     }
 
+
     suspend fun download() {
-            try {
-                val temp : List<Task>
-                withContext(dispatcher) {
+        try {
+            val temp: List<Task>
+            withContext(dispatcher) {
                 temp = networkAPI.getAll()
-                }
-        _tasks.value = temp
-        } catch (_: Exception) { //network errors
-                Log.e(logTag, downloadErrorMsg)
-                //Allow app to function, warn user
-                toastMsg.show()
-                _tasks.value = emptyList<Task>()
-                toastMsg.setText(downloadErrorMsg)
-                toastMsg.show()
             }
-            //No Room to autogenerate ids
-            val nextIndex = _tasks.value.orEmpty().size - 1
-            val lastId = if(nextIndex > -1) {(_tasks.value?.get(nextIndex)?.id?: 0) +1} else 1
-            nextId =  lastId
+            _tasks.value = temp
+        } catch (_: Exception) { //network errors
+            Log.e(logTag, downloadErrorMsg)
+            //Allow app to function, warn user
+            _tasks.value = emptyList<Task>()
+            toastMsg.setText(downloadErrorMsg)
+            toastMsg.show()
         }
+        //No Room to autogenerate ids
+        val nextIndex = _tasks.value.orEmpty().size - 1
+        val lastId = if (nextIndex > -1) {
+            (_tasks.value?.get(nextIndex)?.id ?: 0) + 1
+        } else 1
+        nextId = lastId
+    }
 }
