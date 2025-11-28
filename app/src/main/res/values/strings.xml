@@ -68,4 +68,12 @@
     <string name="swipe_mark_wasDone_msg">Task Already Done</string>
     <string name="swipe_mark_error_msg">Critical Error : Could Not Mark Done</string>
 
+
+    <!--Logger Strings-->
+    <string name="Log_Tag">mobileTaskManager Log</string>
+    <string name="network_error_up">There has been a network error, could not upload data</string>
+    <string name="network_error_down">There has been a network error, could not download data</string>
+
+
+
 </resources>

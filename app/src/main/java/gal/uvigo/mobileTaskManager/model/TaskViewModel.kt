@@ -25,7 +25,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
                 tasks
                     .sortedWith(
                         compareBy<Task> { it.category?.name }
-                            .thenBy { it.dueDate }
+                            .thenBy { it.dueDate }.thenBy { it.id }
                     )
                     .groupBy { it.category }
                     .flatMap { (category, categoryTasks) ->
@@ -35,6 +35,11 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
             }
         }
 
+    init {
+        viewModelScope.launch {
+            repo.download()
+        }
+    }
 
     /**
      * Adds a new task with the next available ID, and the given info.

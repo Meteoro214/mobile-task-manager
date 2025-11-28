@@ -82,6 +82,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                                     getString(R.string.check_delete_error_msg),
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                //Needed incase delete fails on network error
+                                binding.taskRV.adapter?.notifyItemChanged(pos)
                             }
                         }
 
