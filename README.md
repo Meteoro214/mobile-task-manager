@@ -123,3 +123,9 @@ habria que hacer en el vm metodo de orden, que llame a metodo en el dao, que hag
 
 
 Refactor TaskClass
+aun asi hay que mantener task anotada para mandarla al servidor (task o task entity?)
+
+
+Refactorizar entity y dto para el que toque
+
+el json adapter que use metodos de extension

@@ -8,7 +8,7 @@ import java.time.LocalDate
 //TaskCrudCrud
 //Used to hold _id to use with CrudCrud
 @JsonClass (generateAdapter = true)
-data class TaskCC(
+data class TaskDTO(
     val _id: String,
     val id: Long,
     val title: String,
