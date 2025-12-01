@@ -30,6 +30,20 @@ class TaskRepository(context: Context) {
     //There is no Room now to autogenerate IDs
     private var nextId: Long = 1
 
+    init {
+        val settings = context.getSharedPreferences(context.getString(R.string.preferences_file),Context.MODE_PRIVATE)
+        val key = context.getString(R.string.preferences_first_init_key)
+        val firstInit = settings.getBoolean(key,true)
+        if(firstInit){
+            //TODO operate and set firstInit to false
+
+
+            //set flag so app knows
+            settings.edit().putBoolean(key, false).commit();
+        }else{
+            //TODO operate
+        }
+    }
 
     suspend fun addTask(task: Task): Long? {
         val t = Task(nextId, task.title, task.dueDate, task.category, task.description, task.isDone)

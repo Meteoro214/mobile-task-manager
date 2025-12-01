@@ -55,7 +55,7 @@ valen clases mapper o tenerlo en el repo
 
 Task las 6 clasicas
 dto +_id
-Entity +_id y posible lo de sync
+Entity +_id y posible lo de sync y a mayores el orden
 
 Mappear dto a entity para sync inicial de 1ra vez al recuperar
 

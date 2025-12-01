@@ -75,5 +75,7 @@
     <string name="network_error_down">There has been a network error, could not download data</string>
 
 
+    <string name="preferences_file">MTM_Preferences</string>
+    <string name="preferences_first_init_key">First_Install</string>
 
 </resources>
