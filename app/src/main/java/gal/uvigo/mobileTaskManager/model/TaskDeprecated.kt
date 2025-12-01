@@ -2,10 +2,16 @@ package gal.uvigo.mobileTaskManager.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import java.time.LocalDate
 
-class Task(
-    val id: Long,
+@Entity(tableName = "tasks")
+@JsonClass (generateAdapter = true)
+class TaskDeprecated(
+    @PrimaryKey(autoGenerate = true) val id: Long,
     var title: String = "",
     dueDate: LocalDate? = null,
     category: Category? = null,
@@ -13,6 +19,7 @@ class Task(
     var isDone: Boolean = false
 ) : Parcelable {
 
+    @ColumnInfo(name = "due_date")
     var dueDate: LocalDate? = dueDate
         set(value) {
             require(
@@ -35,8 +42,8 @@ class Task(
     }
 
 
-    fun copy(): Task =
-        Task(
+    fun copy(): TaskDeprecated =
+        TaskDeprecated(
             this.id,
             this.title,
             this.dueDate,
@@ -46,7 +53,7 @@ class Task(
         )
 
     override fun equals(other: Any?): Boolean =
-        if (other == null || other !is Task) false
+        if (other == null || other !is TaskDeprecated) false
         else this.id == other.id && this.title == other.title
                 && this.dueDate == other.dueDate && this.category == other.category
                 && this.description == other.description && this.isDone == other.isDone
@@ -71,8 +78,8 @@ class Task(
 
     }
 
-    companion object CREATOR : Parcelable.Creator<Task> {
-        override fun createFromParcel(parcel: Parcel): Task {
+    companion object CREATOR : Parcelable.Creator<TaskDeprecated> {
+        override fun createFromParcel(parcel: Parcel): TaskDeprecated {
             val id = parcel.readLong()
             val title = parcel.readString() ?: ""
             val year = parcel.readInt()
@@ -83,7 +90,7 @@ class Task(
             val cat = if (day == -1) null else Category.entries[catId]
             val desc = parcel.readString() ?: ""
             val done = parcel.readBoolean()
-            return Task(
+            return TaskDeprecated(
                 id, title, date, cat, desc, done
             )
         }
@@ -92,7 +99,7 @@ class Task(
          * Not implemented
          * @deprecated
          */
-        override fun newArray(size: Int): Array<Task?> {
+        override fun newArray(size: Int): Array<TaskDeprecated?> {
             //Not implemented
             return arrayOfNulls(size)
         }
