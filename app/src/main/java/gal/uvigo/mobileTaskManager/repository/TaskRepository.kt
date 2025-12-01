@@ -37,6 +37,7 @@ class TaskRepository(context: Context) {
         if(firstInit){
             //TODO operate and set firstInit to false
 
+            //este init volverlo un metodo normal y llamarlo desde el init de viewmodel (donde llama al download ahora)
 
             //set flag so app knows
             settings.edit().putBoolean(key, false).commit();
@@ -133,7 +134,7 @@ class TaskRepository(context: Context) {
     }
 
 
-    suspend fun download() {
+    suspend fun download() { //ejecutar solo si es primera ejecution, refactorizar
         try {
             val temp: List<Task>
             withContext(dispatcher) {
