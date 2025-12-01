@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager.data_model
 
 import android.os.Parcel
 import android.os.Parcelable

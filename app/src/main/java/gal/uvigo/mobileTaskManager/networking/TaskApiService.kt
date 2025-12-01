@@ -1,6 +1,7 @@
-package gal.uvigo.mobileTaskManager.repository.networking
+package gal.uvigo.mobileTaskManager.networking
 
-import gal.uvigo.mobileTaskManager.model.Task
+import androidx.lifecycle.LiveData
+import gal.uvigo.mobileTaskManager.data_model.Task
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

@@ -1,8 +1,8 @@
-package gal.uvigo.mobileTaskManager.repository.db
+package gal.uvigo.mobileTaskManager.db
 
 import androidx.room.TypeConverter
-import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
-import gal.uvigo.mobileTaskManager.model.formattedDueDateWithYear
+import gal.uvigo.mobileTaskManager.data_model.createDateFromMMDD
+import gal.uvigo.mobileTaskManager.data_model.formattedDueDateWithYear
 import java.time.LocalDate
 
 class LocalDateConverter {

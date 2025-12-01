@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.model
+package gal.uvigo.mobileTaskManager.data_model
 
 import java.time.DateTimeException
 import java.time.LocalDate

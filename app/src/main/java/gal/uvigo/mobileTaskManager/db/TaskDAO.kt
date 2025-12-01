@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.repository.db
+package gal.uvigo.mobileTaskManager.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -7,7 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.data_model.Task
 
 @Dao
 interface TaskDAO {

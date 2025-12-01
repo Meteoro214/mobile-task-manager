@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.repository
+package gal.uvigo.mobileTaskManager.model
 
 import android.content.Context
 import android.util.Log
@@ -6,8 +6,8 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.repository.networking.CrudCrudAPI
+import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.networking.CrudCrudAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

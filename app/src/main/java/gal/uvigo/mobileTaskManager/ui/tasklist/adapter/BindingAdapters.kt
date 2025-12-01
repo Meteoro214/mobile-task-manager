@@ -5,9 +5,9 @@ import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.model.Category
-import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.model.formattedDueDate
+import gal.uvigo.mobileTaskManager.data_model.Category
+import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.data_model.formattedDueDate
 import java.time.LocalDate
 
 @BindingAdapter("category")
@@ -69,7 +69,7 @@ fun bindDueDateColor(tv: TextView, task: Task) {
         //there is a strange bug ONLY in a testing version that does not force future dates
         // the bug causes dueDates on TaskList to be colored when task is done in really strange ways when view is modified from TaskList (scrolling & markDone)
         //the bug causes non-deterministic date coloring, ONLY on tasks marked as done, no matter the date, markDone can cause the color to shift between colors
-        tv.context.getColor(R.color.default_color)
+        tv.context.getColor(R.color.black)
     }
     tv.setTextColor(color)
 }
