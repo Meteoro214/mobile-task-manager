@@ -1,11 +1,11 @@
-package gal.uvigo.mobileTaskManager.db
+package gal.uvigo.mobileTaskManager.repository.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.model.Task
 
 @Database(entities = [Task::class], version = 3, exportSchema = false)
 @TypeConverters(LocalDateConverter::class)

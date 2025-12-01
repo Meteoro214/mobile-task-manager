@@ -1,8 +1,8 @@
-package gal.uvigo.mobileTaskManager.networking
+package gal.uvigo.mobileTaskManager.repository.networking
 
 import com.squareup.moshi.JsonClass
-import gal.uvigo.mobileTaskManager.data_model.Category
-import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.model.Category
+import gal.uvigo.mobileTaskManager.model.Task
 import java.time.LocalDate
 
 //TaskCrudCrud

@@ -10,4 +10,7 @@
     <color name="grassgreen">#54CC64</color>
     <color name="skyblue">#2BC3ED</color>
     <color name="purple">#9B61CA</color>
+
+    <color name="default_color">@color/black</color>
+
 </resources>

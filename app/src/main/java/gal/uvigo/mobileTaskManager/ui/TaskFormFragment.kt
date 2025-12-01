@@ -12,9 +12,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.data_model.Category
-import gal.uvigo.mobileTaskManager.data_model.Task
-import gal.uvigo.mobileTaskManager.data_model.createDateFromMMDD
+import gal.uvigo.mobileTaskManager.model.Category
+import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskFormBinding
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 import java.time.LocalDate

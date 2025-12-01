@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.databinding.ItemHeaderBinding
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 

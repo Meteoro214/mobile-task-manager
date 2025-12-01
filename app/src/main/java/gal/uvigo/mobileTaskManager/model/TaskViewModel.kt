@@ -5,8 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
-import gal.uvigo.mobileTaskManager.data_model.Category
-import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.repository.TaskRepository
 import gal.uvigo.mobileTaskManager.ui.tasklist.adapter.TaskListItem
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -25,7 +24,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
                 tasks
                     .sortedWith(
                         compareBy<Task> { it.category?.name }
-                            .thenBy { it.dueDate }.thenBy { it.id }
+                            .thenBy { it.dueDate }.thenBy { it.id } //para orden seria ponerle aqui que ordenase por categoria y luego por orden
                     )
                     .groupBy { it.category }
                     .flatMap { (category, categoryTasks) ->
@@ -36,7 +35,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         }
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch { //esto renombrarlo y que sea tipo init o algo
             repo.download()
         }
     }

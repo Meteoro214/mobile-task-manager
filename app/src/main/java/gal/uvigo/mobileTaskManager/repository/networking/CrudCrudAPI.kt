@@ -1,7 +1,7 @@
-package gal.uvigo.mobileTaskManager.networking
+package gal.uvigo.mobileTaskManager.repository.networking
 
 import android.content.Context
-import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.model.Task
 
 class CrudCrudAPI(context: Context) {
     private val service = RetrofitClient.getInstance(context).service

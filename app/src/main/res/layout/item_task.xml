@@ -7,7 +7,7 @@
 
         <variable
             name="taskData"
-            type="gal.uvigo.mobileTaskManager.data_model.Task" />
+            type="gal.uvigo.mobileTaskManager.model.Task" />
     </data>
 
     <androidx.cardview.widget.CardView
