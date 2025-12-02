@@ -30,6 +30,16 @@ class TaskRepository(context: Context) {
     //There is no Room now to autogenerate IDs
     private var nextId: Long = 1
 
+    //Ordenar tasks aqui y mandarlas ordenadas por category y por orden
+
+    /*
+    *                     .sortedWith(
+                        compareBy<Task> { it.category?.name }
+                            .thenBy { it.dueDate }.thenBy { it.id }
+                    )
+   esto pero .thenBy order en vez de la linea
+* */
+
     init {
         val settings = context.getSharedPreferences(context.getString(R.string.preferences_file),Context.MODE_PRIVATE)
         val key = context.getString(R.string.preferences_first_init_key)
@@ -43,7 +53,15 @@ class TaskRepository(context: Context) {
             settings.edit().putBoolean(key, false).commit();
         }else{
             //TODO operate
+            //se asume sincronizado por workers
         }
+    }
+
+    //aqui metodos para sincronizar desde workers
+
+    suspend fun init{
+        //TODO
+
     }
 
     suspend fun addTask(task: Task): Long? {

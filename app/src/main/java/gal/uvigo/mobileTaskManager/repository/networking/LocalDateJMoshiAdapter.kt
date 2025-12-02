@@ -6,6 +6,9 @@ import java.time.LocalDate
 import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
 import gal.uvigo.mobileTaskManager.model.formattedDueDateWithYear
 
+/**
+ * Class to allow Moshi to handle LocalDates
+ */
 class LocalDateJMoshiAdapter {
 
     @ToJson

@@ -1,5 +1,8 @@
 package gal.uvigo.mobileTaskManager.ui.tasklist.adapter
 
+/**
+ * Methods to bind information to the XML layout files.
+ */
 import android.view.View
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
@@ -10,6 +13,9 @@ import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.formattedDueDate
 import java.time.LocalDate
 
+/**
+ * For a text view, receives a category and sets its text and color with String Resources from the given category.
+ */
 @BindingAdapter("category")
 fun bindCategoryText(tv: TextView, category: Category?) {
     tv.text = when (category) {
@@ -31,6 +37,9 @@ fun bindCategoryText(tv: TextView, category: Category?) {
     }
 }
 
+/**
+ * For a View, receives a category and sets its background color with String Resources from the given category.
+ */
 @BindingAdapter("cat_background_color")
 fun bindCategoryColorBackground(v: View, category: Category?) {
     val color = when (category) {
@@ -43,11 +52,17 @@ fun bindCategoryColorBackground(v: View, category: Category?) {
     v.setBackgroundColor(color)
 }
 
+/**
+ * For a TextView, receives a dueDate and sets its text with the formatted date as MM DD.
+ */
 @BindingAdapter("dueDate")
 fun bindDueDateText(tv: TextView, dueDate: LocalDate?) {
     tv.text = dueDate?.formattedDueDate() ?: ""
 }
 
+/**
+ * For a TextView, receives a task and sets its color according to the dueDate & isDone status
+ */
 @BindingAdapter("expected_date")
 fun bindDueDateColor(tv: TextView, task: Task) {
     val color = if (!task.isDone) {
@@ -66,9 +81,8 @@ fun bindDueDateColor(tv: TextView, task: Task) {
             tv.context.getColor(R.color.black)
         }
     } else {
-        //there is a strange bug ONLY in a testing version that does not force future dates
-        // the bug causes dueDates on TaskList to be colored when task is done in really strange ways when view is modified from TaskList (scrolling & markDone)
-        //the bug causes non-deterministic date coloring, ONLY on tasks marked as done, no matter the date, markDone can cause the color to shift between colors
+        //there was a strange bug in previous versions (see Assignment-10)
+        //the bug caused non-deterministic dueDate coloring, when no default color was given.
         tv.context.getColor(R.color.default_color)
     }
     tv.setTextColor(color)

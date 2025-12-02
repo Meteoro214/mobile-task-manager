@@ -76,6 +76,7 @@
 
 
     <string name="preferences_file">MTM_Preferences</string>
+    <string name="db_name">task_db</string>
     <string name="preferences_first_init_key">First_Install</string>
 
 </resources>

@@ -4,6 +4,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.time.LocalDate
 
+/**
+ * Class to represent a Task, with id, title, a due date, a Category, a description, and a status (done/not done)
+ */
 class Task(
     val id: Long,
     var title: String = "",
@@ -14,6 +17,9 @@ class Task(
 ) : Parcelable {
 
     var dueDate: LocalDate? = dueDate
+        /**
+         * Ensures dueDate is not in the past
+         */
         set(value) {
             require(
                 value?.isBefore(LocalDate.now()) == false
@@ -22,19 +28,29 @@ class Task(
         }
 
     var category: Category? = category
+        /**
+         * Ensures Category is not null
+         */
         set(value) {
             require(value != null) { "Cannot set a null category" }
             field = value
         }
 
-    //Title may be empty,date & category may be null
-    // but will not be accepted on adding/editing
-    //will accept past dates, only in constructor
+    /**
+     * Requires constructor given id to be a positive Long, but this id will be modified by TaskRepository on add
+     * TaskRepository expects id to be 0
+     * When creating a Task, title may be empty, date & category may be null.
+     * Date & Category setters will ensure no nulls & no past dates.
+     * TaskRepository will ensure no nulls, no empty titles & no past dates on add or edit operations.
+     */
     init {
         require(id >= 0) { "ID mustn`t be negative" }
     }
 
 
+    /**
+     * Returns a copy of this.
+     */
     fun copy(): Task =
         Task(
             this.id,

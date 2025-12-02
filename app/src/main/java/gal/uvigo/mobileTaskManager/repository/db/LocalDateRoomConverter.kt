@@ -6,6 +6,9 @@ import gal.uvigo.mobileTaskManager.model.formattedDueDateWithYear
 import java.time.LocalDate
 
 
+/**
+ * Class to allow Room to handle LocalDates
+ */
 class LocalDateRoomConverter {
 
     @TypeConverter

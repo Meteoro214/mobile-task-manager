@@ -12,20 +12,20 @@ import java.time.LocalDate
 
 class TaskViewModel(app: Application) : AndroidViewModel(app) {
 
+    /**
+     * The TaskRepository that will handle our Tasks
+     */
     private val repo = TaskRepository(app)
 
-
+    /**
+     * The List of TaskItems, grouped by category and ordered
+     */
     val taskListItems: LiveData<List<TaskListItem>> =
         repo.tasks.map { tasks ->
             if (tasks.isEmpty()) {
                 emptyList()
             } else {
-                // category will never be null
                 tasks
-                    .sortedWith(
-                        compareBy<Task> { it.category?.name }
-                            .thenBy { it.dueDate }.thenBy { it.id } //para orden seria ponerle aqui que ordenase por categoria y luego por orden
-                    )
                     .groupBy { it.category }
                     .flatMap { (category, categoryTasks) ->
                         listOf(TaskListItem.Header(category ?: Category.OTHER)) +
@@ -34,16 +34,19 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
             }
         }
 
+    /**
+     * Launches initial Repository configuration (ensures tasks are synced on first launch after a reinstall)
+     */
     init {
-        viewModelScope.launch { //esto renombrarlo y que sea tipo init o algo
-            repo.download()
+        viewModelScope.launch {
+            repo.init()
         }
     }
 
     /**
      * Adds a new task with the next available ID, and the given info.
      * As a default, use an empty title & description, current date as dueDate and Category other.
-     * Returns null if add operation fails, or the task if it succeeds
+     * Throws IllegalArgumentException if title is blank
      */
     fun addTask(
         title: String,
@@ -52,14 +55,18 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         category: Category = Category.OTHER,
         isDone: Boolean = false
     ) {
-        if (title.isBlank()) throw IllegalArgumentException()
+        if (title.isBlank() || dueDate.isBefore(LocalDate.now())) throw IllegalArgumentException()
         else {
-            // ID MUST BE 0 OR AUTOINCREMENTAL PK WILL TAKE THE PLACEHOLDER VALUE!!!
+            // ID must be 0 for TaskRepository to issue an ID
+            // If not 0, TaskRepository will maintain the given ID
             val t = Task(0, title, dueDate, category, description, isDone)
             addTask(t)
         }
     }
 
+    /**
+     * Launches TaskRepository add operation
+     */
     private fun addTask(t: Task) {
         viewModelScope.launch {
             repo.addTask(t)
@@ -69,12 +76,15 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     /**
      * Updates the given task maintaining order. Replaces the existing task with the same id on the Task List with the given task.
      * Returns true if update is correct, false if no task with the task id exists.
+     * Throws IllegalArgumentException if updated values are not allowed.
      */
     fun updateTask(updated: Task): Boolean {
         val current = this.get(updated.id)
-        return if (current == null || updated.title.isBlank()
-            || updated.dueDate?.isBefore(LocalDate.now()) ?: true || updated.category == null
-        ) false
+        if (current == null) return false
+        if ( updated.title.isBlank()
+            || updated.dueDate?.isBefore(LocalDate.now()) ?: true
+            || updated.category == null)
+            throw IllegalArgumentException()
         else {
             current.isDone = updated.isDone
             current.category = updated.category
@@ -82,10 +92,13 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
             current.description = updated.description
             current.dueDate = updated.dueDate
             update(updated)
-            true
+            return true
         }
     }
 
+    /**
+     * Launches TaskRepository update operation
+     */
     private fun update(t: Task) {
         viewModelScope.launch {
             repo.updateTask(t)
@@ -111,6 +124,9 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /**
+     * Launches TaskRepository markTaskDone operation
+     */
     private fun markDone(id: Long) {
         viewModelScope.launch {
             repo.markTaskDone(id)
@@ -121,6 +137,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
      * Retrieves the task with the given id or returns null if no such task exists
      */
     fun get(id: Long): Task? = repo.get(id)
+
 
     /**
      * Deletes the task with the given ID, if it exists.
@@ -134,10 +151,20 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         return t != null
     }
 
+    /**
+     * Launches TaskRepository delete operation
+     */
     private fun delete(t: Task) {
         viewModelScope.launch {
             repo.deleteTask(t)
         }
+    }
+
+    /**
+     * TODO reorder in repo, reorder in UI
+     */
+    fun reorder(){
+        //TODO
     }
 
 }

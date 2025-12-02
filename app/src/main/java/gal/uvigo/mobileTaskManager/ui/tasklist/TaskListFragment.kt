@@ -18,21 +18,33 @@ import gal.uvigo.mobileTaskManager.model.TaskViewModel
 import gal.uvigo.mobileTaskManager.ui.tasklist.adapter.TaskAdapter
 import gal.uvigo.mobileTaskManager.ui.tasklist.adapter.TaskListItem
 
+/**
+ * Fragment to show the list of tasks
+ */
 class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
-    private val viewModel: TaskViewModel by activityViewModels()
+    /**
+     * Binding for the layout
+     */
     private lateinit var binding: FragmentTaskListBinding
+
+    /**
+     * TaskViewModel to handle Tasks
+     */
+    private val viewModel: TaskViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
         binding.taskRV.layoutManager = LinearLayoutManager(context)
+        //Creates task adapter and sends lambda for ItemTask onClick
         binding.taskRV.adapter = TaskAdapter { task ->
             findNavController()
                 .navigate(TaskListFragmentDirections.checkTaskDetails(task.id))
         }
 
+        //Observes taskList
         viewModel.taskListItems.observe(viewLifecycleOwner) { taskList ->
             (binding.taskRV.adapter as TaskAdapter).submitList(taskList)
         }
@@ -43,6 +55,14 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         setHasOptionsMenu(true)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.task_list_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    /**
+     * Setups Swipe actions
+     */
     private fun setupSwipe() {
         val swipeHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
@@ -184,6 +204,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         swipeHelper.attachToRecyclerView(binding.taskRV)
     }
 
+    /**
+     * Setups Drag actions
+     */
     private fun setupDrag() {
         val dragHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
@@ -203,7 +226,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
                 return if (fromItem is TaskListItem.TaskItem && toItem is TaskListItem.TaskItem
                     && fromItem.task.category == toItem.task.category
-                ) {
+                ) { //TODO modify
                     list.removeAt(to)
                     list.add(to, fromItem)
                     list.removeAt(from)
@@ -257,11 +280,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         })
 
         dragHelper.attachToRecyclerView(binding.taskRV)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.task_list_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
 }

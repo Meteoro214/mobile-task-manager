@@ -17,7 +17,7 @@ This repository contains the implementation for **Assignment 12** of the Task Ma
 ## 📝 Notes
 
 
-### 📝 URGENT
+### 📝 IMPORTANT
 CrudCrud API only allows 24h of service OR up to 100 operations. To reset the API, you must obtain a new API key from CrudCrud and change the stored API key in API.xml file.
 
 ---
@@ -128,4 +128,11 @@ aun asi hay que mantener task anotada para mandarla al servidor (task o task ent
 
 Refactorizar entity y dto para el que toque
 
-el json adapter que use metodos de extension
+
+Capa de UI faltan los fragmentos de form y los setupAction de list
+en list revisar lo del orden
+model esta revisado, falta hacer lo del orden en TVM
+Refactorizar network (2 clases TaskDTO, una envio otra recibe (con sin _id))
+Refactorizar Repo
+Refactorizar el DAO y la Entity
+Crear los worked

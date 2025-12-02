@@ -6,8 +6,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.R
 
-@Database(entities = [Task::class], version = 3, exportSchema = false)
+/**
+ * Class to represent the Database.
+ */
+@Database(entities = [Task::class], version = 4, exportSchema = false)
 @TypeConverters(LocalDateRoomConverter::class)
 abstract class TaskDB : RoomDatabase() {
     abstract fun taskDAO(): TaskDAO
@@ -20,7 +24,7 @@ abstract class TaskDB : RoomDatabase() {
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    TaskDB::class.java, "task_db"
+                    TaskDB::class.java, context.getString(R.string.db_name)
                 ).fallbackToDestructiveMigration(true)
                     .build().also { INSTANCE = it }
             }
