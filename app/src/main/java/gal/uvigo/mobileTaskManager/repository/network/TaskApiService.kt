@@ -1,6 +1,5 @@
 package gal.uvigo.mobileTaskManager.repository.network
 
-import gal.uvigo.mobileTaskManager.model.Task
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -11,13 +10,13 @@ import retrofit2.http.Path
 interface TaskApiService {
 
     @POST("tasks")
-    suspend fun insert(@Body task : Task) : TaskGetDTO
+    suspend fun insert(@Body task: TaskSendDTO): TaskGetDTO
 
     @PUT("tasks/{idCrudCrud}")
-    suspend fun update(@Path("idCrudCrud") _id : String,@Body updated : Task)
+    suspend fun update(@Path("idCrudCrud") _id: String, @Body updated: TaskSendDTO)
 
     @DELETE("tasks/{idCrudCrud}")
-    suspend fun delete(@Path("idCrudCrud") _id : String)
+    suspend fun delete(@Path("idCrudCrud") _id: String)
 
     @GET("tasks")
     suspend fun getAll(): List<TaskGetDTO>

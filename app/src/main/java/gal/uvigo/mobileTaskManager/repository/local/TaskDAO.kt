@@ -7,29 +7,70 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.repository.sync.SyncStatus
 
 @Dao
 interface TaskDAO {
 
-    //Returns rowID (equivalent to taskID) will always give the last task ID+1
-    //Should return -1 on error
+    /**
+     * Expected to return rowID (also used as Task id), will always be last task id +1
+     * Expected to return -1 on error
+     */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(task: Task): Long
+    suspend fun insert(task: TaskEntity): Long
 
-    //Returns number of updated rows
+    /**
+     * Expected to return number of updated rows (1).
+     * Stores the CrudCrud generated _id.
+     * Call only after sync.
+     */
+    @Query("UPDATE tasks SET _id = :idCC WHERE id = :id")
+    suspend fun syncInsert(id : Long, idCC : String): Int
+
+    /**
+     * Expected to return number of updated rows (1).
+     */
     @Update
-    suspend fun update(updated: Task): Int
+    suspend fun update(updated: TaskEntity): Int
 
-    //Returns number of updated rows
+    /**
+     * Expected to return number of updated rows (1).
+     */
     @Query("UPDATE tasks SET isDone = true WHERE id = :id")
     suspend fun markDone(id: Long): Int
 
-    //Returns number of deleted rows
-    @Delete
-    suspend fun delete(task: Task): Int
+    /**
+     * Expected to return number of updated rows (1).
+     */
+    @Query("UPDATE tasks SET position = :newPos WHERE id = :id")
+    suspend fun changePosition(id: Long, newPos : Int): Int
 
-    //Returns empty list if no data
-    @Query("SELECT * FROM tasks ORDER BY id ASC")
-    fun getAll(): LiveData<List<Task>>
+    /**
+     * Expected to return number of updated rows (1).
+     */
+    @Query("UPDATE tasks SET sync_status = :sync WHERE id = :id")
+    suspend fun updateSyncStatus(id: Long, sync: SyncStatus = SyncStatus.SYNCED): Int
+
+    /**
+     * Expected to return number of updated rows (1).
+     * This is a soft delete.
+     */
+    @Query("UPDATE tasks SET sync_status = 'PENDING_DELETE' WHERE id = :id")
+    suspend fun delete(id: Long): Int
+
+    /**
+     * Expected to return number of updated rows (1).
+     * This is a hard delete.
+     * Perform only after sync operations.
+     */
+    @Delete
+    suspend fun trueDelete(task: TaskEntity): Int
+
+    /**
+     * Expected to return LiveData of empty list if no values.
+     * Will return tasks ordered by category and position
+     */
+    @Query("SELECT * FROM tasks WHERE sync_status <> 'PENDING_DELETE' ORDER BY category,position ASC")
+    fun getAll(): LiveData<List<TaskEntity>>
+
 }
