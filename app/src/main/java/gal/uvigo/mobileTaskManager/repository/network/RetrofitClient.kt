@@ -10,7 +10,7 @@ import gal.uvigo.mobileTaskManager.R
 
 class RetrofitClient private constructor(private val BASE_URL : String){
 
-    private val moshi = Moshi.Builder().add(LocalDateJMoshiAdapter()) //Needed to turn Task to Json
+    private val moshi = Moshi.Builder().add(LocalDateMoshiAdapter()) //Needed to turn Task to Json
         .build()
 
     private val retrofit: Retrofit = Retrofit.Builder()

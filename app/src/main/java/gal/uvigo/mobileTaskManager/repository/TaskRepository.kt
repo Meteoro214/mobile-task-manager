@@ -7,11 +7,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.repository.network.CrudCrudAPI
+import gal.uvigo.mobileTaskManager.repository.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class TaskRepository(context: Context) {
+
+//TODO
+
+
+
+
+    private val service = RetrofitClient.getInstance(context).service
+
+
+
 
     //Some values that use context for network error messages,stored to not store a context
     private val logTag = context.getString(R.string.Log_Tag)
@@ -21,7 +31,6 @@ class TaskRepository(context: Context) {
 
 
     private val dispatcher = Dispatchers.IO
-    private val networkAPI = CrudCrudAPI(context)
 
     private val _tasks = MutableLiveData<List<Task>>(emptyList())
     val tasks: LiveData<List<Task>>
