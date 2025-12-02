@@ -1,0 +1,27 @@
+package gal.uvigo.mobileTaskManager.repository.local
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
+import gal.uvigo.mobileTaskManager.model.Category
+import gal.uvigo.mobileTaskManager.repository.sync.SyncStatus
+import java.time.LocalDate
+
+/**
+ * Class to represent a Task when stored on Room / local DataBase, with all Task attributes,
+ * CrudCrud _id, order for persistent reordering when dragging, and syncState for synchronization with CrudCrud.
+ */
+@Entity(tableName = "tasks")
+data class TaskEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    var title: String,
+    @ColumnInfo(name = "due_date") var dueDate: LocalDate,
+    var category: Category,
+    var description: String,
+    var isDone: Boolean,
+    var _id: String?,
+    var order: Int,
+    @ColumnInfo(name = "sync_state") var syncState: SyncStatus
+)
