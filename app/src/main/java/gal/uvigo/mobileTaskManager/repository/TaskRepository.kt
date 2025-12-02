@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.repository.networking.CrudCrudAPI
+import gal.uvigo.mobileTaskManager.repository.network.CrudCrudAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

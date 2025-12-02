@@ -163,7 +163,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     /**
      * TODO reorder in repo, reorder in UI
      */
-    fun reorder(){
+    fun reorder(from : Int, to : Int){
         //TODO
     }
 

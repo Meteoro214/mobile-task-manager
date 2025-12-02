@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.repository.db
+package gal.uvigo.mobileTaskManager.repository.local
 
 import android.content.Context
 import androidx.room.Database

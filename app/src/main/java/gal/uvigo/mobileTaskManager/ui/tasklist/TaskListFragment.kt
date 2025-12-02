@@ -86,8 +86,11 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (binding.taskRV.adapter as TaskAdapter).currentList.getOrNull(pos)
-                if (item is TaskListItem.TaskItem) {
+
+                if (item is TaskListItem.TaskItem) { //Checks not header
+
                     when (direction) {
+                        //Deletes
                         ItemTouchHelper.LEFT -> {
                             val deleted = viewModel.deleteTask(item.task.id)
                             if (deleted) {
@@ -102,7 +105,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                                     getString(R.string.check_delete_error_msg),
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                //Needed incase delete fails on network error
+                                //Needed incase delete fails
                                 binding.taskRV.adapter?.notifyItemChanged(pos)
                             }
                         }
@@ -111,21 +114,27 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                             val updated = viewModel.markTaskDone(item.task.id)
                             //Used so adapter recharges view & removes the swipe background
                             binding.taskRV.adapter?.notifyItemChanged(pos)
-                            if (updated == true) {
-                                Toast.makeText(
-                                    requireContext(), getString(R.string.swipe_mark_OK_msg),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else if (updated == false) {
-                                Toast.makeText(
-                                    requireContext(), getString(R.string.swipe_mark_wasDone_msg),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {//Should never happen
-                                Toast.makeText(
-                                    requireContext(), getString(R.string.swipe_mark_error_msg),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                            when (updated) {
+                                true -> {
+                                    Toast.makeText(
+                                        requireContext(), getString(R.string.swipe_mark_OK_msg),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                false -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        getString(R.string.swipe_mark_wasDone_msg),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                else -> {//Should never happen
+                                    Toast.makeText(
+                                        requireContext(),
+                                        getString(R.string.swipe_mark_error_msg),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
                             }
                         }
 
@@ -227,11 +236,12 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 return if (fromItem is TaskListItem.TaskItem && toItem is TaskListItem.TaskItem
                     && fromItem.task.category == toItem.task.category
                 ) { //TODO modify
-                    list.removeAt(to)
+             /*       list.removeAt(to)
                     list.add(to, fromItem)
                     list.removeAt(from)
                     list.add(from, toItem)
-                    adapter.submitList(list)
+                    adapter.submitList(list) */
+                    viewModel.reorder(from, to)
                     true
                 } else {
                     false

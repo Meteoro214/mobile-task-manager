@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.repository.networking
+package gal.uvigo.mobileTaskManager.repository.network
 
 
 import android.content.Context

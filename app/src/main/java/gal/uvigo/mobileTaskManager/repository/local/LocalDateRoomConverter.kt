@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.repository.db
+package gal.uvigo.mobileTaskManager.repository.local
 
 import androidx.room.TypeConverter
 import gal.uvigo.mobileTaskManager.model.createDateFromMMDD

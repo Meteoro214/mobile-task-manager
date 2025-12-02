@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager.repository.db
+package gal.uvigo.mobileTaskManager.repository.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
