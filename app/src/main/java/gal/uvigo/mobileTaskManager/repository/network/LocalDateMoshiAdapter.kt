@@ -9,7 +9,7 @@ import gal.uvigo.mobileTaskManager.model.formattedDueDateWithYear
 /**
  * Class to allow Moshi to handle LocalDates
  */
-class LocalDateJMoshiAdapter {
+class LocalDateMoshiAdapter {
 
     @ToJson
     fun toJson(date: LocalDate): String = date.formattedDueDateWithYear()
