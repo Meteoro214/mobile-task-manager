@@ -122,17 +122,9 @@ habria que hacer en el vm metodo de orden, que llame a metodo en el dao, que hag
 
 
 
-Refactor TaskClass
-aun asi hay que mantener task anotada para mandarla al servidor (task o task entity?)
 
-
-Refactorizar entity y dto para el que toque
-
-
-Capa de UI faltan los fragmentos de form y los setupAction de list
-en list revisar lo del orden
 model esta revisado, falta hacer lo del orden en TVM
-Refactorizar network (2 clases TaskDTO, una envio otra recibe (con sin _id))
-Refactorizar Repo
-Refactorizar el DAO y la Entity
-Crear los worked
+Crear los workers
+meter CCAPI al repo
+Hacer repo
+hacer lo de orden en general

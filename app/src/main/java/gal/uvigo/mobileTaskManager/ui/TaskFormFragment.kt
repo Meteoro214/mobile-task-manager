@@ -21,10 +21,29 @@ import java.time.LocalDate
 
 class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
-    private val args: TaskFormFragmentArgs by navArgs()
-    private lateinit var navController: NavController
-    private val viewModel: TaskViewModel by activityViewModels()
+    /**
+     * Binding for the layout
+     */
     private lateinit var binding: FragmentTaskFormBinding
+
+    /**
+     * NavController for navigation
+     */
+    private lateinit var navController: NavController
+
+    /**
+     * Arguments received on navigation. Expected to receive a taskID (long)
+     */
+    private val args: TaskFormFragmentArgs by navArgs()
+
+    /**
+     * TaskViewModel to handle Tasks
+     */
+    private val viewModel: TaskViewModel by activityViewModels()
+
+    /**
+     * Flag to know if task was saved when executing onPause
+     */
     private var saved = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,10 +55,13 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         //Loads task passed in SafeArgs
         loadTask()
         //Config AutoCompleteTextView
-        configACTVCategory()
+        setupACTVCategory()
         binding.saveTaskButton.setOnClickListener { v -> saveButtonAction() }
     }
 
+    /**
+     * Loads task info passed in Navigation Arguments.
+     */
     private fun loadTask() {
         if (isEditingForm()) { //Existing task
             val t = viewModel.get(args.taskID)?.copy()
@@ -56,19 +78,25 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
-            //ID will change when added, isDone/description/Category use the defaults
-            binding.taskData = Task(0)
+            //ID will change when added, isDone/description/title use the defaults  (false orempty)
             // Category & Date will be null to start to show empty form
+            binding.taskData = Task(0)
         }
     }
 
-    private fun configACTVCategory() {
+    /**
+     * Setups AutoCompleteTextView for Category
+     */
+    private fun setupACTVCategory() {
+        //Gets string resources to not show names from code directly
         val categories = resources.getStringArray(R.array.categories)
+
         val adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line, categories
         )
         binding.categoryInput.setAdapter(adapter)
+
         binding.categoryInput.onFocusChangeListener =
             View.OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
@@ -92,6 +120,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
     }
 
+    /**
+     * Method to execute when Save Button is pressed
+     */
     private fun saveButtonAction() {
         //verify info
         if (verifyTask()) {
@@ -100,6 +131,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         }
     }
 
+    /**
+     * Validates the input for a Task
+     */
     private fun verifyTask(): Boolean {
         var toRet = true
         if (binding.taskData?.title?.isEmpty() ?: true) {
@@ -121,6 +155,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         return toRet
     }
 
+    /**
+     * Saves a Task after input is verified
+     */
     private fun saveTask() {
         //Data is already verified
         if (isEditingForm()) { //Existing task
@@ -132,8 +169,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 ).show()
             }
         } else { //New task
-            //Adds the task  the info on the binding
-            //Only change will be the ID (binding has a placeholder, database will save with a real ID)
+            //Only change will be the ID (binding has a placeholder, ViewModel will save with a real ID)
             //Should never fail, data has already been checked
             viewModel.addTask(
                 binding.taskData?.title ?: "",
@@ -260,6 +296,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         binding.taskData = binding.taskData
     }
 
+    /**
+     * Method to check whether we are editing or adding a task
+     */
     private fun isEditingForm(): Boolean =
         args.taskID != -1L //-1 Default value, no real value passed
 

@@ -8,7 +8,7 @@ import java.time.LocalDate
  * Class to represent a Task when retrieved from CrudCrud, with all TaskSendDTO attributes
  * and CrudCrud _id
  */
-@JsonClass (generateAdapter = true)
+@JsonClass(generateAdapter = true)
 data class TaskGetDTO(
     val _id: String,
     val id: Long,
@@ -17,6 +17,6 @@ data class TaskGetDTO(
     var category: Category,
     var description: String,
     var isDone: Boolean,
-    var order: Int
+    var position: Int
 )
 

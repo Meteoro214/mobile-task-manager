@@ -3,6 +3,7 @@ package gal.uvigo.mobileTaskManager.repository.network
 import android.content.Context
 import gal.uvigo.mobileTaskManager.model.Task
 
+//TODO delete and port to repo
 class CrudCrudAPI(context: Context) {
     private val service = RetrofitClient.getInstance(context).service
 
