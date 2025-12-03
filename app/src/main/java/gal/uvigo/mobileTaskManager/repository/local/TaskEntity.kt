@@ -13,13 +13,13 @@ import java.time.LocalDate
  */
 @Entity(tableName = "tasks")
 data class TaskEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     var title: String,
     @ColumnInfo(name = "due_date") var dueDate: LocalDate,
     var category: Category,
     var description: String,
     var isDone: Boolean,
-    var _id: String?,
     var position: Int,
-    @ColumnInfo(name = "sync_status") var syncStatus: SyncStatus
+    var _id: String? = null,
+    @ColumnInfo(name = "sync_status") var syncStatus: SyncStatus = SyncStatus.PENDING_CREATE
 )

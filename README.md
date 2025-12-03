@@ -17,6 +17,11 @@ This repository contains the implementation for **Assignment 12** of the Task Ma
 ## 📝 Notes
 
 
+Esto es falso despues de meterle append, reescribir cuando acabe y sepa bien 
+
+- I have assumed that sync operations are performed on enqueuing order. This means assuming no update or delete operation will be executed to CrudCrud before the Task has been inserted, and no update can happen after a delete. App will not update if task is pending delete (meaning a task was deleted after an update, but before the update synced) but no checks are performed to ensure a Task actually exists on CrudCrud.
+- If 2 or more different updates are enqueued to sync with CrudCrud, only the last one will be executed to save on API calls, as the last update would have overwritten the earlier ones when performed.
+
 ### 📝 IMPORTANT
 CrudCrud API only allows 24h of service OR up to 100 operations. To reset the API, you must obtain a new API key from CrudCrud and change the stored API key in API.xml file.
 
@@ -25,10 +30,6 @@ CrudCrud API only allows 24h of service OR up to 100 operations. To reset the AP
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
 > See the course syllabus and lab instructions for more details.
 
-
-
-
-Room va a ser la fuente de datos real.
 
 
 LECTURA
@@ -43,74 +44,23 @@ Opcional  se solicita la operacion al servidor cuando haya conexion usando worke
 hacer un request por cada operacion
 
 
-1 Task para el modelo   Task
-1 Task para el DB       TaskEntity
-1 Task para CrudCrud    TaskDTO
-Conversiones en el Repo = Mappers
-el crudCrudApi renombrarlo a mapper o algo
-el repo que use mappers intermedios?
-el repo tiene que hacer los mappeos entre tipos de task
-valen clases mapper o tenerlo en el repo
-
-
-Task las 6 clasicas
-dto +_id
-Entity +_id y posible lo de sync y a mayores el orden
-
-Mappear dto a entity para sync inicial de 1ra vez al recuperar
-
 
 if Room empty recupera de server
-si no empty sync
-
-
-guardar la id original en crudcrud? yo lo haria
-
-
-
 el network lo llevaria todo el work manager
-
-puede que actualice demasiado el livedata al cambiar el estado del sync
-
 el request si falla con server no hace nada, no avisa, en todo caso loggea
-
-mirar themes night para el color de texto
-
 al worker pasarle la id de la task/la propia task y el dao para que pueda acceder y eliminar o modificar el estado?
-
-al dao añadirle metodos de modificacion directa del estado
 la task se pasaria al worker como inputData
-
 casi seguro hay que pasar la task como sus valores
 necesita el _id, trabajar con el dto
 el dao retrievearlo dentro
 pasarle la task ya hecha/datos y no hacer un get por optimizar, el dao seria para cambiar estado o deletear
-
-
 comprobar lo del default color
-
-
 hacer lo de ordenar con swipe (guardar un orden en el TaskEntity)
 
-preferencias app sharepreferences es un mapa clave valor meterle una variable bool
-logica de esto en el repo
-
-
-todo encima del viewmodel estaria hecho
-el viewmodel cambiar el init y lo de move si lo hago
-
-
-
 primero se guarda en local con _id null, cuando se haga el sync_created se actualiza el _id
-
-
 si se actualiza una que este sync_created, no se le pone en uodated
 si se deletea, simplemente se deletea sin entrar a sync
 
-
-en inicio se fuerza sincroniza
-
-en inicio se sincroniza, o se asume sincronizado?
 
 
 En taskListItems //para orden seria ponerle aqui que ordenase por categoria y luego por orden (pero el orden seria en TaskEntity principalmente)
@@ -123,8 +73,8 @@ habria que hacer en el vm metodo de orden, que llame a metodo en el dao, que hag
 
 
 
-model esta revisado, falta hacer lo del orden en TVM
 Crear los workers
-meter CCAPI al repo
 Hacer repo
 hacer lo de orden en general
+
+metodos en el repo para permitir al worker trbaajar con repo

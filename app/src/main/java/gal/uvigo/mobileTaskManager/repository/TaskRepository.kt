@@ -5,9 +5,18 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.repository.local.TaskDB
 import gal.uvigo.mobileTaskManager.repository.network.RetrofitClient
+import gal.uvigo.mobileTaskManager.repository.sync.SyncStatus
+import gal.uvigo.mobileTaskManager.repository.sync.TaskUploadWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -16,11 +25,10 @@ class TaskRepository(context: Context) {
 //TODO
 
 
+    private val taskService = RetrofitClient.getInstance(context).service
+    private val taskDAO = TaskDB.getInstance(context).taskDAO()
 
-
-    private val service = RetrofitClient.getInstance(context).service
-
-
+    private val workManager = WorkManager.getInstance(context)
 
 
     //Some values that use context for network error messages,stored to not store a context
@@ -50,17 +58,20 @@ class TaskRepository(context: Context) {
 * */
 
     init {
-        val settings = context.getSharedPreferences(context.getString(R.string.preferences_file),Context.MODE_PRIVATE)
+        val settings = context.getSharedPreferences(
+            context.getString(R.string.preferences_file),
+            Context.MODE_PRIVATE
+        )
         val key = context.getString(R.string.preferences_first_init_key)
-        val firstInit = settings.getBoolean(key,true)
-        if(firstInit){
+        val firstInit = settings.getBoolean(key, true)
+        if (firstInit) {
             //TODO operate and set firstInit to false
 
             //este init volverlo un metodo normal y llamarlo desde el init de viewmodel (donde llama al download ahora)
 
             //set flag so app knows
-            settings.edit().putBoolean(key, false).commit();
-        }else{
+            settings.edit().putBoolean(key, false).commit()
+        } else {
             //TODO operate
             //se asume sincronizado por workers
         }
@@ -183,4 +194,85 @@ class TaskRepository(context: Context) {
         } else 1
         nextId = lastId
     }
+
+    private fun prepareSync(id: Long, status: SyncStatus) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.UNMETERED)
+            .build()
+
+        val taskWorkRequest = OneTimeWorkRequestBuilder<TaskUploadWorker>()
+            .setInputData(
+                workDataOf(
+                    "taskID" to id,
+                    "taskStatus" to status.name,
+                )
+            )
+            .setConstraints(constraints)
+            .build()
+
+        val workPolicy = when (status) {
+            SyncStatus.PENDING_CREATE -> {
+                //Create operation should only happen once and be the first, so
+                // pending work with the same task ID means a bug happened
+                // Replace because when request with same name fails it is pending and keeps the name
+                ExistingWorkPolicy.REPLACE
+            }
+
+            SyncStatus.PENDING_UPDATE -> {
+                //Update operation should happen after create operation
+                //this means there may be a pending operation
+                //create/update could be pending, delete shouldn´t, so we need to APPEND the work request
+                // to ensure it is executed after the pending ones
+                //If previous fails, it does not matter if it was an update, but a failed insert
+                //means update will also fail, so if previous fails so does this one (no AppendOrReplace)
+                ExistingWorkPolicy.APPEND
+            }
+
+            SyncStatus.PENDING_DELETE -> {
+                //Delete operation should be the last to happen
+                //It requires Create operation to succeed, and ignores any update operation pending
+                //but if create is still pending and is not executed, then delete is not needed, so
+                // Delete can check when executing if Task exists in CrudCrud, and if insert was
+                // pending and REPLACED, do no API calls
+                ExistingWorkPolicy.REPLACE
+            }
+
+            //Should never happen, ensures no work is enqueued
+            else -> return
+        }
+
+        workManager.enqueueUniqueWork(
+            id.toString(),
+            workPolicy, taskWorkRequest
+        )
+    }
+
+    suspend fun sync(id: Long, syncStatus: SyncStatus) : Int {
+        withContext(dispatcher) {
+            val entity = taskDAO.get(id)
+            if(entity != null){
+
+            } else{
+                //Log and fail
+                //return error codes so worker knows string to use
+                //Log on worker class
+            }
+            //get from DB (entity)
+            // Switch based on sync status
+        //map to DTO
+        //send to network
+            //clean up
+            //api calls with try catch, fail and log on catch
+
+            //if operation is update, check status is pending update,
+            // not delete (should never be pending_insert, because an update would overwrite sync Status)
+            // if it is delete when updating, no API call but no delete (let the delete Worker do it)
+
+            //if operation is insert, check status is not delete, if delete fail and delete the task without API calls
+            //if operation is delete, status is always pending delete, only do API call if DB has the item (could be cancelled if not inserted) AND it has _id (it exists in CrudCrud)
+
+            //Note that status may be SYNCED after a succesfull Insert or Update
+        }
+    }
+
 }
