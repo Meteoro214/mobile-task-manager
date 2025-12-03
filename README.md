@@ -44,6 +44,7 @@ Opcional  se solicita la operacion al servidor cuando haya conexion usando worke
 hacer un request por cada operacion
 
 
+hacer un string file que sea de strings hardcoreadas internas
 
 if Room empty recupera de server
 el network lo llevaria todo el work manager

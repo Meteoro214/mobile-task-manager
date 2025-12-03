@@ -37,6 +37,8 @@ class TaskRepository(context: Context) {
     private val downloadErrorMsg = context.getString(R.string.network_error_down)
     private val toastMsg = Toast.makeText(context, "", Toast.LENGTH_SHORT)
 
+    private val taskIDKey = context.getString(R.string.Task_ID_Key)
+    private val taskStatusKey = context.getString(R.string.Task_Status_Key)
 
     private val dispatcher = Dispatchers.IO
 
@@ -203,8 +205,8 @@ class TaskRepository(context: Context) {
         val taskWorkRequest = OneTimeWorkRequestBuilder<TaskUploadWorker>()
             .setInputData(
                 workDataOf(
-                    "taskID" to id,
-                    "taskStatus" to status.name,
+                    taskIDKey to id,
+                    taskStatusKey to status.name,
                 )
             )
             .setConstraints(constraints)
@@ -247,20 +249,23 @@ class TaskRepository(context: Context) {
         )
     }
 
-    suspend fun sync(id: Long, syncStatus: SyncStatus) : Int {
+    suspend fun sync(id: Long, syncStatusName: String): Int {
+
+
+        //check syncStatus is valid
         withContext(dispatcher) {
             val entity = taskDAO.get(id)
-            if(entity != null){
+            if (entity != null) {
 
-            } else{
+            } else {
                 //Log and fail
                 //return error codes so worker knows string to use
                 //Log on worker class
             }
             //get from DB (entity)
             // Switch based on sync status
-        //map to DTO
-        //send to network
+            //map to DTO
+            //send to network
             //clean up
             //api calls with try catch, fail and log on catch
 
