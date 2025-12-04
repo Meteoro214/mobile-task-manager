@@ -28,6 +28,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
                 tasks
                     .groupBy { it.category }
                     .flatMap { (category, categoryTasks) ->
+                        //Category is never null
                         listOf(TaskListItem.Header(category ?: Category.OTHER)) +
                                 categoryTasks.map { TaskListItem.TaskItem(it) }
                     }
@@ -81,9 +82,10 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     fun updateTask(updated: Task): Boolean {
         val current = this.get(updated.id)
         if (current == null) return false
-        if ( updated.title.isBlank()
+        if (updated.title.isBlank()
             || updated.dueDate?.isBefore(LocalDate.now()) ?: true
-            || updated.category == null)
+            || updated.category == null
+        )
             throw IllegalArgumentException()
         else {
             current.isDone = updated.isDone
@@ -134,10 +136,27 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
+     * Swaps the position of the 2 tasks with the given IDs
+     */
+    fun reorder(fromID: Long, toID: Long) : Boolean {
+        if(get(fromID) == null || get(toID) == null) return false
+        changePosition(fromID,toID)
+        return true
+    }
+
+    /**
+     * Launches TaskRepository reorder operation.
+     */
+    private fun changePosition(fromID: Long, toID: Long) {
+        viewModelScope.launch {
+            repo.reorder(fromID,toID)
+        }
+    }
+
+    /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
     fun get(id: Long): Task? = repo.get(id)
-
 
     /**
      * Deletes the task with the given ID, if it exists.
@@ -160,11 +179,5 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /**
-     * TODO reorder in repo, reorder in UI
-     */
-    fun reorder(from : Int, to : Int){
-        //TODO
-    }
 
 }

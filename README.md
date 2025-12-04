@@ -32,6 +32,13 @@ CrudCrud API only allows 24h of service OR up to 100 operations. To reset the AP
 
 
 
+
+    //Some values that use context for network error messages,stored to not store a context
+    private val logTag = context.getString(R.string.Log_Tag)
+    private val uploadErrorMsg = context.getString(R.string.network_error_up)
+    private val downloadErrorMsg = context.getString(R.string.network_error_down)
+    private val toastMsg = Toast.makeText(context, "", Toast.LENGTH_SHORT)
+
 LECTURA
 La primera vez, se leen los datos del server porque Room estara vacio
 En proximas ejecuciones intentara leer Room y no del server, se asume que estan sincronizados
@@ -45,34 +52,6 @@ hacer un request por cada operacion
 
 
 hacer un string file que sea de strings hardcoreadas internas
-
-if Room empty recupera de server
-el network lo llevaria todo el work manager
-el request si falla con server no hace nada, no avisa, en todo caso loggea
-al worker pasarle la id de la task/la propia task y el dao para que pueda acceder y eliminar o modificar el estado?
-la task se pasaria al worker como inputData
-casi seguro hay que pasar la task como sus valores
-necesita el _id, trabajar con el dto
-el dao retrievearlo dentro
-pasarle la task ya hecha/datos y no hacer un get por optimizar, el dao seria para cambiar estado o deletear
-comprobar lo del default color
-hacer lo de ordenar con swipe (guardar un orden en el TaskEntity)
-
-primero se guarda en local con _id null, cuando se haga el sync_created se actualiza el _id
-si se actualiza una que este sync_created, no se le pone en uodated
-si se deletea, simplemente se deletea sin entrar a sync
-
-
-
-En taskListItems //para orden seria ponerle aqui que ordenase por categoria y luego por orden (pero el orden seria en TaskEntity principalmente)
-Al pasar de entity a task la lista normal, que del dao venga ordenada la lista y se muestre ordenada
-orden = id inicial y luego se modifica
-repo va a tomar el livedata de entitys y transformarlo en task a secas, que el de entitys venga ordenado de la db y ya
-taskdto tendra el orden tambien para guardarlo
-habria que hacer en el vm metodo de orden, que llame a metodo en el dao, que haga que el worker lo haga como un update
-
-
-
 
 Crear los workers
 Hacer repo

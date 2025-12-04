@@ -15,6 +15,8 @@ class TaskUploadWorker(appContext: Context, params: WorkerParameters) :
         val id = inputData.getLong(applicationContext.getString(R.string.Task_ID_Key),-1)
         val statusName = inputData.getString(applicationContext.getString(R.string.Task_Status_Key))
 
+        if(id == -1L || statusName == null) return Result.failure()
+
 
 
         val repo = TaskRepository(applicationContext)
@@ -23,5 +25,6 @@ class TaskUploadWorker(appContext: Context, params: WorkerParameters) :
         //read return code
         //log if error
         // success or fail
+        //check if isStopped on failure = retry
     }
 }

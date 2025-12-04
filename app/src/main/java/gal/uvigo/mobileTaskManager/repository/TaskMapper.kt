@@ -1,31 +1,85 @@
 package gal.uvigo.mobileTaskManager.repository
 
-import gal.uvigo.mobileTaskManager.repository.local.TaskEntity
+import gal.uvigo.mobileTaskManager.model.Category
 import gal.uvigo.mobileTaskManager.model.Task
+import gal.uvigo.mobileTaskManager.repository.local.TaskEntity
+import gal.uvigo.mobileTaskManager.repository.network.TaskGetDTO
+import gal.uvigo.mobileTaskManager.repository.network.TaskSendDTO
+import gal.uvigo.mobileTaskManager.repository.sync.SyncStatus
+import java.time.LocalDate
 
 /**
  * Class to handle conversions between the different classes that represent Tasks
  */
 class TaskMapper {
 
-    //Only ussed for insert
-    //Requires position to be passed, _id will be null and sync status will be pending_created
-    fun toEntity(task : Task, position : Int) : TaskEntity
-    // Task to Entity (add/update to Room)  _id to null, Sync to pending_insert/update, position to next one
-    // Task to SendDTO (NEVER)
-    // Task to GetDTO (NEVER)
+    /**
+     * Transforms a Task into a TaskEntity.
+     * Used to store Tasks in Room.
+     * Sets syncStatus to PENDING_CREATE and _id to null.
+     */
+    fun toEntity(task: Task, position: Int): TaskEntity =
+        TaskEntity(
+            task.id,
+            task.title,
+            task.dueDate ?: LocalDate.now(),
+            task.category ?: Category.OTHER,
+            task.description,
+            task.isDone,
+            position,
+            null,
+            SyncStatus.PENDING_CREATE
+        )
 
-    // Entity to Task (transforming getAll and get) (ordering is done on dao, ignore position,_id, syncStatus)
-    // Entity to SendDTO (sync to CruCrud) (ignore _id, sync)
-    // Entity to GetDTO (NEVER)
+    /**
+     * Transforms a TaskGetDTO into a TaskEntity.
+     * Will ignore syncStatus, position and _id.
+     * Used to read Tasks from CrudCrud on first app launch.
+     * Sets syncStatus to SYNCED.
+     */
+    fun toEntity(taskDTO: TaskGetDTO): TaskEntity =
+        TaskEntity(
+            taskDTO.id,
+            taskDTO.title,
+            taskDTO.dueDate,
+            taskDTO.category,
+            taskDTO.description,
+            taskDTO.isDone,
+            taskDTO.position,
+            taskDTO._id,
+            SyncStatus.SYNCED
+        )
 
-    // SendDTO to Task (NEVER)
-    // SendDTO to Entity (NEVER)
-    // SendDTO to GetDTO (NEVER) CrudCrud does it kinda
+    /**
+     * Transforms a TaskEntity into a Task.
+     * Will ignore syncStatus, position and _id.
+     * Used to send a TaskEntity to TaskViewModel.
+     * Order is expected to be maintained (getAll on DAO ordered by position)
+     */
+    fun toTask(entity: TaskEntity): Task =
+        Task(
+            entity.id,
+            entity.title,
+            entity.dueDate,
+            entity.category,
+            entity.description,
+            entity.isDone
+        )
 
-    // GetDTO to Task (maybe on first launch, maybe NEVER if sync goes to Room first)
-    // GetDTO to Entity (sync on first launch, CrudCrud to Room)
-    // GetDTO to SendDTO (NEVER)
-
+    /**
+     * Transforms a TaskEntity into a TaskSendDTO.
+     * Will ignore syncStatus and _id.
+     * Used to send a TaskEntity to CrudCrud.
+     */
+    fun toDTO(entity: TaskEntity): TaskSendDTO =
+        TaskSendDTO(
+            entity.id,
+            entity.title,
+            entity.dueDate,
+            entity.category,
+            entity.description,
+            entity.isDone,
+            entity.position,
+        )
 
 }

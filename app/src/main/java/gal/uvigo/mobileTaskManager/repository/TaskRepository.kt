@@ -2,9 +2,7 @@ package gal.uvigo.mobileTaskManager.repository
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
@@ -14,6 +12,7 @@ import androidx.work.workDataOf
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.repository.local.TaskDB
+import gal.uvigo.mobileTaskManager.repository.local.TaskEntity
 import gal.uvigo.mobileTaskManager.repository.network.RetrofitClient
 import gal.uvigo.mobileTaskManager.repository.sync.SyncStatus
 import gal.uvigo.mobileTaskManager.repository.sync.TaskUploadWorker
@@ -22,44 +21,66 @@ import kotlinx.coroutines.withContext
 
 class TaskRepository(context: Context) {
 
-//TODO
-
-
+    /**
+     * The TaskApiService that will handle CrudCrud API.
+     */
     private val taskService = RetrofitClient.getInstance(context).service
+
+    /**
+     * The TaskDAO that will handle Room operations.
+     */
     private val taskDAO = TaskDB.getInstance(context).taskDAO()
 
+    /**
+     * The WorkManager that will handle TaskUploadWorker works.
+     */
     private val workManager = WorkManager.getInstance(context)
 
-
-    //Some values that use context for network error messages,stored to not store a context
-    private val logTag = context.getString(R.string.Log_Tag)
-    private val uploadErrorMsg = context.getString(R.string.network_error_up)
-    private val downloadErrorMsg = context.getString(R.string.network_error_down)
-    private val toastMsg = Toast.makeText(context, "", Toast.LENGTH_SHORT)
-
-    private val taskIDKey = context.getString(R.string.Task_ID_Key)
-    private val taskStatusKey = context.getString(R.string.Task_Status_Key)
-
+    /**
+     * The Dispacher that will be used to launch coroutines.
+     */
     private val dispatcher = Dispatchers.IO
 
-    private val _tasks = MutableLiveData<List<Task>>(emptyList())
-    val tasks: LiveData<List<Task>>
-        get() = _tasks
+    /**
+     * A key from String resources for TaskUploadWorker input data.
+     */
+    private val taskIDKey = context.getString(R.string.Task_ID_Key)
 
-    //There is no Room now to autogenerate IDs
-    private var nextId: Long = 1
+    /**
+     * A key from String resources for TaskUploadWorker input data.
+     */
+    private val taskStatusKey = context.getString(R.string.Task_Status_Key)
 
-    //Ordenar tasks aqui y mandarlas ordenadas por category y por orden
+    /**
+     * A TaskMapper to handle transformations between all the Task classes
+     */
+    private val taskMapper = TaskMapper()
 
-    /*
-    *                     .sortedWith(
-                        compareBy<Task> { it.category?.name }
-                            .thenBy { it.dueDate }.thenBy { it.id }
-                    )
-   esto pero .thenBy order en vez de la linea
-* */
+    /**
+     * A MutableMap that maps TaskEntities by id to allow quicker retrieving.
+     */
+    private var _tasks: MutableMap<Long, TaskEntity> = mutableMapOf()
 
-    init {
+    //LiveData will keep the list updated after CUD operations
+    /**
+     * A LiveData that exposes the Tasks to the ViewModel.
+     * Exposed tasks are expected to be ordered by category and then by position
+     */
+    val tasks: LiveData<List<Task>> = this.getAll()
+
+
+    /**
+     *
+     */
+    private fun getAll() {
+        //Hace repo getAll y transforma entity a task, y ademas almacena en el mapa
+    } //en delete borrar del mapa, aqui meter 1 a 1
+
+    /**
+     *
+     */
+    suspend fun init{
+        //TODO
         val settings = context.getSharedPreferences(
             context.getString(R.string.preferences_file),
             Context.MODE_PRIVATE
@@ -77,37 +98,46 @@ class TaskRepository(context: Context) {
             //TODO operate
             //se asume sincronizado por workers
         }
-    }
-
-    //aqui metodos para sincronizar desde workers
-
-    suspend fun init{
-        //TODO
 
     }
 
+    /**
+     * Adds the given task
+     */
     suspend fun addTask(task: Task): Long? {
-        val t = Task(nextId, task.title, task.dueDate, task.category, task.description, task.isDone)
-        val list = _tasks.value.orEmpty().toMutableList()
-        list.add(t)
-        try {
-            networkAPI.insert(t)
-            nextId++
-            _tasks.value = list
-            return nextId - 1
-        } catch (e: Exception) {
-            Log.e(logTag, uploadErrorMsg)
-            Log.e(logTag, e.toString())
-            toastMsg.setText(uploadErrorMsg)
-            toastMsg.show()
-            return null
+         withContext(dispatcher) {
+            //Insert on Room
+            val id = taskDAO.insert(taskMapper.toEntity(task, _tasks.size))
+            if (id > 0L) {
+                //Prepare a WorkRequest to sync
+                prepareSync(id, SyncStatus.PENDING_CREATE)
+                id
+            } else null
+        }
+    }
+
+    /**
+     * Called by sync() to perform a POST to server & update the _id.
+     */
+    private suspend fun addSync(task : TaskEntity) : Int{
+        val dto = taskMapper.toDTO(task)
+        try{
+            val returned = taskService.insert(dto)
+            val updatedRows = taskDAO.syncInsert(task.id,returned._id)
+            return if (updatedRows == 1) 0 else 404
+        }catch (_ : Exception){
+            return 500
         }
     }
 
     /**
      * Retrieves the task with the given id or returns null if no such task exists
      */
-    fun get(id: Long): Task? = tasks.value.orEmpty().find { it.id == id }
+    fun get(id: Long): Task? {
+        val toRet = _tasks[id]
+        return if (toRet == null) null else taskMapper.toTask(toRet)
+    }
+
 
     suspend fun updateTask(updated: Task): Boolean {
         val list = _tasks.value.orEmpty().toMutableList()
@@ -251,10 +281,10 @@ class TaskRepository(context: Context) {
 
     suspend fun sync(id: Long, syncStatusName: String): Int {
 
-
+        //TODO
         //check syncStatus is valid
         withContext(dispatcher) {
-            val entity = taskDAO.get(id)
+            val entity = taskDAO.get(id) //i think _tasks would not be created if Worker acts with app closed
             if (entity != null) {
 
             } else {
@@ -278,6 +308,10 @@ class TaskRepository(context: Context) {
 
             //Note that status may be SYNCED after a succesfull Insert or Update
         }
+    }
+
+    fun reorder(fromID: Long, toID: Long) {
+
     }
 
 }

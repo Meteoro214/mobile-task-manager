@@ -121,6 +121,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
+
                                 false -> {
                                     Toast.makeText(
                                         requireContext(),
@@ -128,6 +129,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
+
                                 else -> {//Should never happen
                                     Toast.makeText(
                                         requireContext(),
@@ -235,13 +237,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
                 return if (fromItem is TaskListItem.TaskItem && toItem is TaskListItem.TaskItem
                     && fromItem.task.category == toItem.task.category
-                ) { //TODO modify
-             /*       list.removeAt(to)
-                    list.add(to, fromItem)
-                    list.removeAt(from)
-                    list.add(from, toItem)
-                    adapter.submitList(list) */
-                    viewModel.reorder(from, to)
+                ) {
+                    viewModel.reorder(fromItem.task.id, toItem.task.id)
                     true
                 } else {
                     false
