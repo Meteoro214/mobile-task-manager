@@ -52,6 +52,17 @@ class TaskRepository(context: Context) {
     private val taskStatusKey = context.getString(R.string.Task_Status_Key)
 
     /**
+     * A String resource to Log errors on download.
+     */
+    private val downloadErrorMsg = context.getString(R.string.network_error_down)
+
+    /**
+     * A String resource to Log errors.
+     * A String resource to Log errors.
+     */
+    private val logTag = context.getString(R.string.Log_Tag)
+
+    /**
      * A TaskMapper to handle transformations between all the Task classes
      */
     private val taskMapper = TaskMapper()
@@ -68,19 +79,10 @@ class TaskRepository(context: Context) {
      */
     val tasks: LiveData<List<Task>> = this.getAll()
 
-
     /**
-     *
+     * Checks if the app is launching for the first time. If it is, downloads tasks from CrudCrud
      */
-    private fun getAll() {
-        //Hace repo getAll y transforma entity a task, y ademas almacena en el mapa
-    } //en delete borrar del mapa, aqui meter 1 a 1
-
-    /**
-     *
-     */
-    suspend fun init{
-        //TODO
+    suspend fun init(context: Context) {
         val settings = context.getSharedPreferences(
             context.getString(R.string.preferences_file),
             Context.MODE_PRIVATE
@@ -88,24 +90,41 @@ class TaskRepository(context: Context) {
         val key = context.getString(R.string.preferences_first_init_key)
         val firstInit = settings.getBoolean(key, true)
         if (firstInit) {
-            //TODO operate and set firstInit to false
-
-            //este init volverlo un metodo normal y llamarlo desde el init de viewmodel (donde llama al download ahora)
-
+            this.download()
             //set flag so app knows
             settings.edit().putBoolean(key, false).commit()
-        } else {
-            //TODO operate
-            //se asume sincronizado por workers
         }
-
     }
+
+    /**
+     * Downloads all Tasks from CrudCrud and stores them in Room
+     */
+    private suspend fun download() {
+        withContext(dispatcher) {
+            try {
+                val list = taskService.getAll()
+                var entity: TaskEntity
+                for (taskDTO in list) {
+                    entity = taskMapper.toEntity(taskDTO)
+                    if (taskDAO.insert(entity) == -1L
+                        || taskDAO.syncInsert(entity.id, taskDTO._id) != 1
+                    ) {
+                        Log.e(logTag, downloadErrorMsg)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(logTag, downloadErrorMsg)
+                Log.e(logTag, e.toString())
+            }
+        }
+    }
+
 
     /**
      * Adds the given task
      */
-    suspend fun addTask(task: Task): Long? {
-         withContext(dispatcher) {
+    suspend fun addTask(task: Task): Long? =
+        withContext(dispatcher) {
             //Insert on Room
             val id = taskDAO.insert(taskMapper.toEntity(task, _tasks.size))
             if (id > 0L) {
@@ -114,19 +133,18 @@ class TaskRepository(context: Context) {
                 id
             } else null
         }
-    }
 
     /**
      * Called by sync() to perform a POST to server & update the _id.
      */
-    private suspend fun addSync(task : TaskEntity) : Int{
+    private suspend fun addSync(task: TaskEntity): Int {
         val dto = taskMapper.toDTO(task)
-        try{
+        try {
             val returned = taskService.insert(dto)
-            val updatedRows = taskDAO.syncInsert(task.id,returned._id)
-            return if (updatedRows == 1) 0 else 404
-        }catch (_ : Exception){
-            return 500
+            val updatedRows = taskDAO.syncInsert(task.id, returned._id)
+            return if (updatedRows == 1) 0 else 500
+        } catch (_: Exception) {
+            return 400
         }
     }
 
@@ -138,6 +156,13 @@ class TaskRepository(context: Context) {
         return if (toRet == null) null else taskMapper.toTask(toRet)
     }
 
+
+    /**
+     *
+     */
+    private fun getAll() {
+        //Hace repo getAll y transforma entity a task, y ademas almacena en el mapa
+    } //en delete borrar del mapa, aqui meter 1 a 1
 
     suspend fun updateTask(updated: Task): Boolean {
         val list = _tasks.value.orEmpty().toMutableList()
@@ -204,29 +229,9 @@ class TaskRepository(context: Context) {
     }
 
 
-    suspend fun download() { //ejecutar solo si es primera ejecution, refactorizar
-        try {
-            val temp: List<Task>
-            withContext(dispatcher) {
-                temp = networkAPI.getAll()
-            }
-            _tasks.value = temp
-        } catch (e: Exception) { //network errors
-            Log.e(logTag, downloadErrorMsg)
-            Log.e(logTag, e.toString())
-            //Allow app to function, warn user
-            _tasks.value = emptyList<Task>()
-            toastMsg.setText(downloadErrorMsg)
-            toastMsg.show()
-        }
-        //No Room to autogenerate ids
-        val nextIndex = _tasks.value.orEmpty().size - 1
-        val lastId = if (nextIndex > -1) {
-            (_tasks.value?.get(nextIndex)?.id ?: 0) + 1
-        } else 1
-        nextId = lastId
-    }
-
+    /**
+     * Prepares a WorkRequest to sync Task info.
+     */
     private fun prepareSync(id: Long, status: SyncStatus) {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -279,12 +284,16 @@ class TaskRepository(context: Context) {
         )
     }
 
+    /**
+     *
+     */
     suspend fun sync(id: Long, syncStatusName: String): Int {
 
         //TODO
         //check syncStatus is valid
         withContext(dispatcher) {
-            val entity = taskDAO.get(id) //i think _tasks would not be created if Worker acts with app closed
+            val entity =
+                taskDAO.get(id) //i think _tasks would not be created if Worker acts with app closed
             if (entity != null) {
 
             } else {
@@ -310,8 +319,14 @@ class TaskRepository(context: Context) {
         }
     }
 
-    fun reorder(fromID: Long, toID: Long) {
-
+    suspend fun reorder(fromID: Long, toID: Long) {
+        withContext(dispatcher) {
+            //View model already checked if tasks exist
+            val fromPos = _tasks[fromID]?.position ?: -1
+            val toPos = _tasks[toID]?.position ?: -1
+            taskDAO.changePosition(fromID, toPos)
+            taskDAO.changePosition(toID, fromPos)
+        }
     }
 
 }

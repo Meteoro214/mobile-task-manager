@@ -40,7 +40,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
      */
     init {
         viewModelScope.launch {
-            repo.init()
+            repo.init(app)
         }
     }
 
