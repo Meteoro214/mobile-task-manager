@@ -143,7 +143,7 @@ class TaskRepository(context: Context) {
         try {
             val returned = taskService.insert(dto)
             val updatedRows = taskDAO.syncInsert(task.id, returned._id)
-            return if (updatedRows == 1) 0 else 500
+            return if (updatedRows == 1) 200 else 500
         } catch (_: Exception) {
             return 400
         }
@@ -232,7 +232,7 @@ class TaskRepository(context: Context) {
         try {
             taskService.update(task._id ?: "", dto)
             val updatedRows = taskDAO.markSynced(dto.id)
-            return if (updatedRows == 1) 0 else 500
+            return if (updatedRows == 1) 200 else 500
         } catch (_: Exception) {
             return 400
         }
@@ -260,7 +260,7 @@ class TaskRepository(context: Context) {
         try {
             taskService.delete(task._id ?: "")
             val updatedRows = taskDAO.trueDelete(task.id)
-            return if (updatedRows == 1) 0 else 500
+            return if (updatedRows == 1) 200 else 500
         } catch (_: Exception) {
             return 400
         }
@@ -322,39 +322,76 @@ class TaskRepository(context: Context) {
     }
 
     /**
-     * Called by WorkRequest to sync Task information with CruCrud
+     * Called by WorkRequest to sync Task information with CruCrud.
+     * Will return HTTP Response inspired codes
+     * 200 = OK
+     * 400 = Service call failed
+     * 404 = No task for given ID
+     * 409 = Attempted an Invalid operation (Inserting a task pending deletion, Deleting a task not pending deletion, Updating a task pending creation)
+     * 500 = Service succeeded, but Room failed to update sync status
+     * 501 = Non-Implemented status name
      */
     suspend fun sync(id: Long, syncStatusName: String): Int =
         withContext(dispatcher) {
-            val entity =
-                taskDAO.get(id) //i think _tasks would not be created if Worker acts with app closed
+            val entity = taskDAO.get(id)
+            //I think _tasks would not be created if Worker acts with app closed
+            //Because LiveData would not be observed
             if (entity != null) {
+                //Note that status in Room may be SYNCED when updating after a successful Insert or Update
+                when (syncStatusName) {
+                    SyncStatus.PENDING_CREATE.name -> {
+                        //If Room syncStatus is truly Pending Create, insert
+                        //If Room syncStatus is Pending Update, insert because update WorkRequest is appended
+                        //If Room syncStatus is Pending Delete, something failed
+                        when (entity.syncStatus) {
+                            SyncStatus.PENDING_CREATE -> addSync(entity) //Expected behaviour
+                            SyncStatus.PENDING_UPDATE -> addSync(entity) //Can happen
+                            //Should never happen, delete work request is REPLACE
+                            SyncStatus.PENDING_DELETE -> 409
+                            //SyncStatus.SYNCED
+                            else -> 501 //Should never happen
 
+                        }
+                    }
+
+                    SyncStatus.PENDING_UPDATE.name -> {
+                        //If Room syncStatus is Pending Create or Delete, something failed
+                        //If Room syncStatus is Pending Update, all good
+                        //If Room syncStatus is SYNCED, Create or Update sync happened after update operation was schedulled
+                        when (entity.syncStatus) {
+                            SyncStatus.PENDING_CREATE -> 409 //Forbidden
+                            SyncStatus.PENDING_UPDATE -> updateSync(entity) //Expected behaviour
+                            //Should never happen, delete work request is REPLACE
+                            SyncStatus.PENDING_DELETE -> 409
+                            SyncStatus.SYNCED -> updateSync(entity) //Can happen
+                            //Not currently implemented
+                            else -> 501 //Should never happen
+                        }
+                    }
+
+                    SyncStatus.PENDING_DELETE.name -> {
+                        //If Room syncStatus is trully Pending Delete, delete, but only if it was already inserted (_id !=null
+                        //Anything else means a task that was marked as deleted was modified, forbidden
+                        when (entity.syncStatus) {
+                            SyncStatus.PENDING_DELETE -> if (entity._id != null) {
+                                deleteSync(entity) //Expected behaviour
+                            } else 200 // means task wasnt even inserted yet
+
+                            //Insert or Update syncStatus update happened AFTER Room marked as deleted
+                            //Should not happen because of delete WorkRequest being REPLACE
+                            SyncStatus.PENDING_CREATE -> 409 // Forbidden
+                            SyncStatus.PENDING_UPDATE -> 409 // Forbidden
+                            SyncStatus.SYNCED -> 409 // Forbidden
+                            //Not currently implemented
+                            else -> 501 //Should never happen
+                        }
+                    }
+                    //SyncStatus.SYNCED
+                    else -> 501
+                }
             } else {
-                //Log and fail
-                //return error codes so worker knows string to use
-                //Log on worker class
+                404
             }
-
-            //TODO
-            //check syncStatus is valid
-
-            //get from DB (entity)
-            // Switch based on sync status
-            //map to DTO
-            //send to network
-            //clean up
-            //api calls with try catch, fail and log on catch
-
-            //if operation is update, check status is pending update,
-            // not delete (should never be pending_insert, because an update would overwrite sync Status)
-            // if it is delete when updating, no API call but no delete (let the delete Worker do it)
-
-            //if operation is insert, check status is not delete, if delete fail and delete the task without API calls
-            //if operation is delete, status is always pending delete, only do API call if DB has the item (could be cancelled if not inserted) AND it has _id (it exists in CrudCrud)
-
-            //Note that status may be SYNCED after a succesfull Insert or Update
-            0
         }
 
 }
