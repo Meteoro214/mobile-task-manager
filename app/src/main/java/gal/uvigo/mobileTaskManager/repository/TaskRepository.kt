@@ -3,6 +3,7 @@ package gal.uvigo.mobileTaskManager.repository
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
@@ -10,6 +11,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import gal.uvigo.mobileTaskManager.R
+import gal.uvigo.mobileTaskManager.model.Category
 import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.repository.local.TaskDB
 import gal.uvigo.mobileTaskManager.repository.local.TaskEntity
@@ -18,6 +20,7 @@ import gal.uvigo.mobileTaskManager.repository.sync.SyncStatus
 import gal.uvigo.mobileTaskManager.repository.sync.TaskUploadWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 class TaskRepository(context: Context) {
 
@@ -57,7 +60,6 @@ class TaskRepository(context: Context) {
     private val downloadErrorMsg = context.getString(R.string.network_error_down)
 
     /**
-     * A String resource to Log errors.
      * A String resource to Log errors.
      */
     private val logTag = context.getString(R.string.Log_Tag)
@@ -119,7 +121,6 @@ class TaskRepository(context: Context) {
         }
     }
 
-
     /**
      * Adds the given task
      */
@@ -156,78 +157,114 @@ class TaskRepository(context: Context) {
         return if (toRet == null) null else taskMapper.toTask(toRet)
     }
 
+    /**
+     * Retrieves the TaskEntity LiveData from Room via getAll(), then stores it in memory and maps
+     * the list to a new LiveData<List<Task>>.
+     * The exposed List will be ordered by category and position
+     */
+    private fun getAll() = taskDAO.getAll().map { entities ->
+        val tasks = mutableListOf<Task>()
+        _tasks = mutableMapOf() //Empties the map
+        for (entity in entities) {
+            _tasks[entity.id] = entity
+            tasks.add(taskMapper.toTask(entity))
+        }
+        tasks.toList()
+    }
 
     /**
-     *
+     * Updates the given task. Returns true if successful
      */
-    private fun getAll() {
-        //Hace repo getAll y transforma entity a task, y ademas almacena en el mapa
-    } //en delete borrar del mapa, aqui meter 1 a 1
-
-    suspend fun updateTask(updated: Task): Boolean {
-        val list = _tasks.value.orEmpty().toMutableList()
-        val old = get(updated.id)
-        return if (old != null) {
-            val index = list.indexOf(old)
-            list.removeAt(index)
-            list.add(index, updated)
-            try {
-                networkAPI.update(updated)
-                _tasks.value = list
+    suspend fun updateTask(updated: Task): Boolean =
+        withContext(dispatcher) {
+            //Update on Room
+            val res = taskDAO.update(
+                updated.id, updated.title,
+                updated.dueDate ?: LocalDate.now(),
+                updated.category ?: Category.OTHER,
+                updated.description, updated.isDone
+            )
+            if (res == 1) {
+                //Prepare a WorkRequest to sync
+                prepareSync(updated.id, SyncStatus.PENDING_UPDATE)
                 true
-            } catch (e: Exception) {
-                Log.e(logTag, uploadErrorMsg)
-                Log.e(logTag, e.toString())
-                toastMsg.setText(uploadErrorMsg)
-                toastMsg.show()
-                false
-            }
-        } else false
-    }
-
-
-    suspend fun markTaskDone(id: Long): Boolean {
-        val list = _tasks.value.orEmpty().toMutableList()
-        val old = get(id)
-        return if (old != null) {
-            val updated = old.copy()
-            updated.isDone = true
-            val index = list.indexOf(old)
-            list.removeAt(index)
-            list.add(index, updated)
-            try {
-                networkAPI.update(updated)
-                _tasks.value = list
-                true
-            } catch (e: Exception) {
-                Log.e(logTag, uploadErrorMsg)
-                Log.e(logTag, e.toString())
-                toastMsg.setText(uploadErrorMsg)
-                toastMsg.show()
-                false
-            }
-        } else false
-    }
-
-
-    suspend fun deleteTask(task: Task): Boolean {
-        val list = _tasks.value.orEmpty().toMutableList()
-        val toRet = list.remove(task)
-        if (toRet) {
-            try {
-                networkAPI.delete(task)
-                _tasks.value = list
-            } catch (e: Exception) {
-                Log.e(logTag, uploadErrorMsg)
-                Log.e(logTag, e.toString())
-                toastMsg.setText(uploadErrorMsg)
-                toastMsg.show()
-                return false
-            }
+            } else false
         }
-        return toRet
+
+    /**
+     * Marks the task with the given ID as done. Returns true if successful
+     */
+    suspend fun markTaskDone(id: Long): Boolean =
+        withContext(dispatcher) {
+            //Update on Room
+            val res = taskDAO.markDone(id)
+            if (res == 1) {
+                //Prepare a WorkRequest to sync
+                prepareSync(id, SyncStatus.PENDING_UPDATE)
+                true
+            } else false
+        }
+
+    /**
+     * Swaps the position of the 2 tasks with the given IDs.
+     * Returns true if successful
+     */
+    suspend fun reorder(fromID: Long, toID: Long): Boolean =
+        withContext(dispatcher) {
+            //View model already checked if tasks exist
+            val fromPos = _tasks[fromID]?.position ?: -1
+            val toPos = _tasks[toID]?.position ?: -1
+            val res1 = taskDAO.changePosition(fromID, toPos)
+            val res2 = if (res1 == 1) taskDAO.changePosition(toID, fromPos) else -1
+            if (res1 == res2 && res1 == 1) {
+                //Prepare 2 WorkRequests to sync
+                prepareSync(fromID, SyncStatus.PENDING_UPDATE)
+                prepareSync(toID, SyncStatus.PENDING_UPDATE)
+                true
+            } else false
+        }
+
+    /**
+     * Called by sync() to perform a PUT to server & set sync status to SYNCED.
+     */
+    private suspend fun updateSync(task: TaskEntity): Int {
+        val dto = taskMapper.toDTO(task)
+        try {
+            taskService.update(task._id ?: "", dto)
+            val updatedRows = taskDAO.markSynced(dto.id)
+            return if (updatedRows == 1) 0 else 500
+        } catch (_: Exception) {
+            return 400
+        }
     }
 
+    /**
+     * Deletes the given task. Returns true if successful
+     */
+    suspend fun deleteTask(task: Task): Boolean =
+        withContext(dispatcher) {
+            //Update on Room
+            val res = taskDAO.delete(task.id)
+            if (res == 1) {
+                //Prepare a WorkRequest to sync
+                prepareSync(task.id, SyncStatus.PENDING_DELETE)
+                true
+            } else false
+        }
+
+    /**
+     * Called by sync() to perform a DELETE to server & delete the given task on Room
+     * (hard delete,the one no one does).
+     */
+    private suspend fun deleteSync(task: TaskEntity): Int {
+        try {
+            taskService.delete(task._id ?: "")
+            val updatedRows = taskDAO.trueDelete(task.id)
+            return if (updatedRows == 1) 0 else 500
+        } catch (_: Exception) {
+            return 400
+        }
+    }
 
     /**
      * Prepares a WorkRequest to sync Task info.
@@ -285,12 +322,9 @@ class TaskRepository(context: Context) {
     }
 
     /**
-     *
+     * Called by WorkRequest to sync Task information with CruCrud
      */
-    suspend fun sync(id: Long, syncStatusName: String): Int {
-
-        //TODO
-        //check syncStatus is valid
+    suspend fun sync(id: Long, syncStatusName: String): Int =
         withContext(dispatcher) {
             val entity =
                 taskDAO.get(id) //i think _tasks would not be created if Worker acts with app closed
@@ -301,6 +335,10 @@ class TaskRepository(context: Context) {
                 //return error codes so worker knows string to use
                 //Log on worker class
             }
+
+            //TODO
+            //check syncStatus is valid
+
             //get from DB (entity)
             // Switch based on sync status
             //map to DTO
@@ -316,17 +354,7 @@ class TaskRepository(context: Context) {
             //if operation is delete, status is always pending delete, only do API call if DB has the item (could be cancelled if not inserted) AND it has _id (it exists in CrudCrud)
 
             //Note that status may be SYNCED after a succesfull Insert or Update
+            0
         }
-    }
-
-    suspend fun reorder(fromID: Long, toID: Long) {
-        withContext(dispatcher) {
-            //View model already checked if tasks exist
-            val fromPos = _tasks[fromID]?.position ?: -1
-            val toPos = _tasks[toID]?.position ?: -1
-            taskDAO.changePosition(fromID, toPos)
-            taskDAO.changePosition(toID, fromPos)
-        }
-    }
 
 }
