@@ -348,9 +348,9 @@ class TaskRepository(context: Context) {
                             SyncStatus.PENDING_UPDATE -> addSync(entity) //Can happen
                             //Should never happen, delete work request is REPLACE
                             SyncStatus.PENDING_DELETE -> 409
-                            //SyncStatus.SYNCED
+                            SyncStatus.SYNCED -> 409
+                            //Not currently implemented
                             else -> 501 //Should never happen
-
                         }
                     }
 
@@ -386,8 +386,10 @@ class TaskRepository(context: Context) {
                             else -> 501 //Should never happen
                         }
                     }
-                    //SyncStatus.SYNCED
-                    else -> 501
+
+                    SyncStatus.SYNCED.name -> 409 //Forbidden
+                    //Not currently implemented
+                    else -> 501 //Should never happen
                 }
             } else {
                 404
