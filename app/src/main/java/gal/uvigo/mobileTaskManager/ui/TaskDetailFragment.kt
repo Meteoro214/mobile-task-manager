@@ -12,15 +12,33 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 
+/**
+ * Fragment to show Task data
+ */
 class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
-    private val args: TaskDetailFragmentArgs by navArgs()
+    /**
+     * Binding for the layout
+     */
     private lateinit var binding: FragmentTaskDetailBinding
+
+    /**
+     * NavController for navigation
+     */
     private lateinit var navController: NavController
+
+    /**
+     * Arguments received on navigation. Expected to receive a taskID (long)
+     */
+    private val args: TaskDetailFragmentArgs by navArgs()
+
+    /**
+     * TaskViewModel to handle Tasks
+     */
     private val viewModel: TaskViewModel by activityViewModels()
 
 
@@ -71,6 +89,7 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
 
     override fun onResume() {
         super.onResume()
+        //Loads stored task info
         val handle = navController.currentBackStackEntry?.savedStateHandle
         if (handle != null) {
             val key = getString(R.string.handle_editedTask_Key)

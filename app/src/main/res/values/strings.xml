@@ -1,13 +1,4 @@
 <resources>
-    <!-- Handle Keys-->
-    <string name="handle_editedTask_Key">editedTask</string>
-    <string name="handle_unfinishedFormTitle_Key">unfinishedFormTitle</string>
-    <string name="handle_unfinishedFormDate_Key">unfinishedFormDate</string>
-    <string name="handle_unfinishedFormDescription_Key">unfinishedFormDescription</string>
-    <string name="handle_unfinishedFormCategory_Key">unfinishedFormCategory</string>
-    <string name="handle_unfinishedFormIsDone_Key">unfinishedFormIsDone</string>
-    <string name="handle_unfinishedFormID_Key">unfinishedFormID</string>
-
     <!-- Common strings-->
     <string name="app_name">Mobile Task Manager</string>
     <string name="mark_done_DONE_img">✅</string>
@@ -67,13 +58,6 @@
     <string name="swipe_mark_OK_msg">Marked a Task as Done</string>
     <string name="swipe_mark_wasDone_msg">Task Already Done</string>
     <string name="swipe_mark_error_msg">Critical Error : Could Not Mark Done</string>
-
-
-    <!--Logger Strings-->
-    <string name="Log_Tag">mobileTaskManager Log</string>
-    <string name="network_error_up">There has been a network error, could not upload data</string>
-    <string name="network_error_down">There has been a network error, could not download data</string>
-
 
 
 </resources>

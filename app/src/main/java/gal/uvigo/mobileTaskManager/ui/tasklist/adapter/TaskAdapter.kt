@@ -5,23 +5,37 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import gal.uvigo.mobileTaskManager.data_model.Task
+import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.databinding.ItemHeaderBinding
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 
+/**
+ * Class to handle Adapter implementation for ReciclerView
+ */
 class TaskAdapter(onTaskItemClick: (Task) -> Unit) :
     ListAdapter<TaskListItem, RecyclerView.ViewHolder>(TaskListItemDiff) {
+
+
+    /**
+     * lambda to execute when TaskItems are clicked. Expected to navigate to TaskDetailFragment
+     */
     private val _onTaskItemClick: (Task) -> Unit = onTaskItemClick
 
+    /**
+     * ViewHolder for Header
+     */
     class HeaderVH(val headerBinding: ItemHeaderBinding) :
         RecyclerView.ViewHolder(headerBinding.root) {
 
         fun bind(header: TaskListItem.Header) {
             this.headerBinding.category = header.category
+            this.headerBinding.executePendingBindings()
         }
-
     }
 
+    /**
+     * ViewHolder for TaskItem
+     */
     inner class TaskItemVH(val taskDataBinding: ItemTaskBinding) :
         RecyclerView.ViewHolder(taskDataBinding.root) {
 
@@ -73,6 +87,9 @@ class TaskAdapter(onTaskItemClick: (Task) -> Unit) :
         }
     }
 
+    /**
+     * Handles DiffUtil.ItemCallback and has a enum to handle TaskListItem types on Adapter
+     */
     companion object {
         private enum class TaskItemTypes {
             HEADER, TASK_ITEM
