@@ -1,4 +1,4 @@
-package gal.uvigo.mobileTaskManager
+package gal.uvigo.mobileTaskManager.ui
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
+import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
