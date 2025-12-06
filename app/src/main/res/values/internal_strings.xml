@@ -15,6 +15,7 @@
 
     <!--Logger Strings-->
     <string name="Log_Tag">mobileTaskManager Log</string>
+    <string name="network_good_down">Successfully downloaded data</string>
     <string name="network_error_down">There has been a network error, could not download data</string>
     <string name="worker_200_code">TaskUploadWorker Success: synced a Task</string>
     <string name="worker_400_code">TaskUploadWorker Failed : CrudCrud issued 500 Server Error</string>

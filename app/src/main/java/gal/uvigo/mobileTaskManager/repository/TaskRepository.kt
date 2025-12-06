@@ -60,6 +60,11 @@ class TaskRepository(context: Context) {
     private val downloadErrorMsg = context.getString(R.string.network_error_down)
 
     /**
+     * A String resource to Log success on download.
+     */
+    private val downloadOkMsg = context.getString(R.string.network_good_down)
+
+    /**
      * A String resource to Log errors.
      */
     private val logTag = context.getString(R.string.Log_Tag)
@@ -68,6 +73,11 @@ class TaskRepository(context: Context) {
      * A TaskMapper to handle transformations between all the Task classes
      */
     private val taskMapper = TaskMapper()
+
+    /**
+     * Stores the tasks that have been reordered but not yet committed.
+     */
+    private val _reorderTasks = mutableMapOf<Long, Int>()
 
     /**
      * A MutableMap that maps TaskEntities by id to allow quicker retrieving.
@@ -98,28 +108,6 @@ class TaskRepository(context: Context) {
         }
     }
 
-    /**
-     * Downloads all Tasks from CrudCrud and stores them in Room
-     */
-    private suspend fun download() {
-        withContext(dispatcher) {
-            try {
-                val list = taskService.getAll()
-                var entity: TaskEntity
-                for (taskDTO in list) {
-                    entity = taskMapper.toEntity(taskDTO)
-                    if (taskDAO.insert(entity) == -1L
-                        || taskDAO.syncInsert(entity.id, taskDTO._id) != 1
-                    ) {
-                        Log.e(logTag, downloadErrorMsg)
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(logTag, downloadErrorMsg)
-                Log.e(logTag, e.toString())
-            }
-        }
-    }
 
     /**
      * Adds the given task
@@ -173,6 +161,30 @@ class TaskRepository(context: Context) {
     }
 
     /**
+     * Downloads all Tasks from CrudCrud and stores them in Room
+     */
+    private suspend fun download() {
+        withContext(dispatcher) {
+            try {
+                val list = taskService.getAll()
+                var entity: TaskEntity
+                for (taskDTO in list) {
+                    entity = taskMapper.toEntity(taskDTO)
+                    if (taskDAO.insert(entity) == -1L
+                        || taskDAO.syncInsert(entity.id, taskDTO._id) != 1
+                    ) {
+                        Log.e(logTag, downloadErrorMsg)
+                    }
+                }
+                Log.e(logTag, downloadOkMsg)
+            } catch (e: Exception) {
+                Log.e(logTag, downloadErrorMsg)
+                Log.e(logTag, e.toString())
+            }
+        }
+    }
+
+    /**
      * Updates the given task. Returns true if successful
      */
     suspend fun updateTask(updated: Task): Boolean =
@@ -211,17 +223,28 @@ class TaskRepository(context: Context) {
      */
     suspend fun reorder(fromID: Long, toID: Long): Boolean =
         withContext(dispatcher) {
-            //View model already checked if tasks exist
-            val fromPos = _tasks[fromID]?.position ?: -1
-            val toPos = _tasks[toID]?.position ?: -1
-            val res1 = taskDAO.changePosition(fromID, toPos)
-            val res2 = if (res1 == 1) taskDAO.changePosition(toID, fromPos) else -1
-            if (res1 == res2 && res1 == 1) {
-                //Prepare 2 WorkRequests to sync
-                prepareSync(fromID, SyncStatus.PENDING_UPDATE)
-                prepareSync(toID, SyncStatus.PENDING_UPDATE)
+            //If task is already pending reorder, retrieve its uncommited position
+            val fromPos = _reorderTasks[fromID] ?: (_tasks[fromID]?.position ?: -1)
+            val toPos = _reorderTasks[toID] ?: (_tasks[toID]?.position ?: -1)
+            if (fromPos != -1 && toPos != -1) {
+                //Store new order only on memory for now
+                _reorderTasks[fromID] = toPos
+                _reorderTasks[toID] = fromPos
                 true
-            } else false
+            } else false //View model already checked if tasks exist, should not happen
+        }
+
+    /**
+     * Commit to Room & CrudCrud the new ordering.
+     */
+    suspend fun commitReordering() =
+        withContext(dispatcher) {
+            for (id in _reorderTasks.keys) {
+                if (1 == taskDAO.changePosition(id, _reorderTasks[id] ?: -1)) {
+                    prepareSync(id, SyncStatus.PENDING_UPDATE)
+                }
+            }
+            _reorderTasks.clear()
         }
 
     /**

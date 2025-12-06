@@ -240,6 +240,13 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 return if (fromItem is TaskListItem.TaskItem && toItem is TaskListItem.TaskItem
                     && fromItem.task.category == toItem.task.category
                 ) {
+                    //Reorder only in View at first
+                    list.removeAt(to)
+                    list.add(to, fromItem)
+                    list.removeAt(from)
+                    list.add(from, toItem)
+                    adapter.submitList(list)
+                    //Tell VM what we reordered
                     viewModel.reorder(fromItem.task.id, toItem.task.id)
                     true
                 } else {
@@ -254,6 +261,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 super.clearView(recyclerView, viewHolder)
                 viewHolder.itemView.elevation = 5.5F
                 viewHolder.itemView.alpha = 1F
+                //Commit reordering to Room
+                viewModel.persistOrder()
             }
 
             override fun onSelectedChanged(

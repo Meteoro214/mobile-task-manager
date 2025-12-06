@@ -136,7 +136,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Swaps the position of the 2 tasks with the given IDs
+     * Swaps the position of the 2 tasks with the given IDs (Memory only)
      */
     fun reorder(fromID: Long, toID: Long) : Boolean {
         if(get(fromID) == null || get(toID) == null) return false
@@ -150,6 +150,15 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     private fun changePosition(fromID: Long, toID: Long) {
         viewModelScope.launch {
             repo.reorder(fromID,toID)
+        }
+    }
+
+    /**
+     * Launches TaskRepository commit reordering operation.
+     */
+    fun persistOrder(){
+        viewModelScope.launch {
+            repo.commitReordering()
         }
     }
 
