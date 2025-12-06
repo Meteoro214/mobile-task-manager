@@ -112,8 +112,6 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
                         ItemTouchHelper.RIGHT -> {
                             val updated = viewModel.markTaskDone(item.task.id)
-                            //Used so adapter recharges view & removes the swipe background
-                            binding.taskRV.adapter?.notifyItemChanged(pos)
                             when (updated) {
                                 true -> {
                                     Toast.makeText(
@@ -128,6 +126,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                                         getString(R.string.swipe_mark_wasDone_msg),
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    //Used so adapter recharges view & removes the swipe background
+                                    binding.taskRV.adapter?.notifyItemChanged(pos)
                                 }
 
                                 else -> {//Should never happen
@@ -136,6 +136,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                                         getString(R.string.swipe_mark_error_msg),
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    //Used so adapter recharges view & removes the swipe background
+                                    binding.taskRV.adapter?.notifyItemChanged(pos)
                                 }
                             }
                         }
