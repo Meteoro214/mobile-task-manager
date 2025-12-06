@@ -11,7 +11,7 @@ import gal.uvigo.mobileTaskManager.R
 /**
  * Class to represent the Database.
  */
-@Database(entities = [Task::class], version = 4, exportSchema = false)
+@Database(entities = [TaskEntity::class], version = 4, exportSchema = false)
 @TypeConverters(LocalDateRoomConverter::class)
 abstract class TaskDB : RoomDatabase() {
     abstract fun taskDAO(): TaskDAO
