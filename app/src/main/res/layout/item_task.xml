@@ -49,13 +49,14 @@
 
             <TextView
                 android:id="@+id/titleTV"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="@{taskData.title}"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toTopOf="@id/categoryTV"
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
+                app:layout_constraintEnd_toStartOf="@+id/dueDateTV"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />
 
             <TextView
@@ -67,7 +68,6 @@
                 app:category="@{taskData.category}"
                 android:textColor="@color/gray"
                 android:textSize="11sp"
-                app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintTop_toBottomOf="@id/titleTV" />
 
