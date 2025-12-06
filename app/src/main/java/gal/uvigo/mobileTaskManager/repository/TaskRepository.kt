@@ -398,7 +398,10 @@ class TaskRepository(context: Context) {
                         when (entity.syncStatus) {
                             SyncStatus.PENDING_DELETE -> if (entity._id != null) {
                                 deleteSync(entity) //Expected behaviour
-                            } else 200 // means task wasnt even inserted yet
+                            } else { // means task wasnt even inserted yet
+                                taskDAO.trueDelete(entity.id)
+                                200
+                            }
 
                             //Insert or Update syncStatus update happened AFTER Room marked as deleted
                             //Should not happen because of delete WorkRequest being REPLACE

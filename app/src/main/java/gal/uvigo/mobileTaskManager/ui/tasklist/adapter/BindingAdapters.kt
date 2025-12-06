@@ -78,7 +78,7 @@ fun bindDueDateColor(tv: TextView, task: Task) {
             tv.context.getColor(R.color.yellow)
         } else {
             //else normal color
-            tv.context.getColor(R.color.black)
+            tv.context.getColor(R.color.default_color)
         }
     } else {
         //there was a strange bug in previous versions (see Assignment-10)

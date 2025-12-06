@@ -1,6 +1,7 @@
 package gal.uvigo.mobileTaskManager.ui.tasklist
 
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -169,6 +170,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 actionState: Int,
                 isCurrentlyActive: Boolean
             ) {
+                val p = Paint()
                 //gets the position of the viewholder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
@@ -176,7 +178,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 val itemView = viewHolder.itemView
                 if (item is TaskListItem.TaskItem && actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     if (dX > 0) { //Swipping right
-                        c.drawColor(itemView.context.getColor(R.color.grassgreen))
+                        p.color = itemView.context.getColor(R.color.grassgreen)
+                        c.drawRect(itemView.left.toFloat(),itemView.top.toFloat(),
+                            itemView.right.toFloat(),itemView.bottom.toFloat(),
+                            p)
                         val d = itemView.context.getDrawable(R.drawable.ic_checkmark)
                         if (d != null) {
                             val iconMargin = (itemView.height - d.intrinsicHeight) / 2
@@ -188,7 +193,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                             d.draw(c)
                         }
                     } else if (dX < 0) { //Swipping left
-                        c.drawColor(itemView.context.getColor(R.color.red))
+                        p.color = itemView.context.getColor(R.color.red)
+                        c.drawRect(itemView.left.toFloat(),itemView.top.toFloat(),
+                            itemView.right.toFloat(),itemView.bottom.toFloat(),
+                            p)
                         val d = itemView.context.getDrawable(R.drawable.ic_delete)
 
                         if (d != null) {
