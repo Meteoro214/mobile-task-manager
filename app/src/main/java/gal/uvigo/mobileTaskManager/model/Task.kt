@@ -5,7 +5,7 @@ import android.os.Parcelable
 import java.time.LocalDate
 
 /**
- * Class to represent a Task, with id, title, a due date, a Category, a description, and a status (done/not done)
+ * Class to represent a Task, with id, title, a due date, a Category, a description, and a status (done/not done).
  */
 class Task(
     val id: Long,
@@ -18,7 +18,7 @@ class Task(
 
     var dueDate: LocalDate? = dueDate
         /**
-         * Ensures dueDate is not in the past
+         * Ensures dueDate is not in the past.
          */
         set(value) {
             require(
@@ -29,7 +29,7 @@ class Task(
 
     var category: Category? = category
         /**
-         * Ensures Category is not null
+         * Ensures Category is not null.
          */
         set(value) {
             require(value != null) { "Cannot set a null category" }
@@ -37,8 +37,8 @@ class Task(
         }
 
     /**
-     * Requires constructor given id to be a positive Long, but this id will be modified by TaskRepository on add
-     * TaskRepository expects id to be 0
+     * Requires constructor given id to be a positive Long, but this id will be modified by TaskRepository on add.
+     * TaskRepository expects id to be 0.
      * When creating a Task, title may be empty, date & category may be null.
      * Date & Category setters will ensure no nulls & no past dates.
      * TaskRepository will ensure no nulls, no empty titles & no past dates on add or edit operations.
@@ -61,6 +61,9 @@ class Task(
             this.isDone
         )
 
+    /**
+     * Checks if other is a Task with the same parameters.
+     */
     override fun equals(other: Any?): Boolean =
         if (other == null || other !is Task) false
         else this.id == other.id && this.title == other.title

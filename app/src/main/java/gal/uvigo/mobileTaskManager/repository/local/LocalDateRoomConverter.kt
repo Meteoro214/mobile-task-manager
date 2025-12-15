@@ -7,7 +7,7 @@ import java.time.LocalDate
 
 
 /**
- * Class to allow Room to handle LocalDates
+ * Class to allow Room to handle LocalDates.
  */
 class LocalDateRoomConverter {
 

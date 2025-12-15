@@ -1,20 +1,23 @@
 package gal.uvigo.mobileTaskManager.model
-/**
- * Extension functions to handle dueDate formats
- */
 
 import java.time.DateTimeException
 import java.time.LocalDate
 
 /**
- * For this date, returns a String of the date formatted as MM DD
+ * Extension functions to handle dueDate formats.
+ */
+
+//TODO adapt to date picker, mantener seguro para los adapters
+
+/**
+ * For this date, returns a String of the date formatted as MM DD.
  */
 fun LocalDate.formattedDueDate(): String =
     this.monthValue.toString().padStart(2, '0') + " " + this.dayOfMonth.toString()
         .padStart(2, '0')
 
 /**
- * For this date, returns a String of the date formatted as MM DD YYYY
+ * For this date, returns a String of the date formatted as MM DD YYYY.
  */
 fun LocalDate.formattedDueDateWithYear(): String =
     this.monthValue.toString().padStart(2, '0') + " " +
@@ -26,7 +29,7 @@ fun LocalDate.formattedDueDateWithYear(): String =
  * Returns a date created from the given mmdd formatted date string.
  * If autoYear is set to true, will expect MM DD and add a year so the date is not in the past.
  * If autoYear is set to false, will expect MM DD YYYY and parse accordingly.
- * Returns null if format or date is not valid
+ * Returns null if format or date is not valid.
  * Will force a leap year for 29th february.
  */
 fun LocalDate.createDateFromMMDD(mmdd: String, autoYear: Boolean = true): LocalDate? =

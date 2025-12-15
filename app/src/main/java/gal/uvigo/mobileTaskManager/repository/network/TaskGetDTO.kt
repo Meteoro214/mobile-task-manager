@@ -6,7 +6,7 @@ import java.time.LocalDate
 
 /**
  * Class to represent a Task when retrieved from CrudCrud, with all TaskSendDTO attributes
- * and CrudCrud _id
+ * and CrudCrud _id.
  */
 @JsonClass(generateAdapter = true)
 data class TaskGetDTO(

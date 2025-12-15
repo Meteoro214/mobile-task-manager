@@ -1,8 +1,9 @@
 <resources>
+
     <!-- Common strings-->
-    <string name="app_name">Mobile Task Manager</string>
-    <string name="mark_done_DONE_img">✅</string>
-    <string name="mark_done_UNDONE_img">❌</string>
+    <string name="app_name" translatable="false">Mobile Task Manager</string>
+    <string name="mark_done_DONE_img" translatable="false">✅</string>
+    <string name="mark_done_UNDONE_img" translatable="false">❌</string>
 
     <!-- Category names-->
     <string name="other_cat">Other/None</string>
@@ -43,7 +44,6 @@
     <string name="form_date_invalid_msg">Date is not valid</string>
     <string name="form_category_empty_msg">Category must be selected</string>
     <string name="form_edit_error_msg">Critical Edit Error : Could Not Update</string>
-
 
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Completion Status:</string>

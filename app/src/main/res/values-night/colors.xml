@@ -14,3 +14,6 @@
     <color name="default_color">@color/white</color>
 
 </resources>
+
+
+<!--Deprecar, el default hacerlo con themes y esto borrarlo-->

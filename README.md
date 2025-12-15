@@ -8,6 +8,7 @@ This repository contains the implementation for **Assignment 13** of the Task Ma
 
 ## ✅ Implemented Features
 
+- Implemented Spanish translations.
 
 ## 🚧 Known Issues
 
@@ -24,3 +25,23 @@ CrudCrud API only allows 24h of service OR up to 100 operations. To reset the AP
 
 > This assignment is part of the Mobile Development course at Escuela Superior de Enxeñaria Informatica - Universidade de Vigo.  
 > See the course syllabus and lab instructions for more details.
+
+
+
+el ACTV como es en material
+cambiar toasts por snackbar
+Revisar layouts en general, mejorar el cardview con un pelin de separacion? separarlas
+los colores de tasks meterlos como theme
+comprobar el uso de todas las strings definidas
+Revisado todo lo no UI
+
+
+hacer un readme especifico para la entrega final
+
+
+Mirar el formato del date picker si influye en algo
+los formateadores de fehca sdeberian usarse solo en Room y CrudCrud creo, no importaria
+
+
+add_form_title no se usa, default_form_title se usa en su luega
+lo mismo edit_form_title

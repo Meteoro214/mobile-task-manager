@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Handle Keys-->
-    <string name="handle_editedTask_Key">editedTask</string>
-    <string name="handle_unfinishedFormTitle_Key">unfinishedFormTitle</string>
-    <string name="handle_unfinishedFormDate_Key">unfinishedFormDate</string>
-    <string name="handle_unfinishedFormDescription_Key">unfinishedFormDescription</string>
-    <string name="handle_unfinishedFormCategory_Key">unfinishedFormCategory</string>
-    <string name="handle_unfinishedFormIsDone_Key">unfinishedFormIsDone</string>
-    <string name="handle_unfinishedFormID_Key">unfinishedFormID</string>
+    <string name="handle_editedTask_Key" translatable="false">editedTask</string>
+    <string name="handle_unfinishedFormTitle_Key" translatable="false">unfinishedFormTitle</string>
+    <string name="handle_unfinishedFormDate_Key" translatable="false">unfinishedFormDate</string>
+    <string name="handle_unfinishedFormDescription_Key" translatable="false">unfinishedFormDescription</string>
+    <string name="handle_unfinishedFormCategory_Key" translatable="false">unfinishedFormCategory</string>
+    <string name="handle_unfinishedFormIsDone_Key" translatable="false">unfinishedFormIsDone</string>
+    <string name="handle_unfinishedFormID_Key" translatable="false">unfinishedFormID</string>
 
     <!-- Worker Input Data Keys-->
-    <string name="Task_ID_Key">taskIDKey</string>
-    <string name="Task_Status_Key">taskStatusKey</string>
+    <string name="Task_ID_Key" translatable="false">taskIDKey</string>
+    <string name="Task_Status_Key" translatable="false">taskStatusKey</string>
 
     <!--Logger Strings-->
-    <string name="Log_Tag">mobileTaskManager Log</string>
-    <string name="network_good_down">Successfully downloaded data</string>
-    <string name="network_error_down">There has been a network error, could not download data</string>
-    <string name="worker_200_code">TaskUploadWorker Success: synced a Task</string>
-    <string name="worker_400_code">TaskUploadWorker Failed : CrudCrud issued 500 Server Error</string>
-    <string name="worker_400_down">TaskUploadWorker Failed : Service Failed No Network</string>
-    <string name="worker_404_code">TaskUploadWorker Failed : Task Not Found</string>
-    <string name="worker_409_code">TaskUploadWorker Failed : Attempted a Forbidden Operation</string>
-    <string name="worker_500_code">TaskUploadWorker Failed : Database Failed on Syncing</string>
-    <string name="worker_501_code">TaskUploadWorker Failed : Operation Not Implemented</string>
-    <string name="worker_XXX_code">TaskUploadWorker Failed : Unexpected Failure</string>
-
+    <string name="Log_Tag" translatable="false">mobileTaskManager Log</string>
+    <string name="network_good_down" translatable="false">Successfully downloaded data</string>
+    <string name="network_error_down" translatable="false">There has been a network error, could not download data</string>
+    <string name="worker_200_code" translatable="false">TaskUploadWorker Success: synced a Task</string>
+    <string name="worker_400_code" translatable="false">TaskUploadWorker Failed : CrudCrud issued 500 Server Error</string>
+    <string name="worker_400_down" translatable="false">TaskUploadWorker Failed : Service Failed No Network</string>
+    <string name="worker_404_code" translatable="false">TaskUploadWorker Failed : Task Not Found</string>
+    <string name="worker_409_code" translatable="false">TaskUploadWorker Failed : Attempted a Forbidden Operation</string>
+    <string name="worker_500_code" translatable="false">TaskUploadWorker Failed : Database Failed on Syncing</string>
+    <string name="worker_501_code" translatable="false">TaskUploadWorker Failed : Operation Not Implemented</string>
+    <string name="worker_XXX_code" translatable="false">TaskUploadWorker Failed : Unexpected Failure</string>
 
     <!--Misc Strings-->
-    <string name="preferences_file">MTM_Preferences</string>
-    <string name="db_name">task_db</string>
-    <string name="preferences_first_init_key">First_Install</string>
+    <string name="preferences_file" translatable="false">MTM_Preferences</string>
+    <string name="db_name" translatable="false">task_db</string>
+    <string name="preferences_first_init_key" translatable="false">First_Install</string>
+
 
 </resources>

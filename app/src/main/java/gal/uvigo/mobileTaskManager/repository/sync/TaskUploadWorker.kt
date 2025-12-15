@@ -7,23 +7,27 @@ import androidx.work.WorkerParameters
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.repository.TaskRepository
 
+/**
+ * Class to implement a Worker that handles sync operations between Room and CrudCrud.
+ */
 class TaskUploadWorker(appContext: Context, params: WorkerParameters) :
     CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
-        //get the keys as resources
+
         val id = inputData.getLong(applicationContext.getString(R.string.Task_ID_Key), -1)
         val statusName = inputData.getString(applicationContext.getString(R.string.Task_Status_Key))
 
         if (id == -1L || statusName == null) return Result.failure()
 
-
+        //Retrieve the TaskRepository
         val repo = TaskRepository(applicationContext)
 
+        //Perform sync operation and receive response code
         val responseCode = repo.sync(id, statusName)
 
+        //Handle result
         val tag = applicationContext.getString(R.string.Log_Tag)
-
         return when (responseCode) {
             200 -> { //Ok
                 Log.i(tag, applicationContext.getString(R.string.worker_200_code))
@@ -66,4 +70,5 @@ class TaskUploadWorker(appContext: Context, params: WorkerParameters) :
             }
         }
     }
+
 }

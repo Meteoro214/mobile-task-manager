@@ -5,5 +5,5 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.MobileTaskManager" parent="Base.Theme.MobileTaskManager" />
+    <style name="Theme.MobileTaskManager" parent="Base.Theme.MobileTaskManager" /><!--Esta es la theme que pilla el maniest-->
 </resources>
