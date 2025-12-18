@@ -10,39 +10,33 @@
             type="gal.uvigo.mobileTaskManager.model.Category" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="5dp">
+        android:layout_marginVertical="10dp"
+        android:paddingBottom="30dp"
+        tools:context=".ui.MainActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/categoryTV"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            tools:context=".ui.MainActivity">
+            android:layout_marginStart="10dp"
+            android:gravity="bottom"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:category="@{category}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/categoryTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:gravity="bottom"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:category="@{category}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <!-- Linea de separacion -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            app:cat_background_color="@{category}"
+            app:layout_constraintTop_toBottomOf="@id/categoryTV" />
 
-            <!-- Linea de separacion -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                app:cat_background_color="@{category}"
-                app:layout_constraintTop_toBottomOf="@id/categoryTV" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
 </layout>
