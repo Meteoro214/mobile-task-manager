@@ -13,6 +13,9 @@ import androidx.navigation.ui.setupWithNavController
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.ActivityMainBinding
 
+/**
+ * The App´s main (and only) activity.
+ */
 class MainActivity : AppCompatActivity() {
 
     /**
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
+    //TODO REMOVE
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return item.onNavDestinationSelected(navController) ||
                 super.onOptionsItemSelected(item)

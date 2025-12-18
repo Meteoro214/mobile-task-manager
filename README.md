@@ -45,3 +45,19 @@ los formateadores de fehca sdeberian usarse solo en Room y CrudCrud creo, no imp
 
 add_form_title no se usa, default_form_title se usa en su luega
 lo mismo edit_form_title
+
+
+Recomendado hacer el bottom shet como frafmento
+
+extends BottomSheetDIalogFragment
+
+Es practicamente un fragmento estandar
+
+A la hora de navegarlo s puede incluir en el navgraph pero como dialog
+
+
+si no se usa el navgraph metodo showDialog, fragmentTransaction
+
+ahora mas o menos habra 2 fragments
+
+tener placegolder en la activity para el fragment(llega el que hay ya?)

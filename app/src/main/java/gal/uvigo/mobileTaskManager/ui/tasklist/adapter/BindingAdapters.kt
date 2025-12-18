@@ -81,8 +81,6 @@ fun bindDueDateColor(tv: TextView, task: Task) {
             tv.context.getColor(R.color.default_color)
         }
     } else {
-        //there was a strange bug in previous versions (see Assignment-10)
-        //the bug caused non-deterministic dueDate coloring, when no default color was given.
         tv.context.getColor(R.color.default_color)
     }
     tv.setTextColor(color)

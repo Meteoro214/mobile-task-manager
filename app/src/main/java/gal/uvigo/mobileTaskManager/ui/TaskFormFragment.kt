@@ -76,11 +76,13 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             } else {
                 binding.taskData = t
             }
+            binding.formTitleTV.text = getString(R.string.edit_form_title)
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
             //ID will change when added, isDone/description/title use the defaults  (false orempty)
             // Category & Date will be null to start to show empty form
             binding.taskData = Task(0)
+            binding.formTitleTV.text = getString(R.string.add_form_title)
         }
     }
 
