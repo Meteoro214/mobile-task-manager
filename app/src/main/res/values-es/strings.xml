@@ -27,12 +27,6 @@
     <string name="form_task_isDone_msg">Marcar como Hecha?</string>
     <string name="form_save_button_msg">Guardar Tarea</string>
 
-    <!-- Task Form Hint strings-->
-    <string name="form_desc_hint_msg">Descripcion para una nueva Tarea</string>
-    <string name="form_title_hint_msg">Titulo para una nueva Tarea</string>
-    <string name="form_dueDate_hint_msg">MM DD</string><!-- TODO Esto habria que cambiarlo?-->
-    <string name="form_category_hint_msg">Categoría para una nueva Tarea</string>
-
     <!-- Task Form Error strings-->
     <string name="form_load_error_msg">Error de Edición Critico : Tarea No Encontrada</string>
     <string name="form_title_empty_msg">El titulo no puede estar vacio</string>

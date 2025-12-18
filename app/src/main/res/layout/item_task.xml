@@ -22,7 +22,7 @@
             android:layout_marginVertical="15dp"
             tools:context=".ui.MainActivity">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/idTV"
                 android:layout_width="20dp"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/isDoneMark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
                 app:layout_constraintTop_toTopOf="@id/idTV" />
 
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/titleTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/categoryTV"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -71,7 +71,7 @@
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintTop_toBottomOf="@id/titleTV" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/dueDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
