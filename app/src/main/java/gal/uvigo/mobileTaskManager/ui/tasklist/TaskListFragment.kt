@@ -3,8 +3,6 @@ package gal.uvigo.mobileTaskManager.ui.tasklist
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -52,13 +50,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
 
         setupSwipe()
         setupDrag()
-
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.task_list_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+        binding.addFAB.setOnClickListener {
+            val action = TaskListFragmentDirections.openForm()
+            findNavController().navigate(action)
+        }
     }
 
     /**

@@ -44,10 +44,4 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
-    //TODO REMOVE
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(navController) ||
-                super.onOptionsItemSelected(item)
-    }
-
 }
