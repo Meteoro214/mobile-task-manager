@@ -100,15 +100,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:hint="@string/form_task_dueDate_msg"
+            app:icon="@drawable/ic_calendar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/categoryLayout">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/dueDateInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"
                 app:dueDate="@{taskData.dueDate}" />
 
         </com.google.android.material.textfield.TextInputLayout>

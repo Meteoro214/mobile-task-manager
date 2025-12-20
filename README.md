@@ -28,23 +28,13 @@ CrudCrud API only allows 24h of service OR up to 100 operations. To reset the AP
 
 
 
-el ACTV como es en material
+poner los labels chulos de error
+
 cambiar toasts por snackbar
-Revisar layouts en general, mejorar el cardview con un pelin de separacion? separarlas
 los colores de tasks meterlos como theme
-comprobar el uso de todas las strings definidas
-Revisado todo lo no UI
 
 
 hacer un readme especifico para la entrega final
-
-
-Mirar el formato del date picker si influye en algo
-los formateadores de fehca sdeberian usarse solo en Room y CrudCrud creo, no importaria
-
-
-add_form_title no se usa, default_form_title se usa en su luega
-lo mismo edit_form_title
 
 
 Recomendado hacer el bottom shet como frafmento

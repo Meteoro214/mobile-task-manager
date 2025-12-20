@@ -11,13 +11,19 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import gal.uvigo.mobileTaskManager.R
+import gal.uvigo.mobileTaskManager.databinding.FragmentTaskFormBinding
 import gal.uvigo.mobileTaskManager.model.Category
 import gal.uvigo.mobileTaskManager.model.Task
-import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
-import gal.uvigo.mobileTaskManager.databinding.FragmentTaskFormBinding
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
+import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Locale
 
 class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
 
@@ -56,6 +62,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         loadTask()
         //Config AutoCompleteTextView
         setupACTVCategory()
+        //Config DatePicker
+        setupDatePicker()
         binding.saveTaskButton.setOnClickListener { v -> saveButtonAction() }
     }
 
@@ -120,6 +128,44 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 binding.categoryInput.error = null //remove error msg
 
             }
+    }
+
+    /**
+     * Setups DatePicker for dueDate
+     */
+    private fun setupDatePicker() {
+        binding.dueDateInput.setOnClickListener {
+            val taskDate = this.binding.taskData.dueDate ?: LocalDate.now()
+            val taskDateMillis = taskDate.atStartOfDay(ZoneId.systemDefault())
+                .toInstant().toEpochMilli()
+            val currentDateMillis = LocalDate.now().atStartOfDay(ZoneId.systemDefault())
+                .toInstant().toEpochMilli()
+
+            //Creates a DatePickerDialog
+            //Dialog will start with the existing date selected (or current day if no selection)
+            // Will not allow past dates
+            //will expect MM/DD/YYYY on text input mode
+            val mdp = MaterialDatePicker.Builder.datePicker()
+                .setTitleText(getString(R.string.form_task_dueDate_msg))
+                .setSelection(taskDateMillis)
+                .setCalendarConstraints(
+                    CalendarConstraints.Builder()
+                        .setStart(currentDateMillis)
+                        .setValidator(DateValidatorPointForward.now())
+                        .build()
+                )
+                .setTextInputFormat(SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()))
+                .build()
+
+            mdp.addOnPositiveButtonClickListener {
+                //comprobar la fecha?
+
+                //si se pone en texto directamente no comprobar si se pone en el task comprobar
+                //poner la fecha en texto
+            }
+
+            mdp.show(parentFragmentManager, "TAG")
+        }
     }
 
     /**
