@@ -26,6 +26,7 @@
     <string name="form_task_category_msg">Categoría:</string>
     <string name="form_task_isDone_msg">Marcar como Hecha?</string>
     <string name="form_save_button_msg">Guardar Tarea</string>
+    <string name="form_task_mandatory">Obligatorio</string>
 
     <!-- Task Form Error strings-->
     <string name="form_load_error_msg">Error de Edición Critico : Tarea No Encontrada</string>

@@ -142,10 +142,10 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
      */
     private fun setupDatePicker() {
         binding.dueDateInput.setOnClickListener {
-            val taskDate = this.binding.taskData.dueDate ?: LocalDate.now()
-            val taskDateMillis = taskDate.atStartOfDay(ZoneId.systemDefault())
+            val taskDate = this.binding.taskData?.dueDate ?: LocalDate.now()
+            val taskDateMillis = taskDate.atStartOfDay(ZoneId.of("UTC"))
                 .toInstant().toEpochMilli()
-            val currentDateMillis = LocalDate.now().atStartOfDay(ZoneId.systemDefault())
+            val currentDateMillis = LocalDate.now().atStartOfDay(ZoneId.of("UTC"))
                 .toInstant().toEpochMilli()
 
             //Creates a DatePickerDialog
@@ -161,16 +161,18 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                         .setValidator(DateValidatorPointForward.now())
                         .build()
                 )
-                .setTextInputFormat(SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()))
+                .setTextInputFormat(SimpleDateFormat("yyyy/mm/dd", Locale.getDefault()))
                 .build()
 
-            mdp.addOnPositiveButtonClickListener {
-                //comprobar la fecha?
+            mdp.addOnPositiveButtonClickListener { date ->
+                //Date should be valid, will be checked on save
+                val date = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
+                binding.taskData?.dueDate = date
+                verifyField("dueDate")
+                //Data binding is not responding on updates
+                binding.dueDateInput.setText(date?.formattedDueDate() ?: "")
 
-                //si se pone en texto directamente no comprobar si se pone en el task comprobar
-                //poner la fecha en texto
             }
-
             mdp.show(parentFragmentManager, "TAG")
         }
     }

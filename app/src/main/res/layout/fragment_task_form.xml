@@ -39,6 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:hint="@string/form_task_title_msg"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
+            app:helperText="@string/form_task_mandatory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/formTitleTV">
@@ -72,9 +75,11 @@
             android:id="@+id/categoryLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:hint="@string/form_task_category_msg"
+            app:errorEnabled="true"
+            app:helperText="@string/form_task_mandatory"
             app:layout_constraintBottom_toBottomOf="@id/isDoneCheck"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/isDoneCheck"
@@ -86,6 +91,7 @@
                 android:layout_height="match_parent"
                 android:completionThreshold="0"
                 android:inputType="none"
+                android:paddingVertical="10dp"
                 android:paddingStart="20dp"
                 app:category="@{taskData.category}" />
 
@@ -100,15 +106,19 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:hint="@string/form_task_dueDate_msg"
-            app:icon="@drawable/ic_calendar"
+            app:errorEnabled="true"
+            app:helperText="@string/form_task_mandatory"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryLayout">
+            app:layout_constraintTop_toBottomOf="@id/categoryLayout"
+            app:startIconDrawable="@drawable/ic_calendar">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dueDateInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:focusable="false"
+                android:inputType="none"
                 app:dueDateYear="@{taskData.dueDate}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -122,6 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:hint="@string/form_task_description_msg"
+            app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dueDateLayout">

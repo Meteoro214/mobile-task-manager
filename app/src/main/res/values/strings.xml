@@ -31,6 +31,7 @@
     <string name="form_task_category_msg">Category:</string>
     <string name="form_task_isDone_msg">Mark as Done?</string>
     <string name="form_save_button_msg">Save Task</string>
+    <string name="form_task_mandatory">Mandatory</string>
 
     <!-- Task Form Error strings-->
     <string name="form_load_error_msg">Critical Edit Error : Task Not Found</string>
