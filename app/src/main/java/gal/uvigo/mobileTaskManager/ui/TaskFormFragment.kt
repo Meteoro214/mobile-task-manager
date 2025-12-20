@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -14,13 +14,16 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskFormBinding
 import gal.uvigo.mobileTaskManager.model.Category
 import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
+import gal.uvigo.mobileTaskManager.model.formattedDueDate
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale
@@ -57,9 +60,13 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         //another way of binding
         binding = FragmentTaskFormBinding.bind(view)
         navController = findNavController()
-
         //Loads task passed in SafeArgs
         loadTask()
+
+        binding.titleInput.doOnTextChanged { _, _, _, _ ->
+            verifyField("title")
+        }
+
         //Config AutoCompleteTextView
         setupACTVCategory()
         //Config DatePicker
@@ -75,11 +82,12 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             val t = viewModel.get(args.taskID)?.copy()
             if (t == null) {
                 //Should never happen
-                Toast.makeText(
-                    requireContext(), getString(R.string.form_load_error_msg),
-                    Toast.LENGTH_SHORT
-                ).show()
                 saved = true
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.form_load_error_msg),
+                    Snackbar.LENGTH_SHORT
+                ).show()
                 navController.navigateUp()
             } else {
                 binding.taskData = t
@@ -87,7 +95,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             binding.formTitleTV.text = getString(R.string.edit_form_title)
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
-            //ID will change when added, isDone/description/title use the defaults  (false orempty)
+            //ID will change when added, isDone/description/title use the defaults  (false or empty)
             // Category & Date will be null to start to show empty form
             binding.taskData = Task(0)
             binding.formTitleTV.text = getString(R.string.add_form_title)
@@ -125,8 +133,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             AdapterView.OnItemClickListener { _, _, position, _ ->
                 //Requires order be maintained in enum & array
                 binding.taskData?.category = Category.entries[position]
-                binding.categoryInput.error = null //remove error msg
-
+                verifyField("category")
             }
     }
 
@@ -184,23 +191,47 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
      */
     private fun verifyTask(): Boolean {
         var toRet = true
-        if (binding.taskData?.title?.isEmpty() ?: true) {
-            binding.titleInput.error = getString(R.string.form_title_empty_msg)
-            toRet = false
-        }
-        val date =
-            LocalDate.of(1, 1, 1).createDateFromMMDD(binding.dueDateInput.text.toString())
-        if (date == null) {
-            binding.dueDateInput.error = getString(R.string.form_date_invalid_msg)
-            toRet = false
-        } else {
-            binding.taskData?.dueDate = date
-        }
-        if (binding.categoryInput.text.isEmpty()) {
-            binding.categoryInput.error = getString(R.string.form_category_empty_msg)
-            toRet = false
-        }
+        toRet = verifyField("title") && toRet
+        toRet = verifyField("dueDate") && toRet
+        toRet = verifyField("category") && toRet
         return toRet
+    }
+
+    private fun verifyField(fieldName: String): Boolean = when (fieldName) {
+        "title" -> {
+            if (binding.taskData?.title?.isEmpty() ?: true) {
+                binding.titleLayout.error = getString(R.string.form_title_empty_msg)
+                false
+            } else {
+                binding.titleLayout.error = null
+                true
+            }
+        }
+
+        "dueDate" -> {
+            val date = LocalDate.of(1, 1, 1)
+                .createDateFromMMDD(binding.taskData?.dueDate?.formattedDueDate() ?: "")
+            if (date == null) {
+                binding.dueDateLayout.error = getString(R.string.form_date_invalid_msg)
+                false
+            } else {
+                binding.dueDateLayout.error = null
+                true
+            }
+
+        }
+
+        "category" -> {
+            if (binding.categoryInput.text.isEmpty()) {
+                binding.categoryLayout.error = getString(R.string.form_category_empty_msg)
+                false
+            } else {
+                binding.categoryLayout.error = null //remove error msg
+                true
+            }
+        }
+
+        else -> true
     }
 
     /**
@@ -211,9 +242,10 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         if (isEditingForm()) { //Existing task
             val validUpdate = viewModel.updateTask(binding.taskData ?: Task(-1))
             if (!validUpdate) { //Should never happen
-                Toast.makeText(
-                    requireContext(), getString(R.string.form_edit_error_msg),
-                    Toast.LENGTH_SHORT
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.form_edit_error_msg),
+                    Snackbar.LENGTH_SHORT
                 ).show()
             }
         } else { //New task
