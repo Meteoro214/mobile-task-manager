@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--Fragment Title-->
+        <!--Form Title-->
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/detailsTitleTV"
@@ -43,10 +43,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/detailsTitleTV">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titleTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 android:text="@{taskData.title}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -80,10 +81,13 @@
             app:layout_constraintStart_toEndOf="@id/isDoneCheck"
             app:layout_constraintTop_toTopOf="@id/isDoneCheck">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/categoryTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:enabled="false"
+                android:paddingVertical="10dp"
+                android:paddingStart="20dp"
                 app:category="@{taskData.category}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,10 +105,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/categoryLayout">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dueDateTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 app:dueDateYear="@{taskData.dueDate}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -122,10 +127,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dueDateLayout">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descriptionTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 android:text="@{taskData.description}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -143,10 +149,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionLayout">
 
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/idTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:enabled="false"
                 android:text="@{Long.toString(taskData.id)}" />
 
         </com.google.android.material.textfield.TextInputLayout>
