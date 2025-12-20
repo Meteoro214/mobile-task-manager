@@ -5,15 +5,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import gal.uvigo.mobileTaskManager.R
-import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
+import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 
 /**
@@ -68,16 +68,16 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
             val deleted = viewModel.deleteTask(binding.taskData?.id ?: -1)
 
             if (deleted) {
-                Toast.makeText(
-                    requireContext(),
+                Snackbar.make(
+                    binding.root,
                     getString(R.string.check_delete_OK_msg),
-                    Toast.LENGTH_SHORT
+                    Snackbar.LENGTH_SHORT
                 ).show()
             } else {
-                Toast.makeText(
-                    requireContext(),
+                Snackbar.make(
+                    binding.root,
                     getString(R.string.check_delete_error_msg),
-                    Toast.LENGTH_SHORT
+                    Snackbar.LENGTH_SHORT
                 ).show()
             }
 

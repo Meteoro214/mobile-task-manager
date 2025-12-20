@@ -57,6 +57,14 @@ fun bindCategoryColorBackground(v: View, category: Category?) {
  */
 @BindingAdapter("dueDate")
 fun bindDueDateText(tv: TextView, dueDate: LocalDate?) {
+    tv.text = dueDate?.formattedDueDate(year = false) ?: ""
+}
+
+/**
+ * For a TextView, receives a dueDate and sets its text with the formatted date as MM DD YYYY.
+ */
+@BindingAdapter("dueDateYear")
+fun bindDueDateYearText(tv: TextView, dueDate: LocalDate?) {
     tv.text = dueDate?.formattedDueDate() ?: ""
 }
 

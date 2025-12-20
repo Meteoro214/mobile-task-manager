@@ -44,7 +44,7 @@ class Task(
      * TaskRepository will ensure no nulls, no empty titles & no past dates on add or edit operations.
      */
     init {
-        require(id >= 0) { "ID mustn`t be negative" }
+        require(id >= 0) { "ID must not be negative" }
     }
 
 

@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.R
 
 /**

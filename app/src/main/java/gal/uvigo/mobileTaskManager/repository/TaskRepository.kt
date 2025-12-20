@@ -21,6 +21,7 @@ import gal.uvigo.mobileTaskManager.repository.sync.TaskUploadWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import androidx.core.content.edit
 
 /**
  *  Class to represent a Repository for the App.
@@ -43,7 +44,7 @@ class TaskRepository(context: Context) {
     private val workManager = WorkManager.getInstance(context)
 
     /**
-     * The Dispacher that will be used to launch coroutines.
+     * The Dispatcher that will be used to launch coroutines.
      */
     private val dispatcher = Dispatchers.IO
 
@@ -107,7 +108,7 @@ class TaskRepository(context: Context) {
         if (firstInit) {
             this.download()
             //set flag so app knows
-            settings.edit().putBoolean(key, false).commit()
+            settings.edit { putBoolean(key, false) }
         }
     }
 
@@ -321,7 +322,7 @@ class TaskRepository(context: Context) {
             SyncStatus.PENDING_UPDATE -> {
                 //Update operation should happen after create operation
                 //this means there may be a pending operation
-                //create/update could be pending, delete shouldn´t, so we need to APPEND the work request
+                //create/update could be pending, delete should not, so we need to APPEND the work request
                 // to ensure it is executed after the pending ones
                 //If previous fails, it does not matter if it was an update, but a failed insert
                 //means update will also fail, so if previous fails so does this one (no AppendOrReplace)
@@ -383,7 +384,7 @@ class TaskRepository(context: Context) {
                     SyncStatus.PENDING_UPDATE.name -> {
                         //If Room syncStatus is Pending Create or Delete, something failed
                         //If Room syncStatus is Pending Update, all good
-                        //If Room syncStatus is SYNCED, Create or Update sync happened after update operation was schedulled
+                        //If Room syncStatus is SYNCED, Create or Update sync happened after update operation was scheduled
                         when (entity.syncStatus) {
                             SyncStatus.PENDING_CREATE -> 409 //Forbidden
                             SyncStatus.PENDING_UPDATE -> updateSync(entity) //Expected behaviour
@@ -396,12 +397,12 @@ class TaskRepository(context: Context) {
                     }
 
                     SyncStatus.PENDING_DELETE.name -> {
-                        //If Room syncStatus is trully Pending Delete, delete, but only if it was already inserted (_id !=null
+                        //If Room syncStatus is truly Pending Delete, delete, but only if it was already inserted (_id !=null
                         //Anything else means a task that was marked as deleted was modified, forbidden
                         when (entity.syncStatus) {
                             SyncStatus.PENDING_DELETE -> if (entity._id != null) {
                                 deleteSync(entity) //Expected behaviour
-                            } else { // means task wasnt even inserted yet
+                            } else { // means task was not even inserted yet
                                 taskDAO.trueDelete(entity.id)
                                 200
                             }

@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
@@ -83,7 +83,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 viewHolder: RecyclerView.ViewHolder,
                 direction: Int
             ) {
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (binding.taskRV.adapter as TaskAdapter).currentList.getOrNull(pos)
@@ -95,18 +95,18 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                         ItemTouchHelper.LEFT -> {
                             val deleted = viewModel.deleteTask(item.task.id)
                             if (deleted) {
-                                Toast.makeText(
-                                    requireContext(),
+                                Snackbar.make(
+                                    binding.root,
                                     getString(R.string.check_delete_OK_msg),
-                                    Toast.LENGTH_SHORT
+                                    Snackbar.LENGTH_SHORT
                                 ).show()
                             } else {
-                                Toast.makeText(
-                                    requireContext(),
+                                Snackbar.make(
+                                    binding.root,
                                     getString(R.string.check_delete_error_msg),
-                                    Toast.LENGTH_SHORT
+                                    Snackbar.LENGTH_SHORT
                                 ).show()
-                                //Needed incase delete fails
+                                //Needed in case delete fails
                                 binding.taskRV.adapter?.notifyItemChanged(pos)
                             }
                         }
@@ -115,27 +115,28 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                             val updated = viewModel.markTaskDone(item.task.id)
                             when (updated) {
                                 true -> {
-                                    Toast.makeText(
-                                        requireContext(), getString(R.string.swipe_mark_OK_msg),
-                                        Toast.LENGTH_SHORT
+                                    Snackbar.make(
+                                        binding.root,
+                                        getString(R.string.swipe_mark_OK_msg),
+                                        Snackbar.LENGTH_SHORT
                                     ).show()
                                 }
 
                                 false -> {
-                                    Toast.makeText(
-                                        requireContext(),
+                                    Snackbar.make(
+                                        binding.root,
                                         getString(R.string.swipe_mark_wasDone_msg),
-                                        Toast.LENGTH_SHORT
+                                        Snackbar.LENGTH_SHORT
                                     ).show()
                                     //Used so adapter recharges view & removes the swipe background
                                     binding.taskRV.adapter?.notifyItemChanged(pos)
                                 }
 
                                 else -> {//Should never happen
-                                    Toast.makeText(
-                                        requireContext(),
+                                    Snackbar.make(
+                                        binding.root,
                                         getString(R.string.swipe_mark_error_msg),
-                                        Toast.LENGTH_SHORT
+                                        Snackbar.LENGTH_SHORT
                                     ).show()
                                     //Used so adapter recharges view & removes the swipe background
                                     binding.taskRV.adapter?.notifyItemChanged(pos)
@@ -153,7 +154,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
@@ -171,17 +172,19 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 isCurrentlyActive: Boolean
             ) {
                 val p = Paint()
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
                 val itemView = viewHolder.itemView
                 if (item is TaskListItem.TaskItem && actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    if (dX > 0) { //Swipping right
+                    if (dX > 0) { //Swiping right
                         p.color = itemView.context.getColor(R.color.grassgreen)
-                        c.drawRect(itemView.left.toFloat(),itemView.top.toFloat(),
-                            itemView.right.toFloat(),itemView.bottom.toFloat(),
-                            p)
+                        c.drawRect(
+                            itemView.left.toFloat(), itemView.top.toFloat(),
+                            itemView.right.toFloat(), itemView.bottom.toFloat(),
+                            p
+                        )
                         val d = itemView.context.getDrawable(R.drawable.ic_checkmark)
                         if (d != null) {
                             val iconMargin = (itemView.height - d.intrinsicHeight) / 2
@@ -192,11 +195,13 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                             d.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                             d.draw(c)
                         }
-                    } else if (dX < 0) { //Swipping left
+                    } else if (dX < 0) { //Swiping left
                         p.color = itemView.context.getColor(R.color.red)
-                        c.drawRect(itemView.left.toFloat(),itemView.top.toFloat(),
-                            itemView.right.toFloat(),itemView.bottom.toFloat(),
-                            p)
+                        c.drawRect(
+                            itemView.left.toFloat(), itemView.top.toFloat(),
+                            itemView.right.toFloat(), itemView.bottom.toFloat(),
+                            p
+                        )
                         val d = itemView.context.getDrawable(R.drawable.ic_delete)
 
                         if (d != null) {
@@ -295,7 +300,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
