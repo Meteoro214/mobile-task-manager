@@ -167,8 +167,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             mdp.addOnPositiveButtonClickListener { date ->
                 //Date should be valid, will be checked on save
                 val date = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
+                verifyField("dueDate", date)
                 binding.taskData?.dueDate = date
-                verifyField("dueDate")
                 //Data binding is not responding on updates
                 binding.dueDateInput.setText(date?.formattedDueDate() ?: "")
 
@@ -199,42 +199,42 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         return toRet
     }
 
-    private fun verifyField(fieldName: String): Boolean = when (fieldName) {
-        "title" -> {
-            if (binding.taskData?.title?.isEmpty() ?: true) {
-                binding.titleLayout.error = getString(R.string.form_title_empty_msg)
-                false
-            } else {
-                binding.titleLayout.error = null
-                true
-            }
-        }
-
-        "dueDate" -> {
-            val date = LocalDate.of(1, 1, 1)
-                .createDateFromMMDD(binding.taskData?.dueDate?.formattedDueDate() ?: "")
-            if (date == null) {
-                binding.dueDateLayout.error = getString(R.string.form_date_invalid_msg)
-                false
-            } else {
-                binding.dueDateLayout.error = null
-                true
+    private fun verifyField(fieldName: String, newDate: LocalDate? = null): Boolean =
+        when (fieldName) {
+            "title" -> {
+                if (binding.taskData?.title?.isEmpty() ?: true) {
+                    binding.titleLayout.error = getString(R.string.form_title_empty_msg)
+                    false
+                } else {
+                    binding.titleLayout.error = null
+                    true
+                }
             }
 
-        }
-
-        "category" -> {
-            if (binding.categoryInput.text.isEmpty()) {
-                binding.categoryLayout.error = getString(R.string.form_category_empty_msg)
-                false
-            } else {
-                binding.categoryLayout.error = null //remove error msg
-                true
+            "dueDate" -> {
+                val date = if (newDate != null) newDate else LocalDate.of(1, 1, 1)
+                    .createDateFromMMDD(binding.taskData?.dueDate?.formattedDueDate() ?: "")
+                if (date == null || date.isBefore(LocalDate.now())) {
+                    binding.dueDateLayout.error = getString(R.string.form_date_invalid_msg)
+                    false
+                } else {
+                    binding.dueDateLayout.error = null
+                    true
+                }
             }
-        }
 
-        else -> true
-    }
+            "category" -> {
+                if (binding.categoryInput.text.isEmpty()) {
+                    binding.categoryLayout.error = getString(R.string.form_category_empty_msg)
+                    false
+                } else {
+                    binding.categoryLayout.error = null //remove error msg
+                    true
+                }
+            }
+
+            else -> true
+        }
 
     /**
      * Saves a Task after input is verified
