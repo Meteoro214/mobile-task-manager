@@ -42,8 +42,8 @@
     <string name="form_edit_error_msg">Critical Edit Error : Could Not Update</string>
 
     <!-- Task Detail strings-->
-    <string name="check_task_isItDone">Completion Status:</string>
-    <string name="check_task_id">Task ID: </string>
+    <string name="check_task_isItDone">Status</string>
+    <string name="check_task_id">Task ID:</string>
 
     <!-- Task Detail Error strings-->
     <string name="check_delete_OK_msg">Deleted a Task</string>

@@ -357,7 +357,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
                 binding.taskData?.isDone = handle.get<Boolean>(keyIsDone) == true
                 val date =
                     LocalDate.of(1, 1, 1).createDateFromMMDD(handle.get<String>(keyDate) ?: "")
-                if (date != null) binding.taskData?.dueDate = date
+                if (date != null && !date.isBefore(LocalDate.now()))binding.taskData?.dueDate = date
                 val cat = handle.get<String>(keyCat)
                 if (cat?.isNotBlank() ?: false) {
                     //turn string into cat

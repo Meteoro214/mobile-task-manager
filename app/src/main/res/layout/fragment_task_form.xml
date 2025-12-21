@@ -6,7 +6,6 @@
     tools:context=".ui.TaskFormFragment">
 
     <data>
-
         <variable
             name="taskData"
             type="gal.uvigo.mobileTaskManager.model.Task" />
@@ -15,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <!-- Drag handle for accessibility -->
@@ -84,11 +83,9 @@
             android:id="@+id/isDoneCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_margin="20dp"
             android:checked="@={taskData.done}"
             android:text="@string/form_task_isDone_msg"
-            app:layout_constraintEnd_toStartOf="@id/categoryLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleLayout" />
 
@@ -99,14 +96,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_margin="20dp"
             android:hint="@string/form_task_category_msg"
             app:errorEnabled="true"
             app:helperText="@string/form_task_mandatory"
-            app:layout_constraintBottom_toBottomOf="@id/isDoneCheck"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/isDoneCheck"
-            app:layout_constraintTop_toTopOf="@id/isDoneCheck">
+            app:layout_constraintEnd_toStartOf="@id/dueDateLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/dueDateLayout"
+            app:layout_constraintBottom_toBottomOf="@id/dueDateLayout">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/categoryInput"
@@ -114,8 +111,8 @@
                 android:layout_height="match_parent"
                 android:completionThreshold="0"
                 android:inputType="none"
-                android:paddingVertical="10dp"
-                android:paddingStart="20dp"
+                android:gravity="center"
+                android:paddingVertical="15dp"
                 app:category="@{taskData.category}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -132,8 +129,8 @@
             app:errorEnabled="true"
             app:helperText="@string/form_task_mandatory"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryLayout"
+            app:layout_constraintStart_toEndOf="@id/categoryLayout"
+            app:layout_constraintTop_toBottomOf="@id/isDoneCheck"
             app:startIconDrawable="@drawable/ic_calendar">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -141,6 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:focusable="false"
+                android:gravity="center"
                 android:inputType="none"
                 app:dueDateYear="@{taskData.dueDate}" />
 

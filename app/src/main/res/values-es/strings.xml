@@ -37,8 +37,8 @@
     <string name="form_edit_error_msg">Error de Edición Critico : No se pudo Editar</string>
 
     <!-- Task Detail strings-->
-    <string name="check_task_isItDone">Estado:</string>
-    <string name="check_task_id">ID de Tarea: </string>
+    <string name="check_task_isItDone">Estado</string>
+    <string name="check_task_id">ID de Tarea:</string>
 
     <!-- Task Detail Error strings-->
     <string name="check_delete_OK_msg">Se ha borrado una Tarea</string>
