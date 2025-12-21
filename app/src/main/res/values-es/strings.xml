@@ -16,10 +16,11 @@
     <string name="menu_save_task">Guardar Tarea</string>
     <string name="menu_edit_task">Editar Tarea</string>
     <string name="menu_delete_task">Borrar Tarea</string>
+    <string name="menu_return_task">Dejar de Editar</string>
 
     <!-- Task Form strings-->
-    <string name="add_form_title">NUEVA TAREA</string>
-    <string name="edit_form_title">EDITAR TAREA</string>
+    <string name="add_form_title">Nueva Tarea</string>
+    <string name="edit_form_title">Editar Tarea</string>
     <string name="form_task_title_msg">Titulo:</string>
     <string name="form_task_dueDate_msg">Fecha Limite:</string>
     <string name="form_task_description_msg">Descripción:</string>

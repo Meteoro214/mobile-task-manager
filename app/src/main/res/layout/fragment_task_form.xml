@@ -48,7 +48,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:menu="@menu/task_form_menu"
                 app:title="@string/form_title"
                 app:titleCentered="true" />
 
@@ -169,7 +168,7 @@
                 android:text="@={taskData.description}" />
 
         </com.google.android.material.textfield.TextInputLayout>
-        
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

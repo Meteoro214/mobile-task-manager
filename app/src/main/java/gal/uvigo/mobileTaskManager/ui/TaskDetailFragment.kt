@@ -88,7 +88,7 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
     override fun onResume() {
         super.onResume()
         //Loads stored task info
-        val handle = navController.currentBackStackEntry?.savedStateHandle
+        val handle = navController.previousBackStackEntry?.savedStateHandle
         if (handle != null) {
             val key = getString(R.string.handle_editedTask_Key)
             val task = handle.get<Task>(key)

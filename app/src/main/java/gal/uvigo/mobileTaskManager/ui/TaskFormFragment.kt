@@ -81,13 +81,38 @@ class TaskFormFragment : BottomSheetDialogFragment() {
         setupACTVCategory()
         //Config DatePicker
         setupDatePicker()
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.saveTask -> {
-                    this.saveButtonAction()
-                    true
+        setupMenu()
+    }
+
+    private fun setupMenu(){
+        if(isEditingForm()){
+            binding.toolbar.title = getString(R.string.edit_form_title)
+            binding.toolbar.inflateMenu(R.menu.task_form_edit_menu)
+            binding.toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.saveTask -> {
+                        this.saveButtonAction()
+                        true
+                    }
+                    R.id.abandonEdit ->{
+                        val action = TaskFormFragmentDirections.returnToView( binding.taskData?.id ?: -1)
+                        navController.navigate(action)
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
+            }
+        } else{
+            binding.toolbar.title = getString(R.string.add_form_title)
+            binding.toolbar.inflateMenu(R.menu.task_form_add_menu)
+            binding.toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.saveTask -> {
+                        this.saveButtonAction()
+                        true
+                    }
+                    else -> false
+                }
             }
         }
     }
@@ -110,13 +135,11 @@ class TaskFormFragment : BottomSheetDialogFragment() {
             } else {
                 binding.taskData = t
             }
-            binding.toolbar.title = getString(R.string.edit_form_title)
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
             //ID will change when added, isDone/description/title use the defaults  (false or empty)
             // Category & Date will be null to start to show empty form
             binding.taskData = Task(0)
-            binding.toolbar.title = getString(R.string.add_form_title)
         }
     }
 
@@ -286,9 +309,8 @@ class TaskFormFragment : BottomSheetDialogFragment() {
 
     override fun onPause() {
         super.onPause()
-        //If app is exited, current is still the fragment
-        //If back button or save button is pressed, current changed to previous (stack is popped BEFORE onPause)
-        val handle = navController.currentBackStackEntry?.savedStateHandle
+        //Current BackStack entry will always point to this fragment (as of this version)
+        val handle = navController.previousBackStackEntry?.savedStateHandle
         if (handle != null) { //should always be true
             if (!saved) {
                 //store unfinished data for a possible reload
@@ -316,8 +338,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        //If app resumes from exit, current is the fragment and will have a handle
-        //If it is access from another fragment, handle is on previous
+        //As of the current version, data will always be stored in the previous fragment
         val handle = navController.previousBackStackEntry?.savedStateHandle
         val keyID = getString(R.string.handle_unfinishedFormID_Key)
 
@@ -352,48 +373,6 @@ class TaskFormFragment : BottomSheetDialogFragment() {
             handle.remove<String>(keyDesc)
             handle.remove<String>(keyCat)
         }
-
-        //If the fragment is resuming after going to background instead of being created,
-        //data will be in the current stack entry`s handle, not the previous
-        val currentHandle = navController.currentBackStackEntry?.savedStateHandle
-
-        if (currentHandle != null && currentHandle.contains(keyID)) {
-            val keyTitle = getString(R.string.handle_unfinishedFormTitle_Key)
-            val keyIsDone = getString(R.string.handle_unfinishedFormIsDone_Key)
-            val keyDate = getString(R.string.handle_unfinishedFormDate_Key)
-            val keyDesc = getString(R.string.handle_unfinishedFormDescription_Key)
-            val keyCat = getString(R.string.handle_unfinishedFormCategory_Key)
-            //there was a previously unfinished form saved
-            if (currentHandle.get<Long>(keyID) == binding.taskData?.id) {
-                //Ensure the saved data has the same ID (on edit, we try to edit the same Task)
-                //Handle should hold all necessary data
-                binding.taskData?.title = currentHandle.get<String>(keyTitle) ?: ""
-                binding.taskData?.description = currentHandle.get<String>(keyDesc) ?: ""
-                binding.taskData?.isDone = currentHandle.get<Boolean>(keyIsDone) == true
-                val date =
-                    LocalDate.of(1, 1, 1)
-                        .createDateFromMMDD(currentHandle.get<String>(keyDate) ?: "")
-                if (date != null) binding.taskData?.dueDate = date
-                val cat = currentHandle.get<String>(keyCat)
-                if (cat?.isNotBlank() ?: false) {
-                    //turn string into cat
-                    val index = resources.getStringArray(R.array.categories).indexOf(cat)
-                    binding.taskData?.category = Category.entries[index]
-                }
-            }
-            //Clear saved data (Note that if saved data was from an edit from other task, it will still be lost)
-            currentHandle.remove<Long>(keyID)
-            currentHandle.remove<String>(keyTitle)
-            currentHandle.remove<Boolean>(keyIsDone)
-            currentHandle.remove<String>(keyDate)
-            currentHandle.remove<String>(keyDesc)
-            currentHandle.remove<String>(keyCat)
-        }
-
-        //When loading unfinished data from an add operation, and only from an add operation,
-        // data is correctly bound but not displayed on the form
-        //forcing a setText resolves the issue
-        binding.taskData = binding.taskData
     }
 
     /**

@@ -21,10 +21,11 @@
     <string name="menu_save_task">Save Task</string>
     <string name="menu_edit_task">Edit Task</string>
     <string name="menu_delete_task">Delete Task</string>
+    <string name="menu_return_task">Abandon Edit</string>
 
     <!-- Task Form strings-->
-    <string name="add_form_title">NEW TASK</string>
-    <string name="edit_form_title">EDIT TASK</string>
+    <string name="add_form_title">New Task</string>
+    <string name="edit_form_title">Edit Task</string>
     <string name="form_task_title_msg">Title:</string>
     <string name="form_task_dueDate_msg">Due Date:</string>
     <string name="form_task_description_msg">Description:</string>

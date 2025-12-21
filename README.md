@@ -30,3 +30,7 @@ CrudCrud API only allows 24h of service OR up to 100 operations. To reset the AP
 
 los colores de tasks meterlos como theme
 hacer un readme especifico para la entrega final
+
+
+
+Modified TaskForm onPause and onResume to upgrade task saving logic. The navigation back stack no longer distinguishes between exiting the app and navigating back.
