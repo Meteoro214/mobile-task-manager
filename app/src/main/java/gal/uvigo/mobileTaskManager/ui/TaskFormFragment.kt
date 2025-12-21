@@ -1,16 +1,18 @@
 package gal.uvigo.mobileTaskManager.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -22,13 +24,14 @@ import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 import gal.uvigo.mobileTaskManager.model.createDateFromMMDD
 import gal.uvigo.mobileTaskManager.model.formattedDueDate
+import gal.uvigo.mobileTaskManager.ui.tasklist.adapter.bindDueDateYearText
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Locale
 
-class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
+class TaskFormFragment : BottomSheetDialogFragment() {
 
     /**
      * Binding for the layout
@@ -55,9 +58,16 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
      */
     private var saved = false
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_task_form, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //another way of binding
         binding = FragmentTaskFormBinding.bind(view)
         navController = findNavController()
         //Loads task passed in SafeArgs
@@ -71,7 +81,15 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
         setupACTVCategory()
         //Config DatePicker
         setupDatePicker()
-        binding.saveTaskButton.setOnClickListener { v -> saveButtonAction() }
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.saveTask -> {
+                    this.saveButtonAction()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     /**
@@ -92,13 +110,13 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             } else {
                 binding.taskData = t
             }
-            binding.formTitleTV.text = getString(R.string.edit_form_title)
+            binding.toolbar.title = getString(R.string.edit_form_title)
         } else { //New task
             //Values will be placeholders, will not be saved unless input is entered
             //ID will change when added, isDone/description/title use the defaults  (false or empty)
             // Category & Date will be null to start to show empty form
             binding.taskData = Task(0)
-            binding.formTitleTV.text = getString(R.string.add_form_title)
+            binding.toolbar.title = getString(R.string.add_form_title)
         }
     }
 
@@ -161,7 +179,7 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                         .setValidator(DateValidatorPointForward.now())
                         .build()
                 )
-                .setTextInputFormat(SimpleDateFormat("yyyy/mm/dd", Locale.getDefault()))
+                .setTextInputFormat(SimpleDateFormat("mm dd yyyy", Locale.getDefault()))
                 .build()
 
             mdp.addOnPositiveButtonClickListener { date ->
@@ -169,9 +187,8 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
                 val date = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
                 verifyField("dueDate", date)
                 binding.taskData?.dueDate = date
-                //Data binding is not responding on updates
-                binding.dueDateInput.setText(date?.formattedDueDate() ?: "")
-
+                //Data binding is not responding on updates, I execute the binding function manually
+                bindDueDateYearText(binding.dueDateInput, date)
             }
             mdp.show(parentFragmentManager, "TAG")
         }
@@ -212,8 +229,9 @@ class TaskFormFragment : Fragment(R.layout.fragment_task_form) {
             }
 
             "dueDate" -> {
-                val date = if (newDate != null) newDate else LocalDate.of(1, 1, 1)
-                    .createDateFromMMDD(binding.taskData?.dueDate?.formattedDueDate() ?: "")
+                val date = newDate
+                    ?: LocalDate.of(1, 1, 1)
+                        .createDateFromMMDD(binding.taskData?.dueDate?.formattedDueDate() ?: "")
                 if (date == null || date.isBefore(LocalDate.now())) {
                     binding.dueDateLayout.error = getString(R.string.form_date_invalid_msg)
                     false

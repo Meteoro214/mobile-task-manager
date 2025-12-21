@@ -17,7 +17,7 @@
             android:id="@+id/openForm"
             app:destination="@id/taskFormFragment" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/taskDetailFragment"
         android:name="gal.uvigo.mobileTaskManager.ui.TaskDetailFragment"
         android:label="@string/detail_title"
@@ -29,8 +29,8 @@
             android:name="taskID"
             android:defaultValue="-1L"
             app:argType="long" />
-    </fragment>
-    <fragment
+    </dialog>
+    <dialog
         android:id="@+id/taskFormFragment"
         android:name="gal.uvigo.mobileTaskManager.ui.TaskFormFragment"
         android:label="@string/form_title"
@@ -39,5 +39,5 @@
             android:name="taskID"
             android:defaultValue="-1L"
             app:argType="long" />
-    </fragment>
+    </dialog>
 </navigation>

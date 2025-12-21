@@ -30,10 +30,3 @@ CrudCrud API only allows 24h of service OR up to 100 operations. To reset the AP
 
 los colores de tasks meterlos como theme
 hacer un readme especifico para la entrega final
-Recomendado hacer el bottom shet como frafmento
-extends BottomSheetDIalogFragment
-Es practicamente un fragmento estandar
-A la hora de navegarlo s puede incluir en el navgraph pero como dialog
-si no se usa el navgraph metodo showDialog, fragmentTransaction
-ahora mas o menos habra 2 fragments
-tener placegolder en la activity para el fragment(llega el que hay ya?)

@@ -6,29 +6,52 @@
     tools:context=".ui.TaskDetailFragment">
 
     <data>
-
         <variable
             name="taskData"
             type="gal.uvigo.mobileTaskManager.model.Task" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/Widget.Material3.BottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <!--Form Title-->
+        <!-- Drag handle for accessibility -->
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/detailsTitleTV"
-            android:layout_width="wrap_content"
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:id="@+id/drag_handle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/check_detail_title"
-            android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!--Top Bar-->
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/barLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/drag_handle">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:title="@string/detail_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleCentered="true"
+                app:menu="@menu/task_detail_menu"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <!--Task Title-->
 
@@ -41,7 +64,7 @@
             android:hint="@string/form_task_title_msg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/detailsTitleTV">
+            app:layout_constraintTop_toBottomOf="@id/barLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titleTV"

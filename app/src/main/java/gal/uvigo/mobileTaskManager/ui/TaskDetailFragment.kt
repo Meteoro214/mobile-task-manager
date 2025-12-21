@@ -1,15 +1,14 @@
 package gal.uvigo.mobileTaskManager.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.LayoutInflater
 import android.view.View
-import androidx.fragment.app.Fragment
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskDetailBinding
@@ -19,7 +18,7 @@ import gal.uvigo.mobileTaskManager.model.TaskViewModel
 /**
  * Fragment to show Task data
  */
-class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
+class TaskDetailFragment : BottomSheetDialogFragment() {
 
     /**
      * Binding for the layout
@@ -41,50 +40,49 @@ class TaskDetailFragment : Fragment(R.layout.fragment_task_detail) {
      */
     private val viewModel: TaskViewModel by activityViewModels()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_task_detail, container, false)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //another way of binding
         binding = FragmentTaskDetailBinding.bind(view)
         navController = findNavController()
         binding.taskData = viewModel.get(args.taskID)
-        setHasOptionsMenu(true)
-    }
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.editTask -> {
+                    val action = TaskDetailFragmentDirections.openForm(binding.taskData?.id ?: -1)
+                    navController.navigate(action)
+                    true
+                }
 
+                R.id.deleteTask -> {
+                    val deleted = viewModel.deleteTask(binding.taskData?.id ?: -1)
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.task_detail_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+                    if (deleted) {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.check_delete_OK_msg),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.check_delete_error_msg),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    navController.navigateUp()
+                }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.editTask -> {
-            val action = TaskDetailFragmentDirections.openForm(binding.taskData?.id ?: -1)
-            navController.navigate(action)
-            true
-        }
-
-        R.id.deleteTask -> {
-            val deleted = viewModel.deleteTask(binding.taskData?.id ?: -1)
-
-            if (deleted) {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.check_delete_OK_msg),
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.check_delete_error_msg),
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                else -> false
             }
-
-            navController.navigateUp()
         }
-
-        else -> super.onOptionsItemSelected(item)
     }
 
     override fun onResume() {

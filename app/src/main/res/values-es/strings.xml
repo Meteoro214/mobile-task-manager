@@ -13,12 +13,12 @@
 
     <!-- Menu strings-->
     <string name="menu_add_task">Añadir Tarea</string>
+    <string name="menu_save_task">Guardar Tarea</string>
     <string name="menu_edit_task">Editar Tarea</string>
     <string name="menu_delete_task">Borrar Tarea</string>
 
     <!-- Task Form strings-->
     <string name="add_form_title">NUEVA TAREA</string>
-    <string name="default_form_title">FORMULARIO TAREAS</string>
     <string name="edit_form_title">EDITAR TAREA</string>
     <string name="form_task_title_msg">Titulo:</string>
     <string name="form_task_dueDate_msg">Fecha Limite:</string>
@@ -38,7 +38,6 @@
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Estado:</string>
     <string name="check_task_id">ID de Tarea: </string>
-    <string name="check_detail_title">INFO DE TAREA</string>
 
     <!-- Task Detail Error strings-->
     <string name="check_delete_OK_msg">Se ha borrado una Tarea</string>

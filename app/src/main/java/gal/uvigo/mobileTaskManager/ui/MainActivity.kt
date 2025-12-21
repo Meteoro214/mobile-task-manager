@@ -23,11 +23,6 @@ class MainActivity : AppCompatActivity() {
      */
     private lateinit var binding: ActivityMainBinding
 
-    /**
-     * NavController for navigation
-     */
-    private lateinit var navController: NavController
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -35,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        navController = findNavController(R.id.fragHost)
+        val navController = findNavController(R.id.fragHost)
 
         //Configures menus
         val appBarConfiguration = AppBarConfiguration(navController.graph)

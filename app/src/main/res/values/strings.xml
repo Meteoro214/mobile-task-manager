@@ -18,12 +18,12 @@
 
     <!-- Menu strings-->
     <string name="menu_add_task">Add Task</string>
+    <string name="menu_save_task">Save Task</string>
     <string name="menu_edit_task">Edit Task</string>
     <string name="menu_delete_task">Delete Task</string>
 
     <!-- Task Form strings-->
     <string name="add_form_title">NEW TASK</string>
-    <string name="default_form_title">TASK FORM</string>
     <string name="edit_form_title">EDIT TASK</string>
     <string name="form_task_title_msg">Title:</string>
     <string name="form_task_dueDate_msg">Due Date:</string>
@@ -43,7 +43,6 @@
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Completion Status:</string>
     <string name="check_task_id">Task ID: </string>
-    <string name="check_detail_title">TASK INFO</string>
 
     <!-- Task Detail Error strings-->
     <string name="check_delete_OK_msg">Deleted a Task</string>
