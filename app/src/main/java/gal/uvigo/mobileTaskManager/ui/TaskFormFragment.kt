@@ -106,7 +106,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
     /**
      * Configures the Form fields.
      */
-    private fun setupForm(){
+    private fun setupForm() {
         binding.titleInput.doOnTextChanged { _, _, _, _ ->
             verifyField("title")
         }
@@ -181,10 +181,11 @@ class TaskFormFragment : BottomSheetDialogFragment() {
             mdp.addOnPositiveButtonClickListener { date ->
                 //Date should be valid, will be checked on save
                 val date = Instant.ofEpochMilli(date).atZone(ZoneId.of("UTC")).toLocalDate()
-                verifyField("dueDate", date)
-                binding.taskData?.dueDate = date
-                //Data binding is not responding on updates, I execute the binding function manually
-                bindDueDateYearText(binding.dueDateInput, date)
+                if (verifyField("dueDate", date)) {
+                    binding.taskData?.dueDate = date
+                    //Data binding is not responding on updates, I execute the binding function manually
+                    bindDueDateYearText(binding.dueDateInput, date)
+                }
             }
             mdp.show(parentFragmentManager, "TAG")
         }
