@@ -15,6 +15,11 @@
         <item name="titleCentered">true</item>
     </style>
 
+    <style name="Theme.MobileTaskManager.FAB" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:layout_margin">@dimen/frag_task_list_addFAB_margin</item>
+    </style>
+
     <style name="Theme.MobileTaskManager.BottomSheet" parent="Widget.Material3.BottomSheet">
         <item name="layout_behavior">com.google.android.material.bottomsheet.BottomSheetBehavior</item>
     </style>
