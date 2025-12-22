@@ -30,22 +30,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        setupMainBar()
-    }
-
-    /**
-     * Configures the main bar
-     */
-    private fun setupMainBar(){
-        //Currently deprecated due to using dialogs, only relevant to show app title on toolbar
-
-        val navController = findNavController(R.id.fragHost)
-        //Configures menus
-        val appBarConfiguration = AppBarConfiguration(navController.graph)
-        //Theme has .NoActionBar, configures toolbar as the ActionBar so TaskList can inflate the + menu option
-        setSupportActionBar(binding.toolbar)
-        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
 }

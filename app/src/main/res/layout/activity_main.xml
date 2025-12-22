@@ -33,6 +33,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:titleCentered="true" />
+                    app:title="@string/app_title"/>
             </com.google.android.material.appbar.AppBarLayout>
 
             <fragment
