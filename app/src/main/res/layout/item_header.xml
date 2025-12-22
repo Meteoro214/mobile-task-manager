@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="category"
             type="gal.uvigo.mobileTaskManager.model.Category" />
@@ -13,17 +12,17 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:paddingBottom="30dp"
+        android:layout_marginVertical="@dimen/item_header_layout_marginVertical"
+        android:paddingBottom="@dimen/item_header_layout_paddingBottom"
         tools:context=".ui.MainActivity">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/categoryTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/item_header_categoryTV_marginStart"
             android:gravity="bottom"
-            android:textSize="18sp"
+            android:textSize="@dimen/item_header_categoryTV_textSize"
             android:textStyle="bold"
             app:category="@{category}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +32,7 @@
         <!-- Category separation line -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="@dimen/item_header_view_height"
             app:cat_background_color="@{category}"
             app:layout_constraintTop_toBottomOf="@id/categoryTV" />
 
