@@ -25,14 +25,10 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/colorPrimary"
-                    android:minHeight="?attr/actionBarSize"
                     android:paddingTop="@dimen/activity_main_toolbar_paddingTop"
-                    android:theme="?attr/actionBarTheme"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:titleCentered="true" />
                     app:title="@string/app_title"/>
             </com.google.android.material.appbar.AppBarLayout>
 

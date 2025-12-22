@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MobileTaskManager.HeaderTV">
+        <item name="android:layout_marginStart">@dimen/item_header_categoryTV_marginStart</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:textSize">@dimen/item_header_categoryTV_textSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.MobileTaskManager.AppBar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:theme">?attr/actionBarTheme</item>
+        <item name="titleCentered">true</item>
+    </style>
+
+    <style name="Theme.MobileTaskManager.BottomSheet" parent="Widget.Material3.BottomSheet">
+        <item name="layout_behavior">com.google.android.material.bottomsheet.BottomSheetBehavior</item>
+    </style>
+
+
+</resources>
