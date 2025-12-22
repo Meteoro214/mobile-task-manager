@@ -36,6 +36,17 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         super.onViewCreated(view, savedInstanceState)
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
+
+        setupRecyclerView()
+        setupSwipe()
+        setupDrag()
+        setupFAB()
+    }
+
+    /**
+     * Configures the RecyclerView.
+     */
+    private fun setupRecyclerView() {
         binding.taskRV.layoutManager = LinearLayoutManager(context)
         //Creates task adapter and sends lambda for ItemTask onClick
         binding.taskRV.adapter = TaskAdapter { task ->
@@ -47,24 +58,19 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         viewModel.taskListItems.observe(viewLifecycleOwner) { taskList ->
             (binding.taskRV.adapter as TaskAdapter).submitList(taskList)
         }
-
-        setupSwipe()
-        setupDrag()
-        binding.addFAB.setOnClickListener {
-            val action = TaskListFragmentDirections.openForm()
-            findNavController().navigate(action)
-        }
     }
 
     /**
-     * Setups Swipe actions
+     * Configures Swipe actions.
      */
     private fun setupSwipe() {
         val swipeHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
-            //not used
+            /**
+             * Not used nor implemented.
+             */
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -172,9 +178,10 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 //retrieves the item
                 val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
                 val itemView = viewHolder.itemView
+
                 if (item is TaskListItem.TaskItem && actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     if (dX > 0) { //Swiping right
-                        p.color = itemView.context.getColor(R.color.grassgreen)
+                        p.color = itemView.context.getColor(R.color.swipe_done_background)
                         c.drawRect(
                             itemView.left.toFloat(), itemView.top.toFloat(),
                             itemView.right.toFloat(), itemView.bottom.toFloat(),
@@ -191,7 +198,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                             d.draw(c)
                         }
                     } else if (dX < 0) { //Swiping left
-                        p.color = itemView.context.getColor(R.color.red)
+                        p.color = itemView.context.getColor(R.color.swipe_delete_background)
                         c.drawRect(
                             itemView.left.toFloat(), itemView.top.toFloat(),
                             itemView.right.toFloat(), itemView.bottom.toFloat(),
@@ -210,6 +217,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                         }
                     }
                 }
+
                 super.onChildDraw(
                     c,
                     recyclerView,
@@ -226,7 +234,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     /**
-     * Setups Drag actions
+     * Configures Drag actions
      */
     private fun setupDrag() {
         val dragHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
@@ -284,7 +292,9 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 super.onSelectedChanged(viewHolder, actionState)
             }
 
-            //not used
+            /**
+             * Not used
+             */
             override fun onSwiped(
                 viewHolder: RecyclerView.ViewHolder,
                 direction: Int
@@ -306,6 +316,17 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         })
 
         dragHelper.attachToRecyclerView(binding.taskRV)
+    }
+
+
+    /**
+     * Configures the FloatingActionButton
+     */
+    private fun setupFAB() {
+        binding.addFAB.setOnClickListener {
+            val action = TaskListFragmentDirections.openForm()
+            findNavController().navigate(action)
+        }
     }
 
 }

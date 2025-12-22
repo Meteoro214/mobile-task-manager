@@ -72,49 +72,8 @@ class TaskFormFragment : BottomSheetDialogFragment() {
         navController = findNavController()
         //Loads task passed in SafeArgs
         loadTask()
-
-        binding.titleInput.doOnTextChanged { _, _, _, _ ->
-            verifyField("title")
-        }
-
-        //Config AutoCompleteTextView
-        setupACTVCategory()
-        //Config DatePicker
-        setupDatePicker()
+        setupForm()
         setupMenu()
-    }
-
-    private fun setupMenu(){
-        if(isEditingForm()){
-            binding.toolbar.title = getString(R.string.edit_form_title)
-            binding.toolbar.inflateMenu(R.menu.task_form_edit_menu)
-            binding.toolbar.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.saveTask -> {
-                        this.saveButtonAction()
-                        true
-                    }
-                    R.id.abandonEdit ->{
-                        val action = TaskFormFragmentDirections.returnToView( binding.taskData?.id ?: -1)
-                        navController.navigate(action)
-                        true
-                    }
-                    else -> false
-                }
-            }
-        } else{
-            binding.toolbar.title = getString(R.string.add_form_title)
-            binding.toolbar.inflateMenu(R.menu.task_form_add_menu)
-            binding.toolbar.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.saveTask -> {
-                        this.saveButtonAction()
-                        true
-                    }
-                    else -> false
-                }
-            }
-        }
     }
 
     /**
@@ -131,6 +90,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
                     getString(R.string.form_load_error_msg),
                     Snackbar.LENGTH_SHORT
                 ).show()
+                //Close the form dialog fragment
                 navController.navigateUp()
             } else {
                 binding.taskData = t
@@ -141,6 +101,19 @@ class TaskFormFragment : BottomSheetDialogFragment() {
             // Category & Date will be null to start to show empty form
             binding.taskData = Task(0)
         }
+    }
+
+    /**
+     * Configures the Form fields.
+     */
+    private fun setupForm(){
+        binding.titleInput.doOnTextChanged { _, _, _, _ ->
+            verifyField("title")
+        }
+        //Config AutoCompleteTextView
+        setupACTVCategory()
+        //Config DatePicker
+        setupDatePicker()
     }
 
     /**
@@ -218,7 +191,47 @@ class TaskFormFragment : BottomSheetDialogFragment() {
     }
 
     /**
-     * Method to execute when Save Button is pressed
+     * Configures the options shown on AppBar
+     */
+    private fun setupMenu() {
+        if (isEditingForm()) {
+            binding.toolbar.title = getString(R.string.edit_form_title)
+            binding.toolbar.inflateMenu(R.menu.task_form_edit_menu)
+            binding.toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.saveTask -> {
+                        this.saveButtonAction()
+                        true
+                    }
+
+                    R.id.abandonEdit -> {
+                        val action =
+                            TaskFormFragmentDirections.returnToView(binding.taskData?.id ?: -1)
+                        navController.navigate(action)
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        } else {
+            binding.toolbar.title = getString(R.string.add_form_title)
+            binding.toolbar.inflateMenu(R.menu.task_form_add_menu)
+            binding.toolbar.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.saveTask -> {
+                        this.saveButtonAction()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
+    }
+
+    /**
+     * Method to execute when Save Button is pressed.
      */
     private fun saveButtonAction() {
         //verify info
@@ -229,7 +242,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
     }
 
     /**
-     * Validates the input for a Task
+     * Validates the input for a Task.
      */
     private fun verifyTask(): Boolean {
         var toRet = true
@@ -239,6 +252,10 @@ class TaskFormFragment : BottomSheetDialogFragment() {
         return toRet
     }
 
+    /**
+     * Validates the input for a given field.
+     * Can validate a date directly via newDate.
+     */
     private fun verifyField(fieldName: String, newDate: LocalDate? = null): Boolean =
         when (fieldName) {
             "title" -> {
@@ -246,7 +263,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
                     binding.titleLayout.error = getString(R.string.form_title_empty_msg)
                     false
                 } else {
-                    binding.titleLayout.error = null
+                    binding.titleLayout.error = null //remove error msg
                     true
                 }
             }
@@ -259,7 +276,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
                     binding.dueDateLayout.error = getString(R.string.form_date_invalid_msg)
                     false
                 } else {
-                    binding.dueDateLayout.error = null
+                    binding.dueDateLayout.error = null //remove error msg
                     true
                 }
             }
@@ -278,7 +295,7 @@ class TaskFormFragment : BottomSheetDialogFragment() {
         }
 
     /**
-     * Saves a Task after input is verified
+     * Saves a Task after input is verified.
      */
     private fun saveTask() {
         //Data is already verified
@@ -306,6 +323,12 @@ class TaskFormFragment : BottomSheetDialogFragment() {
         //Returns to previous fragment
         navController.navigateUp()
     }
+
+    /**
+     * Method to check whether we are editing or adding a task.
+     */
+    private fun isEditingForm(): Boolean =
+        args.taskID != -1L //-1 Default value, no real value passed
 
     override fun onPause() {
         super.onPause()
@@ -357,7 +380,8 @@ class TaskFormFragment : BottomSheetDialogFragment() {
                 binding.taskData?.isDone = handle.get<Boolean>(keyIsDone) == true
                 val date =
                     LocalDate.of(1, 1, 1).createDateFromMMDD(handle.get<String>(keyDate) ?: "")
-                if (date != null && !date.isBefore(LocalDate.now()))binding.taskData?.dueDate = date
+                if (date != null && !date.isBefore(LocalDate.now())) binding.taskData?.dueDate =
+                    date
                 val cat = handle.get<String>(keyCat)
                 if (cat?.isNotBlank() ?: false) {
                     //turn string into cat
@@ -374,11 +398,4 @@ class TaskFormFragment : BottomSheetDialogFragment() {
             handle.remove<String>(keyCat)
         }
     }
-
-    /**
-     * Method to check whether we are editing or adding a task
-     */
-    private fun isEditingForm(): Boolean =
-        args.taskID != -1L //-1 Default value, no real value passed
-
 }

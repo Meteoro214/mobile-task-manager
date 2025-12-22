@@ -32,7 +32,7 @@ fun LocalDate.createDateFromMMDD(formattedString: String, year: Boolean = true):
     ) {
         null
     } else {
-        //Could be simplified, no longer used without year
+        //Not currently used without a given year
         val parsed = formattedString.split(" ")
         val day = Integer.parseInt(parsed[1])
         val month = Integer.parseInt(parsed[0])

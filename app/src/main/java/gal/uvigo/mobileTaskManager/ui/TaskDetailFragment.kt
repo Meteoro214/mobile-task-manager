@@ -16,27 +16,27 @@ import gal.uvigo.mobileTaskManager.model.Task
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
 
 /**
- * Fragment to show Task data
+ * Fragment to show Task data.
  */
 class TaskDetailFragment : BottomSheetDialogFragment() {
 
     /**
-     * Binding for the layout
+     * Binding for the layout.
      */
     private lateinit var binding: FragmentTaskDetailBinding
 
     /**
-     * NavController for navigation
+     * NavController for navigation.
      */
     private lateinit var navController: NavController
 
     /**
-     * Arguments received on navigation. Expected to receive a taskID (long)
+     * Arguments received on navigation. Expected to receive a taskID (Long).
      */
     private val args: TaskDetailFragmentArgs by navArgs()
 
     /**
-     * TaskViewModel to handle Tasks
+     * TaskViewModel to handle Tasks.
      */
     private val viewModel: TaskViewModel by activityViewModels()
 
@@ -53,6 +53,13 @@ class TaskDetailFragment : BottomSheetDialogFragment() {
         binding = FragmentTaskDetailBinding.bind(view)
         navController = findNavController()
         binding.taskData = viewModel.get(args.taskID)
+        setupTopBar()
+    }
+
+    /**
+     * Configures the AppBar on the Bottom Sheet Dialog.
+     */
+    private fun setupTopBar() {
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.editTask -> {
