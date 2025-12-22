@@ -240,6 +240,17 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         val dragHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
         ) {
+
+            /**
+             * Used to modify the item elevation when dragging without needing to know original value
+             */
+            private val alphaModifier = 0.8F
+
+            /**
+             * Used to modify the item elevation when dragging without needing to know original value
+             */
+            private val elevationModifier = 3
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -275,8 +286,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 viewHolder: RecyclerView.ViewHolder
             ) {
                 super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.elevation = 5.5F
-                viewHolder.itemView.alpha = 1F
+                viewHolder.itemView.elevation /= this.elevationModifier
+                viewHolder.itemView.alpha /= this.alphaModifier
                 //Commit reordering to Room
                 viewModel.persistOrder()
             }
@@ -286,8 +297,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 actionState: Int
             ) {
                 if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
-                    viewHolder.itemView.elevation = 16F
-                    viewHolder.itemView.alpha = 0.8F
+                    viewHolder.itemView.elevation *= this.elevationModifier
+                    viewHolder.itemView.alpha *= this.alphaModifier
                 }
                 super.onSelectedChanged(viewHolder, actionState)
             }
