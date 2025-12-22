@@ -129,6 +129,9 @@
                 android:id="@+id/dueDateInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:focusable="false"
+                android:gravity="center"
+                android:inputType="none"
                 app:dueDateYear="@{taskData.dueDate}" />
 
         </com.google.android.material.textfield.TextInputLayout>
