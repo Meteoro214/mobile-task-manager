@@ -103,8 +103,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:completionThreshold="0"
-                android:inputType="none"
                 android:gravity="center"
+                android:inputType="none"
                 android:paddingVertical="@dimen/bottom_sheet_frags_categoryInput_paddingVertical"
                 app:category="@{taskData.category}" />
 
@@ -129,9 +129,6 @@
                 android:id="@+id/dueDateInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:focusable="false"
-                android:gravity="center"
-                android:inputType="none"
                 app:dueDateYear="@{taskData.dueDate}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -153,7 +150,8 @@
                 android:id="@+id/descriptionInput"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"
+                android:inputType="textMultiLine"
+                android:minLines="3"
                 android:text="@={taskData.description}" />
 
         </com.google.android.material.textfield.TextInputLayout>

@@ -120,10 +120,10 @@
                 android:id="@+id/categoryTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:enabled="false"
-                android:paddingVertical="@dimen/bottom_sheet_frags_categoryInput_paddingVertical"
-                android:gravity="center"
                 android:layout_gravity="center"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingVertical="@dimen/bottom_sheet_frags_categoryInput_paddingVertical"
                 app:category="@{taskData.category}" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -167,6 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:enabled="false"
+                android:minLines="3"
                 android:text="@{taskData.description}" />
 
         </com.google.android.material.textfield.TextInputLayout>
