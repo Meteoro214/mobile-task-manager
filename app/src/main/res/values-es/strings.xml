@@ -38,7 +38,7 @@
 
     <!-- Task Detail strings-->
     <string name="check_task_isItDone">Estado</string>
-    <string name="check_task_id">ID de Tarea:</string>
+    <string name="check_task_id">ID:</string>
 
     <!-- Task Detail Error strings-->
     <string name="check_delete_OK_msg">Se ha borrado una Tarea</string>
