@@ -51,7 +51,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/titleLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
@@ -88,17 +87,16 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/categoryLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
             android:hint="@string/form_task_category_msg"
             app:errorEnabled="true"
             app:helperText="@string/form_task_mandatory"
+            app:layout_constraintBottom_toBottomOf="@id/dueDateLayout"
             app:layout_constraintEnd_toStartOf="@id/dueDateLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/dueDateLayout"
-            app:layout_constraintBottom_toBottomOf="@id/dueDateLayout">
+            app:layout_constraintTop_toTopOf="@id/dueDateLayout">
 
             <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/categoryInput"
@@ -116,7 +114,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/dueDateLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
@@ -143,7 +140,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/descriptionLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
