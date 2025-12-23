@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--Base colors for some things-->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
@@ -17,6 +18,7 @@
     <color name="task_pending_soon">@color/yellow</color>
     <color name="task_pending_today">@color/orange</color>
     <color name="task_undone">@color/red</color>
+    <color name="task_default">@color/md_theme_onSurface</color>
 
     <color name="swipe_delete_background">@color/red</color>
     <color name="swipe_done_background">@color/category_other</color>
@@ -179,6 +181,3 @@
 
 
 </resources>
-
-
-<!--Deprecar, el default hacerlo con themes y esto borrarlo-->
