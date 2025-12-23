@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--activity_mail.xml-->
+    <dimen name="app_title_textSize">26sp</dimen>
     <dimen name="activity_main_toolbar_paddingTop">10dp</dimen>
     <dimen name="activity_main_fragment_marginBottom">33dp</dimen>
 
@@ -11,12 +13,13 @@
     <!--fragment_task_form.xml % fragment_task_detail.xml-->
     <dimen name="bottom_sheet_frags_generalLayout_margin">20dp</dimen>
     <dimen name="bottom_sheet_frags_categoryInput_paddingVertical">15dp</dimen>
+    <dimen name="bottom_sheet_frags_title_textSize">24dp</dimen>
 
     <!--item_header.xml-->
     <dimen name="item_header_layout_paddingBottom">30dp</dimen>
     <dimen name="item_header_layout_marginVertical">10dp</dimen>
     <dimen name="item_header_categoryTV_marginStart">10dp</dimen>
-    <dimen name="item_header_categoryTV_textSize">18sp</dimen>
+    <dimen name="item_header_categoryTV_textSize">20sp</dimen>
     <dimen name="item_header_view_height">4dp</dimen>
 
     <!--item_task.xml-->
@@ -28,8 +31,7 @@
     <dimen name="item_task_isDoneMark_paddingBottom">2dp</dimen>
     <dimen name="item_task_isDoneMark_marginHorizontal">10dp</dimen>
     <dimen name="item_task_isDoneMark_textSize">30sp</dimen>
-    <dimen name="item_task_titleTV_textSize">15sp</dimen>
-    <dimen name="item_task_categoryTV_textSize">11sp</dimen>
+    <dimen name="item_task_titleTV_textSize">17sp</dimen>
     <dimen name="item_task_dueDateTV_marginEnd">30dp</dimen>
 
 

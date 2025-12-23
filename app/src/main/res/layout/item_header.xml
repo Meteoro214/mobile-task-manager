@@ -21,6 +21,7 @@
             style="@style/Theme.MobileTaskManager.HeaderTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/item_header_categoryTV_marginStart"
             app:category="@{category}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

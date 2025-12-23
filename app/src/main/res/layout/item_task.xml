@@ -46,14 +46,13 @@
                 app:layout_constraintStart_toEndOf="@id/idTV"
                 app:layout_constraintTop_toTopOf="@id/idTV" />
 
-
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/titleTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/item_task_general_marginStart"
                 android:text="@{taskData.title}"
-                android:textSize="@dimen/item_task_titleTV_textSize"
+                android:textAppearance="?attr/textAppearanceTitleSmall"
                 app:layout_constraintBottom_toTopOf="@id/categoryTV"
                 app:layout_constraintEnd_toStartOf="@+id/dueDateTV"
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
@@ -65,7 +64,7 @@
                 android:layout_height="0dp"
                 android:layout_marginStart="@dimen/item_task_general_marginStart"
                 android:gravity="bottom"
-                android:textSize="@dimen/item_task_categoryTV_textSize"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
                 app:category="@{taskData.category}"
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintTop_toBottomOf="@id/titleTV" />
@@ -81,8 +80,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
 </layout>

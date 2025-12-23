@@ -1,4 +1,5 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
     <!-- Base application theme. -->
     <style name="Base.Theme.MobileTaskManager" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/md_theme_primary</item>
@@ -48,12 +49,27 @@
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
     </style>
-    
+
     <style name="Theme.MobileTaskManager" parent="Base.Theme.MobileTaskManager">
         <item name="floatingActionButtonStyle">@style/Theme.MobileTaskManager.FAB</item>
         <item name="bottomSheetStyle">@style/Theme.MobileTaskManager.BottomSheet</item>
         <item name="toolbarStyle">@style/Theme.MobileTaskManager.AppBar</item>
+        <item name="textAppearanceHeadlineSmallEmphasized">
+            @style/Theme.MobileTaskManager.HeadlineSmallEmphasized
+        </item>
+        <item name="textAppearanceTitleLarge">
+            @style/Theme.MobileTaskManager.TitleLarge
+        </item>
+        <item name="textAppearanceTitleSmallEmphasized">
+            @style/Theme.MobileTaskManager.TitleSmallEmphasized
+        </item>
+        <item name="textAppearanceTitleSmall">
+            @style/Theme.MobileTaskManager.TitleSmall
+        </item>
+        <item name="textAppearanceLabelSmall">
+            @style/Theme.MobileTaskManager.LabelSmall
+        </item>
     </style>
-    
+
 
 </resources>
