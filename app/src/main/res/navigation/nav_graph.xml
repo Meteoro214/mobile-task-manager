@@ -17,27 +17,35 @@
             android:id="@+id/openForm"
             app:destination="@id/taskFormFragment" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/taskDetailFragment"
         android:name="gal.uvigo.mobileTaskManager.ui.TaskDetailFragment"
         android:label="@string/detail_title"
         tools:layout="@layout/fragment_task_detail">
         <action
             android:id="@+id/openForm"
-            app:destination="@id/taskFormFragment" />
+            app:destination="@id/taskFormFragment"
+            app:popUpTo="@id/taskDetailFragment"
+            app:popUpToInclusive="true" />
+        <!--popUpTo allows the BottomSheet to be dismissed-->
         <argument
             android:name="taskID"
             android:defaultValue="-1L"
             app:argType="long" />
-    </fragment>
-    <fragment
+    </dialog>
+    <dialog
         android:id="@+id/taskFormFragment"
         android:name="gal.uvigo.mobileTaskManager.ui.TaskFormFragment"
         android:label="@string/form_title"
         tools:layout="@layout/fragment_task_form">
+        <action
+            android:id="@+id/returnToView"
+            app:destination="@id/taskDetailFragment"
+            app:popUpTo="@id/taskFormFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="taskID"
             android:defaultValue="-1L"
             app:argType="long" />
-    </fragment>
+    </dialog>
 </navigation>

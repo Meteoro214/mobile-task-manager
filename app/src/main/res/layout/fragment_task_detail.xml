@@ -13,148 +13,167 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
+        <!-- Drag handle for accessibility -->
 
-        <TextView
-            android:id="@+id/detailsTitleTV"
-            android:layout_width="wrap_content"
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:id="@+id/drag_handle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/check_detail_title"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/isDoneTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/check_task_isItDone"
-            app:layout_constraintBottom_toBottomOf="@id/isDoneCheck"
-            app:layout_constraintEnd_toStartOf="@id/isDoneCheck"
-            app:layout_constraintTop_toTopOf="@id/isDoneCheck" />
+        <!--Top Bar-->
 
-        <TextView
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/barLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/drag_handle">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:menu="@menu/task_detail_menu"
+                app:title="@string/detail_title" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--Task Title-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/titleLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
+            android:hint="@string/form_task_title_msg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/barLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/titleTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:text="@{taskData.title}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Task Completion Status-->
+
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/isDoneCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:paddingBottom="2dp"
-            android:text="@{taskData.done ? @string/mark_done_DONE_img: @string/mark_done_UNDONE_img}"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.65"
+            android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
+            android:checked="@{taskData.done}"
+            android:enabled="false"
+            android:text="@string/check_task_isItDone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailsTitleTV" />
+            app:layout_constraintTop_toBottomOf="@+id/titleLayout" />
 
-        <TextView
-            android:id="@+id/titleTV"
-            android:layout_width="wrap_content"
+        <!--Task ID-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/idLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/form_task_title_msg"
+            android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
+            android:hint="@string/check_task_id"
+            app:layout_constraintBottom_toBottomOf="@id/isDoneCheck"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/isDoneCheck" />
+            app:layout_constraintTop_toTopOf="@id/isDoneCheck">
 
-        <TextView
-            android:id="@+id/titleTV2"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/idTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:text="@{Long.toString(taskData.id)}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Task Category-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/categoryLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="@{taskData.title}"
+            android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
+            android:hint="@string/form_task_category_msg"
+            app:layout_constraintBottom_toBottomOf="@id/dueDateLayout"
+            app:layout_constraintEnd_toStartOf="@id/dueDateLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/dueDateLayout">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/categoryTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:enabled="false"
+                android:gravity="center"
+                android:paddingVertical="@dimen/bottom_sheet_frags_categoryInput_paddingVertical"
+                app:category="@{taskData.category}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Task Due Date-->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dueDateLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
+            android:hint="@string/form_task_dueDate_msg"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTV" />
+            app:layout_constraintStart_toEndOf="@id/categoryLayout"
+            app:layout_constraintTop_toBottomOf="@id/isDoneCheck">
 
-        <TextView
-            android:id="@+id/categoryTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/form_task_category_msg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTV2" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dueDateTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:gravity="center"
+                app:dueDateYear="@{taskData.dueDate}" />
 
-        <TextView
-            android:id="@+id/categoryTV2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            app:category="@{taskData.category}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryTV" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/dueDateTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/form_task_dueDate_msg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryTV2" />
+        <!--Task Description-->
 
-        <TextView
-            android:id="@+id/dueDateTV2"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descriptionLayout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            app:dueDate="@{taskData.dueDate}"
-            app:expected_date="@{taskData}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dueDateTV" />
-
-        <TextView
-            android:id="@+id/descriptionTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/form_task_description_msg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dueDateTV2" />
-
-        <TextView
-            android:id="@+id/descriptionTV2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="@{taskData.description}"
+            android:layout_margin="@dimen/bottom_sheet_frags_generalLayout_margin"
+            android:hint="@string/form_task_description_msg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTV" />
+            app:layout_constraintTop_toBottomOf="@id/dueDateLayout">
 
-        <TextView
-            android:id="@+id/idTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="5dp"
-            android:text="@string/check_task_id"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionTV2" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descriptionTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:text="@{taskData.description}" />
 
-        <TextView
-            android:id="@+id/idTV2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:text="@{Long.toString(taskData.id)}"
-            app:layout_constraintBottom_toBottomOf="@+id/idTV"
-            app:layout_constraintStart_toEndOf="@id/idTV"
-            app:layout_constraintTop_toTopOf="@id/idTV" />
-
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
 

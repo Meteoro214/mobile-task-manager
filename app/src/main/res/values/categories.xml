@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- References string resources to allow access to individual values
+
+    <!--
+        References string resources to allow access to individual values
         MUST BE ORDERED THE SAME AS THE CATEGORY ENUM
     -->
     <string-array name="categories">
@@ -9,4 +11,6 @@
         <item>@string/personal_cat</item>
         <item>@string/urgent_cat</item>
     </string-array>
+
+
 </resources>

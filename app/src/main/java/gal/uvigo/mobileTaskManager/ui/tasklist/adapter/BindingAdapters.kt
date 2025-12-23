@@ -27,11 +27,11 @@ fun bindCategoryText(tv: TextView, category: Category?) {
     }
     if (tv !is AutoCompleteTextView) {
         val color = when (category) {
-            Category.OTHER -> tv.context.getColor(R.color.grassgreen)
-            Category.WORK -> tv.context.getColor(R.color.skyblue)
-            Category.PERSONAL -> tv.context.getColor(R.color.purple)
-            Category.URGENT -> tv.context.getColor(R.color.red)
-            else -> tv.context.getColor(R.color.gray)
+            Category.OTHER -> tv.context.getColor(R.color.category_other)
+            Category.WORK -> tv.context.getColor(R.color.category_work)
+            Category.PERSONAL -> tv.context.getColor(R.color.category_personal)
+            Category.URGENT -> tv.context.getColor(R.color.category_urgent)
+            else -> tv.context.getColor(R.color.category_other)
         }
         tv.setTextColor(color)
     }
@@ -43,11 +43,11 @@ fun bindCategoryText(tv: TextView, category: Category?) {
 @BindingAdapter("cat_background_color")
 fun bindCategoryColorBackground(v: View, category: Category?) {
     val color = when (category) {
-        Category.OTHER -> v.context.getColor(R.color.grassgreen)
-        Category.WORK -> v.context.getColor(R.color.skyblue)
-        Category.PERSONAL -> v.context.getColor(R.color.purple)
-        Category.URGENT -> v.context.getColor(R.color.red)
-        else -> v.context.getColor(R.color.gray)
+        Category.OTHER -> v.context.getColor(R.color.category_other)
+        Category.WORK -> v.context.getColor(R.color.category_work)
+        Category.PERSONAL -> v.context.getColor(R.color.category_personal)
+        Category.URGENT -> v.context.getColor(R.color.category_urgent)
+        else -> v.context.getColor(R.color.category_other)
     }
     v.setBackgroundColor(color)
 }
@@ -57,6 +57,14 @@ fun bindCategoryColorBackground(v: View, category: Category?) {
  */
 @BindingAdapter("dueDate")
 fun bindDueDateText(tv: TextView, dueDate: LocalDate?) {
+    tv.text = dueDate?.formattedDueDate(year = false) ?: ""
+}
+
+/**
+ * For a TextView, receives a dueDate and sets its text with the formatted date as MM DD YYYY.
+ */
+@BindingAdapter("dueDateYear")
+fun bindDueDateYearText(tv: TextView, dueDate: LocalDate?) {
     tv.text = dueDate?.formattedDueDate() ?: ""
 }
 
@@ -69,21 +77,19 @@ fun bindDueDateColor(tv: TextView, task: Task) {
         val currentDate = LocalDate.now()
         if (task.dueDate?.isBefore(currentDate) == true) {
             //if task is undone and already due, red
-            tv.context.getColor(R.color.red)
+            tv.context.getColor(R.color.task_undone)
         } else if (task.dueDate?.isEqual(currentDate) == true) {
             //if task is undone and due TODAY, Orange
-            tv.context.getColor(R.color.orange)
+            tv.context.getColor(R.color.task_pending_today)
         } else if (task.dueDate?.isAfter(currentDate.plusWeeks(1)) == false) {
             //if task is undone and due this week, yellow
-            tv.context.getColor(R.color.yellow)
+            tv.context.getColor(R.color.task_pending_soon)
         } else {
             //else normal color
-            tv.context.getColor(R.color.default_color)
+            tv.context.getColor(R.color.task_default)
         }
     } else {
-        //there was a strange bug in previous versions (see Assignment-10)
-        //the bug caused non-deterministic dueDate coloring, when no default color was given.
-        tv.context.getColor(R.color.default_color)
+        tv.context.getColor(R.color.task_default)
     }
     tv.setTextColor(color)
 }

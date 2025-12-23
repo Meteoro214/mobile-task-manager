@@ -1,0 +1,53 @@
+<resources>
+
+    <!-- Category names-->
+    <string name="other_cat">Otra/Ninguna</string>
+    <string name="work_cat">Trabajo</string>
+    <string name="personal_cat">Personal</string>
+    <string name="urgent_cat">Urgente</string>
+
+    <!-- Menu Title strings-->
+    <string name="app_title">MTM - Manager de Tareas</string>
+    <string name="detail_title">Detalles de Tarea</string>
+    <string name="form_title">Formulario de Tarea</string>
+
+    <!-- Menu strings-->
+    <string name="menu_add_task">Añadir Tarea</string>
+    <string name="menu_save_task">Guardar Tarea</string>
+    <string name="menu_edit_task">Editar Tarea</string>
+    <string name="menu_delete_task">Borrar Tarea</string>
+    <string name="menu_return_task">Dejar de Editar</string>
+
+    <!-- Task Form strings-->
+    <string name="add_form_title">Nueva Tarea</string>
+    <string name="edit_form_title">Editar Tarea</string>
+    <string name="form_task_title_msg">Titulo:</string>
+    <string name="form_task_dueDate_msg">Fecha Limite:</string>
+    <string name="form_task_description_msg">Descripción:</string>
+    <string name="form_task_category_msg">Categoría:</string>
+    <string name="form_task_isDone_msg">Marcar como Hecha?</string>
+    <string name="form_save_button_msg">Guardar Tarea</string>
+    <string name="form_task_mandatory">Obligatorio</string>
+
+    <!-- Task Form Error strings-->
+    <string name="form_load_error_msg">Error de Edición Critico : Tarea No Encontrada</string>
+    <string name="form_title_empty_msg">El titulo no puede estar vacio</string>
+    <string name="form_date_invalid_msg">La fecha no es valida</string>
+    <string name="form_category_empty_msg">Debe seleccionarse una categoria</string>
+    <string name="form_edit_error_msg">Error de Edición Critico : No se pudo Editar</string>
+
+    <!-- Task Detail strings-->
+    <string name="check_task_isItDone">Estado</string>
+    <string name="check_task_id">ID:</string>
+
+    <!-- Task Detail Error strings-->
+    <string name="check_delete_OK_msg">Se ha borrado una Tarea</string>
+    <string name="check_delete_error_msg">Error Critico : No se pudo Borrar</string>
+
+    <!-- Task List Error strings-->
+    <string name="swipe_mark_OK_msg">Marcado una Tarea como Hecha</string>
+    <string name="swipe_mark_wasDone_msg">Tarea previamente marcada como Hecha</string>
+    <string name="swipe_mark_error_msg">Error Critico : No se pudo marcar como Hecha</string>
+
+
+</resources>

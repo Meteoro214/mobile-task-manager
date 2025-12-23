@@ -3,16 +3,14 @@ package gal.uvigo.mobileTaskManager.ui.tasklist
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import gal.uvigo.mobileTaskManager.R
 import gal.uvigo.mobileTaskManager.databinding.FragmentTaskListBinding
 import gal.uvigo.mobileTaskManager.model.TaskViewModel
@@ -38,6 +36,17 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         super.onViewCreated(view, savedInstanceState)
         //another way of binding
         binding = FragmentTaskListBinding.bind(view)
+
+        setupRecyclerView()
+        setupSwipe()
+        setupDrag()
+        setupFAB()
+    }
+
+    /**
+     * Configures the RecyclerView.
+     */
+    private fun setupRecyclerView() {
         binding.taskRV.layoutManager = LinearLayoutManager(context)
         //Creates task adapter and sends lambda for ItemTask onClick
         binding.taskRV.adapter = TaskAdapter { task ->
@@ -49,27 +58,19 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         viewModel.taskListItems.observe(viewLifecycleOwner) { taskList ->
             (binding.taskRV.adapter as TaskAdapter).submitList(taskList)
         }
-
-        setupSwipe()
-        setupDrag()
-
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.task_list_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     /**
-     * Setups Swipe actions
+     * Configures Swipe actions.
      */
     private fun setupSwipe() {
         val swipeHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
-            //not used
+            /**
+             * Not used nor implemented.
+             */
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -83,7 +84,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 viewHolder: RecyclerView.ViewHolder,
                 direction: Int
             ) {
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (binding.taskRV.adapter as TaskAdapter).currentList.getOrNull(pos)
@@ -95,18 +96,18 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                         ItemTouchHelper.LEFT -> {
                             val deleted = viewModel.deleteTask(item.task.id)
                             if (deleted) {
-                                Toast.makeText(
-                                    requireContext(),
+                                Snackbar.make(
+                                    binding.root,
                                     getString(R.string.check_delete_OK_msg),
-                                    Toast.LENGTH_SHORT
+                                    Snackbar.LENGTH_SHORT
                                 ).show()
                             } else {
-                                Toast.makeText(
-                                    requireContext(),
+                                Snackbar.make(
+                                    binding.root,
                                     getString(R.string.check_delete_error_msg),
-                                    Toast.LENGTH_SHORT
+                                    Snackbar.LENGTH_SHORT
                                 ).show()
-                                //Needed incase delete fails
+                                //Needed in case delete fails
                                 binding.taskRV.adapter?.notifyItemChanged(pos)
                             }
                         }
@@ -115,27 +116,28 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                             val updated = viewModel.markTaskDone(item.task.id)
                             when (updated) {
                                 true -> {
-                                    Toast.makeText(
-                                        requireContext(), getString(R.string.swipe_mark_OK_msg),
-                                        Toast.LENGTH_SHORT
+                                    Snackbar.make(
+                                        binding.root,
+                                        getString(R.string.swipe_mark_OK_msg),
+                                        Snackbar.LENGTH_SHORT
                                     ).show()
                                 }
 
                                 false -> {
-                                    Toast.makeText(
-                                        requireContext(),
+                                    Snackbar.make(
+                                        binding.root,
                                         getString(R.string.swipe_mark_wasDone_msg),
-                                        Toast.LENGTH_SHORT
+                                        Snackbar.LENGTH_SHORT
                                     ).show()
                                     //Used so adapter recharges view & removes the swipe background
                                     binding.taskRV.adapter?.notifyItemChanged(pos)
                                 }
 
                                 else -> {//Should never happen
-                                    Toast.makeText(
-                                        requireContext(),
+                                    Snackbar.make(
+                                        binding.root,
                                         getString(R.string.swipe_mark_error_msg),
-                                        Toast.LENGTH_SHORT
+                                        Snackbar.LENGTH_SHORT
                                     ).show()
                                     //Used so adapter recharges view & removes the swipe background
                                     binding.taskRV.adapter?.notifyItemChanged(pos)
@@ -153,7 +155,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
@@ -171,17 +173,20 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 isCurrentlyActive: Boolean
             ) {
                 val p = Paint()
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
                 val itemView = viewHolder.itemView
+
                 if (item is TaskListItem.TaskItem && actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-                    if (dX > 0) { //Swipping right
-                        p.color = itemView.context.getColor(R.color.grassgreen)
-                        c.drawRect(itemView.left.toFloat(),itemView.top.toFloat(),
-                            itemView.right.toFloat(),itemView.bottom.toFloat(),
-                            p)
+                    if (dX > 0) { //Swiping right
+                        p.color = itemView.context.getColor(R.color.swipe_done_background)
+                        c.drawRect(
+                            itemView.left.toFloat(), itemView.top.toFloat(),
+                            itemView.right.toFloat(), itemView.bottom.toFloat(),
+                            p
+                        )
                         val d = itemView.context.getDrawable(R.drawable.ic_checkmark)
                         if (d != null) {
                             val iconMargin = (itemView.height - d.intrinsicHeight) / 2
@@ -192,11 +197,13 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                             d.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                             d.draw(c)
                         }
-                    } else if (dX < 0) { //Swipping left
-                        p.color = itemView.context.getColor(R.color.red)
-                        c.drawRect(itemView.left.toFloat(),itemView.top.toFloat(),
-                            itemView.right.toFloat(),itemView.bottom.toFloat(),
-                            p)
+                    } else if (dX < 0) { //Swiping left
+                        p.color = itemView.context.getColor(R.color.swipe_delete_background)
+                        c.drawRect(
+                            itemView.left.toFloat(), itemView.top.toFloat(),
+                            itemView.right.toFloat(), itemView.bottom.toFloat(),
+                            p
+                        )
                         val d = itemView.context.getDrawable(R.drawable.ic_delete)
 
                         if (d != null) {
@@ -210,6 +217,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                         }
                     }
                 }
+
                 super.onChildDraw(
                     c,
                     recyclerView,
@@ -226,12 +234,23 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
     }
 
     /**
-     * Setups Drag actions
+     * Configures Drag actions
      */
     private fun setupDrag() {
         val dragHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
         ) {
+
+            /**
+             * Used to modify the item elevation when dragging without needing to know original value
+             */
+            private val alphaModifier = 0.8F
+
+            /**
+             * Used to modify the item elevation when dragging without needing to know original value
+             */
+            private val elevationModifier = 3
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -267,8 +286,8 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 viewHolder: RecyclerView.ViewHolder
             ) {
                 super.clearView(recyclerView, viewHolder)
-                viewHolder.itemView.elevation = 5.5F
-                viewHolder.itemView.alpha = 1F
+                viewHolder.itemView.elevation /= this.elevationModifier
+                viewHolder.itemView.alpha /= this.alphaModifier
                 //Commit reordering to Room
                 viewModel.persistOrder()
             }
@@ -278,13 +297,15 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 actionState: Int
             ) {
                 if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
-                    viewHolder.itemView.elevation = 16F
-                    viewHolder.itemView.alpha = 0.8F
+                    viewHolder.itemView.elevation *= this.elevationModifier
+                    viewHolder.itemView.alpha *= this.alphaModifier
                 }
                 super.onSelectedChanged(viewHolder, actionState)
             }
 
-            //not used
+            /**
+             * Not used
+             */
             override fun onSwiped(
                 viewHolder: RecyclerView.ViewHolder,
                 direction: Int
@@ -295,7 +316,7 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder
             ): Int {
-                //gets the position of the viewholder on the adapter
+                //gets the position of the view holder on the adapter
                 val pos = viewHolder.bindingAdapterPosition
                 //retrieves the item
                 val item = (recyclerView.adapter as TaskAdapter).currentList.getOrNull(pos)
@@ -306,6 +327,17 @@ class TaskListFragment : Fragment(R.layout.fragment_task_list) {
         })
 
         dragHelper.attachToRecyclerView(binding.taskRV)
+    }
+
+
+    /**
+     * Configures the FloatingActionButton
+     */
+    private fun setupFAB() {
+        binding.addFAB.setOnClickListener {
+            val action = TaskListFragmentDirections.openForm()
+            findNavController().navigate(action)
+        }
     }
 
 }

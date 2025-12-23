@@ -10,7 +10,7 @@ import gal.uvigo.mobileTaskManager.databinding.ItemHeaderBinding
 import gal.uvigo.mobileTaskManager.databinding.ItemTaskBinding
 
 /**
- * Class to handle Adapter implementation for ReciclerView
+ * Class to handle Adapter implementation for RecyclerView
  */
 class TaskAdapter(onTaskItemClick: (Task) -> Unit) :
     ListAdapter<TaskListItem, RecyclerView.ViewHolder>(TaskListItemDiff) {

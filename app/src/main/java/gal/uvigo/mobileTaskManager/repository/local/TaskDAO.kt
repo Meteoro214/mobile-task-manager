@@ -8,6 +8,9 @@ import androidx.room.Query
 import gal.uvigo.mobileTaskManager.model.Category
 import java.time.LocalDate
 
+/**
+ * Interface to define a DAO for Room Database.
+ */
 @Dao
 interface TaskDAO {
 

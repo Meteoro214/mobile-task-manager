@@ -21,7 +21,11 @@ import gal.uvigo.mobileTaskManager.repository.sync.TaskUploadWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import androidx.core.content.edit
 
+/**
+ *  Class to represent a Repository for the App.
+ */
 class TaskRepository(context: Context) {
 
     /**
@@ -40,7 +44,7 @@ class TaskRepository(context: Context) {
     private val workManager = WorkManager.getInstance(context)
 
     /**
-     * The Dispacher that will be used to launch coroutines.
+     * The Dispatcher that will be used to launch coroutines.
      */
     private val dispatcher = Dispatchers.IO
 
@@ -70,7 +74,7 @@ class TaskRepository(context: Context) {
     private val logTag = context.getString(R.string.Log_Tag)
 
     /**
-     * A TaskMapper to handle transformations between all the Task classes
+     * A TaskMapper to handle transformations between all the Task classes.
      */
     private val taskMapper = TaskMapper()
 
@@ -84,15 +88,15 @@ class TaskRepository(context: Context) {
      */
     private var _tasks: MutableMap<Long, TaskEntity> = mutableMapOf()
 
-    //LiveData will keep the list updated after CUD operations
     /**
      * A LiveData that exposes the Tasks to the ViewModel.
-     * Exposed tasks are expected to be ordered by category and then by position
+     * Exposed tasks are expected to be ordered by category and then by position.
+     * LiveData will keep the List updated after CUD operations.
      */
     val tasks: LiveData<List<Task>> = this.getAll()
 
     /**
-     * Checks if the app is launching for the first time. If it is, downloads tasks from CrudCrud
+     * Checks if the app is launching for the first time. If it is, downloads tasks from CrudCrud.
      */
     suspend fun init(context: Context) {
         val settings = context.getSharedPreferences(
@@ -104,13 +108,13 @@ class TaskRepository(context: Context) {
         if (firstInit) {
             this.download()
             //set flag so app knows
-            settings.edit().putBoolean(key, false).commit()
+            settings.edit { putBoolean(key, false) }
         }
     }
 
 
     /**
-     * Adds the given task
+     * Adds the given task.
      */
     suspend fun addTask(task: Task): Long? =
         withContext(dispatcher) {
@@ -138,7 +142,7 @@ class TaskRepository(context: Context) {
     }
 
     /**
-     * Retrieves the task with the given id or returns null if no such task exists
+     * Retrieves the task with the given id or returns null if no such task exists.
      */
     fun get(id: Long): Task? {
         val toRet = _tasks[id]
@@ -148,7 +152,7 @@ class TaskRepository(context: Context) {
     /**
      * Retrieves the TaskEntity LiveData from Room via getAll(), then stores it in memory and maps
      * the list to a new LiveData<List<Task>>.
-     * The exposed List will be ordered by category and position
+     * The exposed List will be ordered by category and position.
      */
     private fun getAll() = taskDAO.getAll().map { entities ->
         val tasks = mutableListOf<Task>()
@@ -161,7 +165,7 @@ class TaskRepository(context: Context) {
     }
 
     /**
-     * Downloads all Tasks from CrudCrud and stores them in Room
+     * Downloads all Tasks from CrudCrud and stores them in Room.
      */
     private suspend fun download() {
         withContext(dispatcher) {
@@ -185,7 +189,7 @@ class TaskRepository(context: Context) {
     }
 
     /**
-     * Updates the given task. Returns true if successful
+     * Updates the given task. Returns true if successful.
      */
     suspend fun updateTask(updated: Task): Boolean =
         withContext(dispatcher) {
@@ -204,7 +208,7 @@ class TaskRepository(context: Context) {
         }
 
     /**
-     * Marks the task with the given ID as done. Returns true if successful
+     * Marks the task with the given ID as done. Returns true if successful.
      */
     suspend fun markTaskDone(id: Long): Boolean =
         withContext(dispatcher) {
@@ -219,7 +223,7 @@ class TaskRepository(context: Context) {
 
     /**
      * Swaps the position of the 2 tasks with the given IDs.
-     * Returns true if successful
+     * Returns true if successful.
      */
     suspend fun reorder(fromID: Long, toID: Long): Boolean =
         withContext(dispatcher) {
@@ -262,7 +266,7 @@ class TaskRepository(context: Context) {
     }
 
     /**
-     * Deletes the given task. Returns true if successful
+     * Deletes the given task. Returns true if successful.
      */
     suspend fun deleteTask(task: Task): Boolean =
         withContext(dispatcher) {
@@ -276,7 +280,7 @@ class TaskRepository(context: Context) {
         }
 
     /**
-     * Called by sync() to perform a DELETE to server & delete the given task on Room
+     * Called by sync() to perform a DELETE to server & delete the given task on Room.
      * (hard delete,the one no one does).
      */
     private suspend fun deleteSync(task: TaskEntity): Int {
@@ -318,7 +322,7 @@ class TaskRepository(context: Context) {
             SyncStatus.PENDING_UPDATE -> {
                 //Update operation should happen after create operation
                 //this means there may be a pending operation
-                //create/update could be pending, delete shouldn´t, so we need to APPEND the work request
+                //create/update could be pending, delete should not, so we need to APPEND the work request
                 // to ensure it is executed after the pending ones
                 //If previous fails, it does not matter if it was an update, but a failed insert
                 //means update will also fail, so if previous fails so does this one (no AppendOrReplace)
@@ -346,7 +350,7 @@ class TaskRepository(context: Context) {
 
     /**
      * Called by WorkRequest to sync Task information with CruCrud.
-     * Will return HTTP Response inspired codes
+     * Will return HTTP Response inspired codes.
      * 200 = OK
      * 400 = Service call failed
      * 404 = No task for given ID
@@ -380,7 +384,7 @@ class TaskRepository(context: Context) {
                     SyncStatus.PENDING_UPDATE.name -> {
                         //If Room syncStatus is Pending Create or Delete, something failed
                         //If Room syncStatus is Pending Update, all good
-                        //If Room syncStatus is SYNCED, Create or Update sync happened after update operation was schedulled
+                        //If Room syncStatus is SYNCED, Create or Update sync happened after update operation was scheduled
                         when (entity.syncStatus) {
                             SyncStatus.PENDING_CREATE -> 409 //Forbidden
                             SyncStatus.PENDING_UPDATE -> updateSync(entity) //Expected behaviour
@@ -393,12 +397,12 @@ class TaskRepository(context: Context) {
                     }
 
                     SyncStatus.PENDING_DELETE.name -> {
-                        //If Room syncStatus is trully Pending Delete, delete, but only if it was already inserted (_id !=null
+                        //If Room syncStatus is truly Pending Delete, delete, but only if it was already inserted (_id !=null
                         //Anything else means a task that was marked as deleted was modified, forbidden
                         when (entity.syncStatus) {
                             SyncStatus.PENDING_DELETE -> if (entity._id != null) {
                                 deleteSync(entity) //Expected behaviour
-                            } else { // means task wasnt even inserted yet
+                            } else { // means task was not even inserted yet
                                 taskDAO.trueDelete(entity.id)
                                 200
                             }

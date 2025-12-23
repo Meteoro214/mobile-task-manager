@@ -9,7 +9,7 @@ import gal.uvigo.mobileTaskManager.repository.sync.SyncStatus
 import java.time.LocalDate
 
 /**
- * Class to handle conversions between the different classes that represent Tasks
+ * Class to handle conversions between the different classes that represent Tasks.
  */
 class TaskMapper {
 
@@ -54,7 +54,7 @@ class TaskMapper {
      * Transforms a TaskEntity into a Task.
      * Will ignore syncStatus, position and _id.
      * Used to send a TaskEntity to TaskViewModel.
-     * Order is expected to be maintained (getAll on DAO ordered by position)
+     * Order is expected to be maintained (getAll on DAO ordered by position).
      */
     fun toTask(entity: TaskEntity): Task =
         Task(

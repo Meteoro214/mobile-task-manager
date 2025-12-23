@@ -10,15 +10,18 @@ import gal.uvigo.mobileTaskManager.ui.tasklist.adapter.TaskListItem
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * Class to represent a ViewModel for the App.
+ */
 class TaskViewModel(app: Application) : AndroidViewModel(app) {
 
     /**
-     * The TaskRepository that will handle our Tasks
+     * The TaskRepository that will handle our Tasks.
      */
     private val repo = TaskRepository(app)
 
     /**
-     * The List of TaskItems, grouped by category and ordered
+     * The List of TaskItems, grouped by category and ordered.
      */
     val taskListItems: LiveData<List<TaskListItem>> =
         repo.tasks.map { tasks ->
@@ -36,7 +39,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
         }
 
     /**
-     * Launches initial Repository configuration (ensures tasks are synced on first launch after a reinstall)
+     * Launches initial Repository configuration (ensures tasks are synced on first launch after a reinstall).
      */
     init {
         viewModelScope.launch {
@@ -47,7 +50,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     /**
      * Adds a new task with the next available ID, and the given info.
      * As a default, use an empty title & description, current date as dueDate and Category other.
-     * Throws IllegalArgumentException if title is blank
+     * Throws IllegalArgumentException if title is blank or dueDate has passes.
      */
     fun addTask(
         title: String,
@@ -66,7 +69,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Launches TaskRepository add operation
+     * Launches TaskRepository add operation.
      */
     private fun addTask(t: Task) {
         viewModelScope.launch {
@@ -99,7 +102,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Launches TaskRepository update operation
+     * Launches TaskRepository update operation.
      */
     private fun update(t: Task) {
         viewModelScope.launch {
@@ -109,7 +112,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
 
     /**
      * Marks the task with given id as done. Returns false if it was already done,
-     * null if it does not exist or true if it's marked as done successfully
+     * null if it does not exist or true if it's marked as done successfully.
      */
     fun markTaskDone(id: Long): Boolean? {
         val current = this.get(id)
@@ -127,7 +130,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Launches TaskRepository markTaskDone operation
+     * Launches TaskRepository markTaskDone operation.
      */
     private fun markDone(id: Long) {
         viewModelScope.launch {
@@ -136,7 +139,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Swaps the position of the 2 tasks with the given IDs (Memory only)
+     * Swaps the position of the 2 tasks with the given IDs (Memory only).
      */
     fun reorder(fromID: Long, toID: Long): Boolean {
         if (get(fromID) == null || get(toID) == null) return false
@@ -163,13 +166,13 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Retrieves the task with the given id or returns null if no such task exists
+     * Retrieves the task with the given id or returns null if no such task exists.
      */
     fun get(id: Long): Task? = repo.get(id)
 
     /**
      * Deletes the task with the given ID, if it exists.
-     * Returns true if the task gets deleted, or false if it doesn't exist
+     * Returns true if the task gets deleted, or false if it doesn't exist.
      */
     fun deleteTask(id: Long): Boolean {
         val t = this.get(id)
@@ -180,7 +183,7 @@ class TaskViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     /**
-     * Launches TaskRepository delete operation
+     * Launches TaskRepository delete operation.
      */
     private fun delete(t: Task) {
         viewModelScope.launch {

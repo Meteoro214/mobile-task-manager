@@ -4,28 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="taskData"
             type="gal.uvigo.mobileTaskManager.model.Task" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="5dp">
+        android:layout_marginVertical="@dimen/item_task_cardview_marginVertical"
+        android:elevation="@dimen/item_task_cardview_elevation">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginVertical="@dimen/item_task_layout_marginVertical"
             tools:context=".ui.MainActivity">
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/idTV"
-                android:layout_width="20dp"
+                android:layout_width="@dimen/item_task_idTV_width"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/item_task_general_marginStart"
                 android:gravity="center_vertical"
                 android:text="@{Long.toString(taskData.id)}"
                 app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
@@ -33,57 +33,55 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/isDoneMark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="@dimen/item_task_isDoneMark_marginHorizontal"
                 android:gravity="center"
-                android:paddingBottom="2dp"
+                android:paddingBottom="@dimen/item_task_isDoneMark_paddingBottom"
                 android:text="@{taskData.done ? @string/mark_done_DONE_img: @string/mark_done_UNDONE_img}"
-                android:textSize="30sp"
+                android:textSize="@dimen/item_task_isDoneMark_textSize"
                 app:layout_constraintBottom_toBottomOf="@id/idTV"
                 app:layout_constraintStart_toEndOf="@id/idTV"
                 app:layout_constraintTop_toTopOf="@id/idTV" />
 
-
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/titleTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/item_task_general_marginStart"
                 android:text="@{taskData.title}"
-                android:textSize="15sp"
+                android:textAppearance="?attr/textAppearanceTitleSmall"
                 app:layout_constraintBottom_toTopOf="@id/categoryTV"
-                app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintEnd_toStartOf="@+id/dueDateTV"
+                app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/categoryTV"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/item_task_general_marginStart"
                 android:gravity="bottom"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
                 app:category="@{taskData.category}"
-                android:textColor="@color/gray"
-                android:textSize="11sp"
                 app:layout_constraintStart_toEndOf="@+id/isDoneMark"
                 app:layout_constraintTop_toBottomOf="@id/titleTV" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/dueDateTV"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginEnd="@dimen/item_task_dueDateTV_marginEnd"
                 app:dueDate="@{taskData.dueDate}"
                 app:expected_date="@{taskData}"
                 app:layout_constraintBottom_toBottomOf="@id/isDoneMark"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/isDoneMark" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

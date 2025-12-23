@@ -1,8 +1,9 @@
 <resources>
+
     <!-- Common strings-->
-    <string name="app_name">Mobile Task Manager</string>
-    <string name="mark_done_DONE_img">✅</string>
-    <string name="mark_done_UNDONE_img">❌</string>
+    <string name="app_name" translatable="false">Mobile Task Manager</string>
+    <string name="mark_done_DONE_img" translatable="false">✅</string>
+    <string name="mark_done_UNDONE_img" translatable="false">❌</string>
 
     <!-- Category names-->
     <string name="other_cat">Other/None</string>
@@ -17,25 +18,21 @@
 
     <!-- Menu strings-->
     <string name="menu_add_task">Add Task</string>
+    <string name="menu_save_task">Save Task</string>
     <string name="menu_edit_task">Edit Task</string>
     <string name="menu_delete_task">Delete Task</string>
+    <string name="menu_return_task">Abandon Edit</string>
 
     <!-- Task Form strings-->
-    <string name="add_form_title">NEW TASK</string>
-    <string name="default_form_title">TASK FORM</string>
-    <string name="edit_form_title">EDIT TASK</string>
+    <string name="add_form_title">New Task</string>
+    <string name="edit_form_title">Edit Task</string>
     <string name="form_task_title_msg">Title:</string>
     <string name="form_task_dueDate_msg">Due Date:</string>
     <string name="form_task_description_msg">Description:</string>
     <string name="form_task_category_msg">Category:</string>
     <string name="form_task_isDone_msg">Mark as Done?</string>
     <string name="form_save_button_msg">Save Task</string>
-
-    <!-- Task Form Hint strings-->
-    <string name="form_desc_hint_msg">Description for a new Task</string>
-    <string name="form_title_hint_msg">Title for a new Task</string>
-    <string name="form_dueDate_hint_msg">MM DD</string>
-    <string name="form_category_hint_msg">Category for a new Task</string>
+    <string name="form_task_mandatory">Mandatory</string>
 
     <!-- Task Form Error strings-->
     <string name="form_load_error_msg">Critical Edit Error : Task Not Found</string>
@@ -44,11 +41,9 @@
     <string name="form_category_empty_msg">Category must be selected</string>
     <string name="form_edit_error_msg">Critical Edit Error : Could Not Update</string>
 
-
     <!-- Task Detail strings-->
-    <string name="check_task_isItDone">Completion Status:</string>
-    <string name="check_task_id">Task ID: </string>
-    <string name="check_detail_title">TASK INFO</string>
+    <string name="check_task_isItDone">Status</string>
+    <string name="check_task_id">ID:</string>
 
     <!-- Task Detail Error strings-->
     <string name="check_delete_OK_msg">Deleted a Task</string>
